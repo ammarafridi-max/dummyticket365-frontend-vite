@@ -133,7 +133,7 @@ export default function Form() {
       const result = await dispatch(submitFormData());
 
       if (result.meta.requestStatus === 'fulfilled') {
-        navigate('/booking/review-details');
+        // navigate('/booking/review-details');
       } else {
         toast.error('An error occurred while submitting the form');
       }
