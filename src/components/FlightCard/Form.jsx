@@ -8,6 +8,7 @@ import {
   updatePricing,
   submitFormData,
   initializePassengers,
+  updateField,
 } from '../../redux/slices/ticketFormSlice';
 import { formatDate } from '../../utils/formatDate';
 import styled from 'styled-components';
