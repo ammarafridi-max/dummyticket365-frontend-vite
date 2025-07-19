@@ -1,6 +1,5 @@
 import PrimarySection from '../PrimarySection';
 import Container from '../Container';
-import styled from 'styled-components';
 
 const airlines = [
   {
@@ -41,45 +40,17 @@ const airlines = [
   // },
 ];
 
-const AirlineContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  gap: 50px;
-  align-items: center;
-  justify-content: center;
-
-  & img {
-    width: 100%;
-    height: fit-content;
-    filter: grayscale(1) opacity(0.7);
-  }
-
-  @media screen and (max-width: 991px) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    gap: 25px;
-  }
-`;
-
 export default function Airlines() {
   return (
-    <PrimarySection
-      backgroundColor="var(--grey-color-100)"
-      py="50px"
-      mb="100px"
-    >
-      <Container>
-        {/* <SectionTitle
-          mb="30px"
-          subtitle="Multiple choices, great flexibility"
-          textAlign="center"
-        >
-          Airlines We Serve
-        </SectionTitle> */}
-        <AirlineContainer>
-          {airlines.map((airline) => (
-            <img src={airline.src} alt={airline.name} />
-          ))}
-        </AirlineContainer>
+    <PrimarySection className="bg-gray-100 py-10 my-15">
+      <Container className="grid grid-cols-4 md:grid-cols-8 gap-3.75 md:gap-12.5 items-center justify-center">
+        {airlines.map((airline) => (
+          <img
+            className="w-full object-contain p-1.25 grayscale-100 opacity-70"
+            src={airline.src}
+            alt={airline.name}
+          />
+        ))}
       </Container>
     </PrimarySection>
   );

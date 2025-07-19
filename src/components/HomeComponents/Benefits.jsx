@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import {
   HiOutlineClock,
   HiOutlineCurrencyDollar,
@@ -6,22 +5,12 @@ import {
 } from 'react-icons/hi2';
 import Container from '../Container';
 import PrimarySection from '../PrimarySection';
-import Paragraph from '../Paragraph';
-
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 50px;
-  @media only screen and (max-width: 991px) {
-    display: block;
-  }
-`;
 
 export default function Benefits({ keyword = 'dummy ticket' }) {
   return (
-    <PrimarySection py="0">
+    <PrimarySection className="pt-20" id="benefits">
       <Container>
-        <Row>
+        <div className="block md:grid md:grid-cols-3 gap-10">
           <IconCard
             icon={<HiCheck />}
             title="Reliable"
@@ -37,77 +26,22 @@ export default function Benefits({ keyword = 'dummy ticket' }) {
             title="Great Value"
             text="Starting from just USD 12, our tickets combine affordability with professional quality, helping travelers save money without compromising reliability."
           />
-        </Row>
+        </div>
       </Container>
     </PrimarySection>
   );
 }
 
-const Card = styled.div`
-  text-align: center;
-  &:last-of-type {
-    margin-bottom: 0px;
-  }
-  @media only screen and (max-width: 991px) {
-    width: 100%;
-    margin-bottom: 50px;
-  }
-`;
-
-const H3 = styled.h3`
-  font-size: 20px;
-  margin: 18px 0;
-  padding: 0;
-  font-weight: 700;
-
-  @media screen and (max-width: 991px) {
-    font-size: 18px;
-  }
-`;
-
-const IconDiv = styled.div`
-  width: fit-content;
-  font-size: 30px;
-  color: var(--primary-color-500);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--primary-color-200);
-  margin: 0 auto;
-  padding: 15px;
-  border-radius: 100px;
-  overflow: hidden;
-`;
-
 function IconCard({ icon, title, text }) {
   return (
-    <Card>
-      <IconDiv>{icon}</IconDiv>
-      <H3>{title}</H3>
-      <Paragraph textAlign="center" fontSize="17px" fontWeight="300">
-        {text}
-      </Paragraph>
-    </Card>
+    <div className="w-full mb-12 text-center md:mb-0">
+      <div className="w-fit text-3xl text-primary-500 flex items-center justify-center bg-primary-50 p-3.75 mx-auto rounded-full overflow-hidden">
+        {icon}
+      </div>
+      <h3 className="text-lg my-4.5 p-0 font-bold font-merriweather md:text-[18px]">
+        {title}
+      </h3>
+      <p className="text-center text-[17px] font-light leading-6">{text}</p>
+    </div>
   );
-}
-
-{
-  /* <IconCard
-  icon={shieldIcon}
-  title="Reliable"
-  text="We use official airline reservation systems to generate dummy tickets, making sure that each ticket is genuine and can be verified by consulates and embassies all around the world."
-  alt="A shield icon, representing the reliability of My Dummy Ticket."
-/>
-<IconCard
-  icon={timeIcon}
-  title="Quick"
-  text="Our streamlined process allows you to get your dummy ticket instantly via email. Simply fill out a short form, and within minutes, you will have a verifiable ticket ready for your visa application."
-  alt="A time icon, highlighting My Dummy Ticket's fast process to get your dummy tickets."
-/>
-<IconCard
-  icon={usdIcon}
-  title="Affordable"
-  text="Starting at just AED 49, our service is the most cost-effective solution. We offer the best rates in the market, making it affordable for everyone to obtain a verifiable dummy ticket."
-  alt="A dollar sign, highlighting My Dummy Ticket's affordable pricing for your traveling needs."
-/> */
 }

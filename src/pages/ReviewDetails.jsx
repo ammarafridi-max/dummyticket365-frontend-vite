@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { createTicket } from '../redux/slices/createTicket';
+import { createStipePaymentLink } from '../redux/slices/stripePayment';
 import { fetchFormDetails } from '../redux/slices/fetchTicketDetails';
 import { formatDate } from '../utils/formatDate';
 import { FaSpinner } from 'react-icons/fa';
@@ -13,6 +13,7 @@ import PrimaryButton from '../components/PrimaryButton';
 const Box = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 15px;
 
   @media (max-width: 991px) {
     flex-direction: column;
@@ -20,9 +21,13 @@ const Box = styled.div`
 `;
 
 const Section = styled.div`
-  margin-bottom: 20px;
-  width: 48%;
-  padding: 0;
+  width: 50%;
+  margin-bottom: 15px;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px 0px rgb(220, 220, 220);
+  background-color: white;
+  font-family: 'Nunito Variable';
 
   @media (max-width: 991px) {
     width: 100%;
@@ -32,16 +37,15 @@ const Section = styled.div`
 const SectionTitle = styled.h2`
   font-size: 1.5rem;
   margin-bottom: 10px;
-  border-bottom: 3px solid var(--primary-color-600);
   padding-bottom: 5px;
-
+  font-weight: 700;
   @media (max-width: 991px) {
     font-size: 1.2rem;
   }
 `;
 
 const Detail = styled.div`
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   font-size: 1rem;
   display: flex;
   justify-content: space-between;
@@ -66,37 +70,17 @@ const LoadingText = styled.p`
   color: var(--primary-color);
 `;
 
-const SpinnerIcon = styled(FaSpinner)`
-  animation: spin 1s linear infinite;
-  margin-right: 8px;
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-const ButtonDiv = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
 export default function ReviewDetails() {
   const dispatch = useDispatch();
   const { formDetails, status } = useSelector((state) => state.formDetails);
   const { stripeStatus, data, stripeError } = useSelector(
-    (state) => state.createTicket
+    (state) => state.payment
   );
   const navigate = useNavigate();
   const sessionId = localStorage.getItem('SESSION_ID');
 
   let additionalPrice = 0;
-  let validityText = '48 Hours';
+  let validityText = '2 Days';
 
   if (formDetails?.ticketValidity === '7 Days') {
     additionalPrice = 7;
@@ -120,7 +104,7 @@ export default function ReviewDetails() {
 
   const handleConfirm = () => {
     if (sessionId) {
-      dispatch(createTicket({ ...formDetails, totalAmount }));
+      dispatch(createStipePaymentLink({ ...formDetails, totalAmount }));
     }
   };
 
@@ -152,8 +136,8 @@ export default function ReviewDetails() {
 
     let statusText;
 
-    if (formDetails?.status === 'REVIEW_ORDER') {
-      statusText = 'Pending Payment';
+    if (formDetails?.paymentStatus === 'UNPAID') {
+      statusText = 'Unpaid';
     }
 
     let availability;
@@ -169,22 +153,28 @@ export default function ReviewDetails() {
         <Helmet>
           <title>Review Your Information</title>
         </Helmet>
-        {/* <PageTitle pt="20px" pb="30px">
-          Review Your Information
-        </PageTitle> */}
 
-        <Box>
+        <div className="block md:flex md:gap-4">
           <BookingDetailBox formDetails={formDetails} statusText={statusText} />
-          <FlightDetailBox formDetails={formDetails} />
-        </Box>
-        <Box>
+          <FlightDetailBox
+            from={formDetails.from}
+            to={formDetails.to}
+            departureDate={formDetails.departureDate}
+            returnDate={formDetails.returnDate}
+            departureFlight={formDetails.flightDetails.departureFlight}
+            returnFlight={formDetails.flightDetails.returnFlight}
+          />
+        </div>
+
+        <div className="block md:flex md:gap-4">
           <TicketAvailabilityDetail
             validityText={validityText}
             availability={availability}
             ticketAvailability={ticketAvailability}
           />
           <PassengerDetail groupedPassengers={groupedPassengers} />
-        </Box>
+        </div>
+
         <OrderTotalDetail
           totalQuantity={totalQuantity}
           additionalPrice={additionalPrice}
@@ -222,38 +212,51 @@ function BookingDetailBox({ formDetails, statusText }) {
         </Detail>
       )}
       <Detail>
-        <span>Status:</span> {statusText}
+        <span>Status:</span> Payment Pending
       </Detail>
+      <Detail>
+        <span>Ticket Validity:</span> {formDetails.ticketValidity}
+      </Detail>
+      {/* <Detail>
+        <span>Ticket Delivery:</span> {formDetails.ticketValidity}
+      </Detail> */}
     </Section>
   );
 }
 
-function FlightDetailBox({ formDetails }) {
+function FlightDetailBox({
+  from,
+  to,
+  departureDate,
+  returnDate,
+  departureFlight,
+  returnFlight,
+}) {
   return (
     <Section>
       <SectionTitle>Flight Information</SectionTitle>
       <Detail>
-        <span>From:</span> {formDetails?.from}
+        <span>From:</span> {from}
       </Detail>
       <Detail>
-        <span>To:</span> {formDetails?.to}
+        <span>To:</span> {to}
       </Detail>
       <Detail>
-        <span>Departure Date:</span> {formatDate(formDetails?.departureDate)}
+        <span>Departure Date:</span> {formatDate(departureDate)}
       </Detail>
       <Detail>
-        <span>Departure Flight:</span>{' '}
-        {formDetails?.flightDetails?.departureFlight}
+        <span>Departure Flight:</span> {departureFlight.segments[0].carrierCode}{' '}
+        {departureFlight.segments[0].flightNumber}
       </Detail>
-      {formDetails?.returnDate && (
+      {returnDate && (
         <Detail>
-          <span>Return Date:</span> {formatDate(formDetails?.returnDate)}
+          <span>Return Date:</span> {formatDate(returnDate)}
         </Detail>
       )}
-      {formDetails?.flightDetails?.returnFlight && (
+      {returnFlight && (
         <Detail>
-          <span>Return Flight:</span>{' '}
-          {formDetails?.flightDetails?.returnFlight || ''}
+          <span>Return Flight:</span> {returnFlight.segments[0].carrierCode}{' '}
+          {returnFlight.segments[0].flightNumber}
         </Detail>
       )}
     </Section>
@@ -269,7 +272,7 @@ function TicketAvailabilityDetail({
     <Section>
       <SectionTitle>Ticket Availability</SectionTitle>
       <Detail>
-        <span>Ticket Validity :</span> {validityText}
+        <span>Ticket Validity:</span> {validityText}
       </Detail>
       <Detail>
         {availability ? (
@@ -318,16 +321,16 @@ function OrderTotalDetail({ totalQuantity, additionalPrice, totalAmount }) {
       <Section>
         <SectionTitle>Order Total</SectionTitle>
         <Detail>
-          <span>Base Price :</span> USD {13 * totalQuantity}
+          <span>Dummy Ticket Price:</span> USD {13 * totalQuantity}
         </Detail>
         <Detail>
-          <span>Additional Price :</span>
+          <span>Additional Validity Price:</span>
           {additionalPrice === 0
             ? 'USD 0'
             : `USD ${additionalPrice * totalQuantity}`}
         </Detail>
         <Detail>
-          <span>Total :</span> USD {totalAmount}
+          <span>Total:</span> USD {totalAmount}
         </Detail>
       </Section>
     </Box>
@@ -336,19 +339,15 @@ function OrderTotalDetail({ totalQuantity, additionalPrice, totalAmount }) {
 
 function ProceedButton({ handleConfirm, stripeStatus, totalAmount }) {
   return (
-    <ButtonDiv>
+    <div className="flex items-center justify-center">
       <PrimaryButton
         onClick={handleConfirm}
         disabled={stripeStatus === 'loading'}
       >
-        {stripeStatus === 'loading' ? (
-          <>
-            <SpinnerIcon /> Processing...
-          </>
-        ) : (
-          <>Proceed To Payment (USD {totalAmount})</>
-        )}
+        {stripeStatus === 'loading'
+          ? 'Processing...'
+          : `Proceed To Payment (USD ${totalAmount})`}
       </PrimaryButton>
-    </ButtonDiv>
+    </div>
   );
 }

@@ -1,89 +1,46 @@
-import styled from 'styled-components';
 import PrimarySection from '../PrimarySection';
 import Container from '../Container';
 import SectionTitle from '../SectionTitle';
 
-const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  @media screen and (max-width: 991px) {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-`;
+const steps = [
+  {
+    title: 'Route and dates',
+    text: 'Enter your departure and arrival cities, select your travel dates, and begin filling out your booking information',
+  },
+  {
+    title: 'Select Flight',
+    text: 'View the list of available flights based on your selected route and dates, then choose the option that suits you best',
+  },
+  {
+    title: 'Payment',
+    text: 'Double-check all the entered details, select your preferred payment method, and securely complete your booking',
+  },
+];
 
 export default function Process() {
   return (
-    <PrimarySection pt="50px" pb="100px" id="process">
+    <PrimarySection className="pt-10" id="process">
       <Container>
-        <SectionTitle textAlign="center" subtitle="How it Works" mb="50px">
+        <SectionTitle textAlign="center" subtitle="How it Works" mb="7">
           Simple, Hassle-Free Process
         </SectionTitle>
-        <Row>
-          <Card number={1} title="Route and dates">
-            Enter your departure and arrival cities, select your travel dates,
-            and begin filling out your booking information.
-          </Card>
-          <Card number={2} title="Select Flight">
-            View the list of available flights based on your selected route and
-            dates, then choose the option that suits you best.
-          </Card>
-          <Card number={3} title="Payment">
-            Double-check all the entered details, select your preferred payment
-            method, and securely complete your booking.
-          </Card>
-        </Row>
+
+        <div className="flex flex-col gap-3.75 md:grid md:grid-cols-3 md:m-0 md:p-0">
+          {steps.map((step, i) => (
+            <div className="bg-gray-100 py-10 px-7.5 rounded-lg" key={i}>
+              <div className="w-10 h-10 bg-primary-500 text-white text-lg font-medium mx-auto flex items-center justify-center rounded-4xl">
+                {i + 1}
+              </div>
+              <h3 className="text-[18px] font-[600] font-merriweather text-center mt-5 mb-2.5 p-0 capitalize">
+                {step.title}
+              </h3>
+              <p className="text-[16.5px] font-[300] text-center">
+                {step.text}
+              </p>
+            </div>
+          ))}
+        </div>
       </Container>
     </PrimarySection>
-  );
-}
-
-const CardItem = styled.div`
-  background-color: var(--grey-color-100);
-  padding: 40px 30px;
-  border-radius: 10px;
-`;
-
-const CardNumber = styled.div`
-  width: 40px;
-  height: 40px;
-  background-color: var(--primary-color-500);
-  color: white;
-  font-size: 18px;
-  font-weight: 700;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 19px;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  padding: 0;
-  text-transform: capitalize;
-`;
-
-const CardText = styled.p`
-  text-align: center;
-  font-size: 16.5px;
-  font-weight: 300;
-`;
-
-function Card({ number, title, children }) {
-  return (
-    <CardItem>
-      <CardNumber>{number}</CardNumber>
-      <CardTitle>{title}</CardTitle>
-      <CardText>{children}</CardText>
-    </CardItem>
   );
 }

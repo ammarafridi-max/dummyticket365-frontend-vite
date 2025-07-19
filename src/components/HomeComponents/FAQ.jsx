@@ -4,22 +4,15 @@ import PrimarySection from '../PrimarySection';
 import Container from '../Container';
 import FAQAccordion from '../FAQAccordion';
 import PrimaryButton from '../PrimaryButton';
-import styled from 'styled-components';
-
-const ButtonDiv = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 export default function FAQ() {
   return (
-    <PrimarySection id="faq" pt="0px" pb="100px">
+    <PrimarySection id="faq" className="pt-25">
       <Container>
         <SectionTitle
           textAlign="center"
           subtitle="Common questions about dummy tickets"
-          mb="50px"
+          mb="8"
         >
           Frequently Asked Questions
         </SectionTitle>
@@ -32,11 +25,11 @@ export default function FAQ() {
             );
           }
         })}
-        <ButtonDiv>
+        <div className="flex items-center justify-center">
           <PrimaryButton as="a" mt="30px" href="/faq">
             Read More FAQs
           </PrimaryButton>
-        </ButtonDiv>
+        </div>
       </Container>
     </PrimarySection>
   );

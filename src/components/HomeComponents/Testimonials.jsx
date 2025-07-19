@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Container from '../Container';
 import PrimarySection from '../PrimarySection';
 import TestimonialCard from '../TestimonialCard';
@@ -25,26 +24,18 @@ const testimonials = [
   },
 ];
 
-const Row = styled.div`
-  display: flex;
-  gap: 15px;
-  @media screen and (max-width: 991px) {
-    flex-direction: column;
-  }
-`;
-
 export default function Testimonials() {
   return (
-    <PrimarySection pt="100px" pb="100px">
+    <PrimarySection className="pt-20">
       <Container>
         <SectionTitle
           textAlign="center"
           subtitle="What our customers say about us"
-          mb="50px"
+          mb="8"
         >
           Testimonials
         </SectionTitle>
-        <Row>
+        <div className="flex flex-col md:flex-row gap-3.75">
           {testimonials.map((test, i) => (
             <TestimonialCard
               key={i}
@@ -55,7 +46,7 @@ export default function Testimonials() {
               {test.text}
             </TestimonialCard>
           ))}
-        </Row>
+        </div>
       </Container>
     </PrimarySection>
   );

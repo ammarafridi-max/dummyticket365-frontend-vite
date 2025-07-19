@@ -1,17 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import {
-  updateField,
   updatePassengerData,
   updatePricing,
   submitFormData,
   initializePassengers,
-} from '../../redux/slices/passengerDetailsSlice';
+} from '../../redux/slices/ticketFormSlice';
 import { formatDate } from '../../utils/formatDate';
+import styled from 'styled-components';
 import Error from '../Error';
 import Input from '../FormElements/Input';
 import Label from '../FormElements/Label';
@@ -22,32 +21,15 @@ import Email from '../FormElements/Email';
 import PhoneNumber from '../FormElements/PhoneNumber';
 import PrimaryButton from '../PrimaryButton';
 
-const StyledForm = styled.form`
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding: 25px 25px;
-  border-radius: 20px;
-  background-color: var(--grey-color-100);
-  @media screen and (max-width: 991px) {
-    padding: 20px 20px;
-  }
-`;
+const FormRow = ({ children }) => {
+  return (
+    <div className="block md:grid md:grid-cols-2 md:gap-2.5">{children}</div>
+  );
+};
 
-const FormRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  @media screen and (max-width: 991px) {
-    display: block;
-  }
-`;
-
-const FormItem = styled.div`
-  width: 100%;
-  @media screen and (max-width: 991px) {
-    width: 100%;
-  }
-`;
+const FormItem = ({ children }) => {
+  return <div className="w-full mb-2">{children}</div>;
+};
 
 export default function Form() {
   const dispatch = useDispatch();
@@ -65,7 +47,7 @@ export default function Form() {
     message,
     passengerErrors,
     errorMessage,
-  } = useSelector((state) => state.passengerDetails);
+  } = useSelector((state) => state.ticketForm);
 
   useEffect(() => {
     if (quantity && (!passengers || passengers.length === 0)) {
@@ -133,7 +115,7 @@ export default function Form() {
       const result = await dispatch(submitFormData());
 
       if (result.meta.requestStatus === 'fulfilled') {
-        // navigate('/booking/review-details');
+        navigate('/booking/review-details');
       } else {
         toast.error('An error occurred while submitting the form');
       }
@@ -144,7 +126,10 @@ export default function Form() {
   };
 
   return (
-    <StyledForm onSubmit={handleSubmit}>
+    <form
+      className="mt-2.5 p-5 md:p-6.25 rounded-xl bg-gray-100"
+      onSubmit={handleSubmit}
+    >
       {passengers && passengers.length > 0 && (
         <PassengerData
           passengers={passengers}
@@ -164,7 +149,7 @@ export default function Form() {
         ticketValidity={ticketValidity}
         handleValidityChange={handleValidityChange}
       />
-      <ReceiptOptions
+      {/* <ReceiptOptions
         receiveNow={receiveNow}
         setReceiveNow={(value) =>
           dispatch(updateField({ field: 'receiveNow', value }))
@@ -179,48 +164,18 @@ export default function Form() {
         setMessage={(value) =>
           dispatch(updateField({ field: 'message', value }))
         }
-      />
+      /> */}
       {errorMessage && <Error>{errorMessage}</Error>}
-      <SubmitButton onClick={handleSubmit} disabled={isSubmitDisabled} />
-    </StyledForm>
+      <PrimaryButton
+        className="w-full mt-5"
+        onClick={handleSubmit}
+        disabled={isSubmitDisabled}
+      >
+        Continue To Payment
+      </PrimaryButton>
+    </form>
   );
 }
-
-const PassengerFields = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 5px;
-  margin-top: 8px;
-  @media screen and (max-width: 991px) {
-    display: grid;
-    grid-template-columns: 1fr 2fr 2fr;
-  }
-`;
-
-const Title = styled(SelectTitle)`
-  width: 20%;
-  box-shadow: var(--input-box-shadow-sm);
-  -webkit-box-shadow: var(--input-box-shadow-sm);
-  -moz-box-shadow: var(--input-box-shadow-sm);
-  @media screen and (max-width: 991px) {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-`;
-
-const FirstName = styled(Input)`
-  width: 100%;
-  @media screen and (max-width: 991px) {
-    width: 100%;
-  }
-`;
-
-const LastName = styled(Input)`
-  width: 100%;
-  @media screen and (max-width: 991px) {
-    width: 100%;
-  }
-`;
 
 function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
   let adultCount = 0;
@@ -241,14 +196,15 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
         return (
           <FormItem key={index}>
             <Label>{label}</Label>
-            <PassengerFields>
-              <Title
+            <div className="w-full flex gap-1.25 mt-2">
+              <SelectTitle
                 value={passenger.title}
                 onChange={(e) =>
                   handleUpdatePassenger(index, 'title', e.target.value)
                 }
               />
-              <FirstName
+              <Input
+                className="w-100"
                 type="text"
                 required
                 name={`firstName${index}`}
@@ -259,7 +215,8 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
                   handleUpdatePassenger(index, 'firstName', e.target.value)
                 }
               />
-              <LastName
+              <Input
+                className="w-100"
                 type="text"
                 required
                 name={`lastName${index}`}
@@ -270,7 +227,7 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
                   handleUpdatePassenger(index, 'lastName', e.target.value)
                 }
               />
-            </PassengerFields>
+            </div>
             {passengerErrors && passengerErrors[index] && (
               <>
                 {passengerErrors[index].firstName && (
@@ -313,18 +270,6 @@ const TicketValidityWrapper = styled.div`
   margin-top: 15px;
   display: flex;
   flex-direction: column;
-`;
-
-const TicketValidityBox = styled.div`
-  display: flex;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: var(--input-box-shadow-sm);
-  -webkit-box-shadow: var(--input-box-shadow-sm);
-  -moz-box-shadow: var(--input-box-shadow-sm);
-  @media screen and (max-width: 991px) {
-    display: block;
-  }
 `;
 
 const Option = styled.label`
@@ -389,15 +334,15 @@ function TicketValidityOptions({ ticketValidity }) {
   };
 
   const options = [
-    { value: '48 Hours', label: '48 Hours', price: 12 },
-    { value: '7 Days', label: '7 Days', price: 19 },
-    { value: '14 Days', label: '14 Days', price: 22 },
+    { value: '2 Days', label: '2 Days', price: 13 },
+    { value: '7 Days', label: '7 Days', price: 20 },
+    { value: '14 Days', label: '14 Days', price: 23 },
   ];
 
   return (
     <TicketValidityWrapper>
       <Label htmlFor="ticketValidity">Choose Ticket Validity</Label>
-      <TicketValidityBox>
+      <div className="block md:flex rounded-md overflow-hidden shadow-(--input-box-shadow)">
         {options.map((option, index) => (
           <Option key={index}>
             <input
@@ -412,28 +357,10 @@ function TicketValidityOptions({ ticketValidity }) {
             </TicketValidityInnerBox>
           </Option>
         ))}
-      </TicketValidityBox>
+      </div>
     </TicketValidityWrapper>
   );
 }
-
-const ReceiptWrapper = styled.div`
-  margin: 20px 0;
-  display: flex;
-  flex-direction: column;
-`;
-
-const RadioGroup = styled.div`
-  display: block;
-`;
-
-const RadioLabel = styled.div`
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  font-size: 15px;
-  margin-bottom: 5px;
-`;
 
 function ReceiptOptions({
   receiveNow,
@@ -442,10 +369,10 @@ function ReceiptOptions({
   setReceiptDate,
 }) {
   return (
-    <ReceiptWrapper>
+    <div className="flex flex-col my-5">
       <Label>Receive Ticket On</Label>
-      <RadioGroup>
-        <RadioLabel>
+      <div>
+        <div className="flex items-center gap-3 mb-1.25 text-[15px] font-nunito">
           <input
             type="radio"
             name="receiveTicket"
@@ -453,8 +380,8 @@ function ReceiptOptions({
             onChange={() => setReceiveNow(true)}
           />
           <span>I need it now</span>
-        </RadioLabel>
-        <RadioLabel>
+        </div>
+        <div className="flex items-center gap-3 mb-1.25 text-[15px] font-nunito">
           <input
             type="radio"
             name="receiveTicket"
@@ -462,8 +389,8 @@ function ReceiptOptions({
             onChange={() => setReceiveNow(false)}
           />
           <span>I need it on a later date</span>
-        </RadioLabel>
-      </RadioGroup>
+        </div>
+      </div>
       {!receiveNow && (
         <FormRow>
           <FormItem>
@@ -476,18 +403,13 @@ function ReceiptOptions({
           </FormItem>
         </FormRow>
       )}
-    </ReceiptWrapper>
+    </div>
   );
 }
 
-const StyledTextarea = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
 function Message({ message, setMessage }) {
   return (
-    <StyledTextarea>
+    <div className="flex flex-col">
       <Label optional>Special Requests</Label>
       <TextArea
         value={message}
@@ -496,19 +418,6 @@ function Message({ message, setMessage }) {
           setMessage(e.target.value);
         }}
       />
-    </StyledTextarea>
-  );
-}
-
-const StyledSubmitButton = styled(PrimaryButton)`
-  width: 100%;
-  margin-top: 20px;
-`;
-
-function SubmitButton({ onClick, disabled }) {
-  return (
-    <StyledSubmitButton type="submit" onClick={onClick} disabled={disabled}>
-      Continue to Payment
-    </StyledSubmitButton>
+    </div>
   );
 }

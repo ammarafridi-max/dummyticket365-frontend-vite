@@ -1,11 +1,11 @@
-import React from 'react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAvailableFlights } from '../redux/slices/flights';
+import { fetchFlights } from '../redux/slices/flights';
 import {
   initializePassengers,
+  transformItinerary,
   updateField,
-} from '../redux/slices/passengerDetailsSlice';
+} from '../redux/slices/ticketFormSlice';
 import { Helmet } from 'react-helmet-async';
 import FlightCard from '../components/FlightCard/FlightCard';
 import PrimaryButton from '../components/PrimaryButton';
@@ -18,11 +18,9 @@ export default function SelectFlights() {
   const [maxFlights, setMaxFlights] = useState(5);
   const [expandedCardId, setExpandedCardId] = useState(null);
   const { type, from, to, departureDate, returnDate, quantity } = useSelector(
-    (state) => state.passengerDetails
+    (state) => state.ticketForm
   );
-  const { availableFlightsData, searchSessionId, searchStatus } = useSelector(
-    (state) => state.availableFlights
-  );
+  const { flights, status } = useSelector((state) => state.flights);
 
   const handleToggleExpand = (id) => {
     setExpandedCardId((prevId) => (prevId === id ? null : id));
@@ -36,7 +34,7 @@ export default function SelectFlights() {
 
   useEffect(() => {
     dispatch(
-      fetchAvailableFlights({
+      fetchFlights({
         type,
         from,
         to,
@@ -48,19 +46,22 @@ export default function SelectFlights() {
   }, [dispatch, type, from, to, departureDate, returnDate, quantity]);
 
   const showMoreFlights = () => {
-    if (maxFlights < availableFlightsData?.length) {
+    if (maxFlights < flights?.length) {
       setMaxFlights((cur) => cur + 5);
     }
   };
 
   function handleSelectFlight(flight, index) {
     handleToggleExpand(index);
-    const dep = `${flight?.itineraries[0].segments[0].carrierCode} ${flight?.itineraries[0].segments[0].number}`;
-    dispatch(updateField({ field: 'departureFlight', value: dep }));
 
-    if (type === 'Return') {
-      const ret = `${flight?.itineraries[1].segments[0].carrierCode} ${flight?.itineraries[1].segments[0].number}`;
-      dispatch(updateField({ field: 'returnFlight', value: ret }));
+    const departureFlightObj = transformItinerary(flight.itineraries[0]);
+    dispatch(
+      updateField({ field: 'departureFlight', value: departureFlightObj })
+    );
+
+    if (type === 'Return' && flight.itineraries[1]) {
+      const returnFlightObj = transformItinerary(flight.itineraries[1]);
+      dispatch(updateField({ field: 'returnFlight', value: returnFlightObj }));
     }
   }
 
@@ -69,26 +70,25 @@ export default function SelectFlights() {
       <Helmet>
         <title>Select Flights</title>
       </Helmet>
-      {searchStatus === 'loading' &&
+      {status === 'loading' &&
         Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} />)}
 
-      {searchStatus === 'succeeded' && availableFlightsData?.length === 0 && (
+      {status === 'succeeded' && flights?.length === 0 && (
         <Error>No flights available</Error>
       )}
 
-      {searchStatus === 'succeeded' && availableFlightsData?.length > 0 && (
+      {status === 'succeeded' && flights?.length > 0 && (
         <>
-          {availableFlightsData.slice(0, maxFlights).map((flight, index) => (
+          {flights.slice(0, maxFlights).map((flight, index) => (
             <FlightCard
               key={index}
-              data={searchSessionId}
               flight={flight}
               isExpanded={expandedCardId === index}
               onSelectFlight={() => handleSelectFlight(flight, index)}
             />
           ))}
-          {availableFlightsData.length > maxFlights && (
-            <div className="text-center">
+          {flights.length > maxFlights && (
+            <div className="text-center mt-3">
               <PrimaryButton onClick={showMoreFlights}>
                 Load More Flights
               </PrimaryButton>
@@ -96,7 +96,7 @@ export default function SelectFlights() {
           )}
         </>
       )}
-      {searchStatus === 'failed' && <FlightError />}
+      {status === 'failed' && <FlightError />}
     </>
   );
 }
