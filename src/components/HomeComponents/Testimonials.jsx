@@ -8,19 +8,22 @@ const testimonials = [
     title: 'Stress-Free',
     name: 'David S.',
     img: '/david.webp',
-    text: 'Dummy Ticket 365 made my visa process incredibly smooth and stress-free. Their service is trustworthy and perfect for frequent travelers.',
+    text: 'Dummy Ticket 365 made my visa process incredibly smooth and totally stress-free. The booking was fast, the ticket looked real, and I had no issues at the embassy. Great service for anyone needing quick and professional travel documents on short notice.',
+    purpose: 'Traveler - Used dummy ticket for visa application',
   },
   {
     title: 'Dependable',
     name: 'Maria K.',
     img: '/maria.webp',
-    text: 'Fast, dependable, and simple to book. Dummy Ticket 365 made travel paperwork effortless. I’ll definitely use them again and again!',
+    text: 'I was in a rush and Dummy Ticket 365 delivered exactly what I needed. The process was simple, the service was reliable, and I had my ticket ready in minutes. It saved me a lot of stress when applying for my visa. Definitely using this again in the future.',
+    purpose: 'Tourist - Used dummy ticket for proof of onward travel',
   },
   {
     title: 'Super Fast',
     name: 'Ahmed R.',
     img: '/ahmed.webp',
-    text: 'Amazing experience! Received my dummy ticket within minutes—ideal for my Schengen visa. These guys really know what travelers need.',
+    text: 'The entire experience with Dummy Ticket 365 was seamless from start to finish. I got my dummy ticket within minutes, and it worked perfectly for my Schengen visa. Fast response, clear instructions, and great support — highly recommend to travelers in need.',
+    purpose: 'Frequent Flyer - Used dummy ticket for Schengen visa',
   },
 ];
 
@@ -35,13 +38,14 @@ export default function Testimonials() {
         >
           Testimonials
         </SectionTitle>
-        <div className="flex flex-col md:flex-row gap-3.75">
+        <div className="flex md:grid md:grid-cols-2 gap-3.75 overflow-scroll">
           {testimonials.map((test, i) => (
             <TestimonialCard
               key={i}
               title={test.title}
               name={test.name}
               src={test.img}
+              purpose={test.purpose}
             >
               {test.text}
             </TestimonialCard>

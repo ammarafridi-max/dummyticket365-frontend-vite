@@ -10,6 +10,7 @@ const phoneNumber = JSON.parse(localStorage.getItem('phoneNumber')) || {
 };
 
 const initialState = {
+  loading: '',
   type: 'One Way',
   from: routes?.from || '',
   to: routes?.to || '',
@@ -165,6 +166,18 @@ const ticketFormSlice = createSlice({
     },
 
     resetForm: () => ({ ...initialState }),
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(submitFormData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(submitFormData.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(submitFormData.rejected, (state) => {
+        state.loading = false;
+      });
   },
 });
 

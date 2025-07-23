@@ -25,18 +25,19 @@ export default function Process() {
           Simple, Hassle-Free Process
         </SectionTitle>
 
-        <div className="flex flex-col gap-3.75 md:grid md:grid-cols-3 md:m-0 md:p-0">
+        <div className="flex gap-3.75 md:grid md:grid-cols-3 md:m-0 md:p-0 overflow-scroll">
           {steps.map((step, i) => (
-            <div className="bg-gray-100 py-10 px-7.5 rounded-lg" key={i}>
-              <div className="w-10 h-10 bg-primary-500 text-white text-lg font-medium mx-auto flex items-center justify-center rounded-4xl">
+            <div
+              className="min-w-80 max-w-full bg-gray-100 py-10 px-7.5 rounded-lg hover:shadow-xl hover:bg-primary-100 duration-300 hover:scale-102"
+              key={i}
+            >
+              <div className="w-10 h-10 bg-primary-500 text-white text-lg font-medium flex items-center justify-center rounded-4xl">
                 {i + 1}
               </div>
-              <h3 className="text-[18px] font-[600] font-merriweather text-center mt-5 mb-2.5 p-0 capitalize">
+              <h3 className="text-[18px] font-[600] font-merriweather text-left mt-5 mb-2.5 p-0 capitalize">
                 {step.title}
               </h3>
-              <p className="text-[16.5px] font-[300] text-center">
-                {step.text}
-              </p>
+              <p className="text-[16.5px] font-[300] text-left">{step.text}</p>
             </div>
           ))}
         </div>

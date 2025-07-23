@@ -38,6 +38,7 @@ export default function Form() {
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
 
   const {
+    loading,
     quantity,
     passengers,
     email,
@@ -170,9 +171,9 @@ export default function Form() {
       <PrimaryButton
         className="w-full mt-5"
         onClick={handleSubmit}
-        disabled={isSubmitDisabled}
+        disabled={loading}
       >
-        Continue To Payment
+        {loading ? 'Processing...' : 'Review Your Information'}
       </PrimaryButton>
     </form>
   );

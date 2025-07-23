@@ -11,7 +11,7 @@ export default function FAQ() {
       <Container>
         <SectionTitle
           textAlign="center"
-          subtitle="Common questions about dummy tickets"
+          subtitle="Common questions answered"
           mb="8"
         >
           Frequently Asked Questions
