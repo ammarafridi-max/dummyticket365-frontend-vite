@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { VIEWTRIP_URL } from '../../config';
-import Input from './Input';
+import { BASEURL } from '../../config';
 import InputWithIcon from './InputWithIcon';
 
 export default function SelectAirport({ value, onChange, id, icon }) {
@@ -18,9 +17,7 @@ export default function SelectAirport({ value, onChange, id, icon }) {
 
     try {
       setIsLoading(true);
-      const res = await fetch(
-        `${VIEWTRIP_URL}/api/airports?keyword=${keyword}`
-      );
+      const res = await fetch(`${BASEURL}/api/airports?keyword=${keyword}`);
       const data = await res.json();
       setAirports(data?.result || []);
     } catch (err) {

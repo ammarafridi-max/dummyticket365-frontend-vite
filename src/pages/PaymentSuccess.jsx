@@ -84,9 +84,7 @@ function Error() {
 function Success({ currency, amount, sessionId }) {
   useEffect(() => {
     if (currency && amount) {
-      if (import.meta.env.MODE !== 'development') {
-        trackPurchaseEvent(currency, amount, sessionId);
-      }
+      trackPurchaseEvent(currency, amount, sessionId);
     }
   }, [currency, amount, sessionId]);
 
@@ -111,9 +109,9 @@ function Success({ currency, amount, sessionId }) {
             has been successfully processed.
           </Text>
           <Text textAlign="center" fontSize="22px" mb="25px">
-            Your flight reservation has been emailed to you. Please check your
-            inbox to receive your reservation. In case you don't find it there,
-            please check your spam folder.
+            You will recieve a receipt of your payment by email, followed by
+            your dummy ticket in a second email shortly afterwards. Please
+            remember to check your spam folder too.
           </Text>
         </Container>
       </PrimarySection>
@@ -130,13 +128,6 @@ const Text = styled(Paragraph)`
 
 const Link = styled.a`
   font-weight: 600;
-`;
-
-const ButtonContainer = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 const IconContainer = styled.div`
@@ -184,18 +175,18 @@ const IconContainer = styled.div`
 //           <PageTitle textAlign="center" mb="20px">
 //             Thank You for Your Booking!
 //           </PageTitle>
-//           <Text textAlign="center" fontSize="22px" mb="15px">
-//             Your payment of{' '}
-//             <strong>
-//               {currency} {amount}
-//             </strong>{' '}
-//             has been successfully processed.
-//           </Text>
-//           <Text textAlign="center" fontSize="22px">
-//             You will recieve a receipt of your payment by email, followed by
-//             your dummy ticket in a second email shortly afterwards. Please
-//             remember to check your Spam folder too.
-//           </Text>
+// <Text textAlign="center" fontSize="22px" mb="15px">
+//   Your payment of{' '}
+//   <strong>
+//     {currency} {amount}
+//   </strong>{' '}
+//   has been successfully processed.
+// </Text>
+// <Text textAlign="center" fontSize="22px">
+//   You will recieve a receipt of your payment by email, followed by
+//   your dummy ticket in a second email shortly afterwards. Please
+//   remember to check your Spam folder too.
+// </Text>
 //         </Container>
 //       </PrimarySection>
 //     </>

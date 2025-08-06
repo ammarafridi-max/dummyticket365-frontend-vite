@@ -5,8 +5,8 @@ import { toast } from 'react-toastify';
 import { createStipePaymentLink } from '../redux/slices/stripePayment';
 import { fetchFormDetails } from '../redux/slices/fetchTicketDetails';
 import { formatDate } from '../utils/formatDate';
-import { FaSpinner } from 'react-icons/fa';
 import { Helmet } from 'react-helmet-async';
+import { trackBeginCheckout } from '../utils/analytics';
 import styled from 'styled-components';
 import PrimaryButton from '../components/PrimaryButton';
 
@@ -104,6 +104,7 @@ export default function ReviewDetails() {
 
   const handleConfirm = () => {
     if (sessionId) {
+      trackBeginCheckout('USD', totalAmount);
       dispatch(createStipePaymentLink({ ...formDetails, totalAmount }));
     }
   };

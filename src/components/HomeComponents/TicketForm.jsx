@@ -71,7 +71,6 @@ export default function TicketForm() {
   };
 
   const handleFormSubmit = (e) => {
-    console.log('clicked');
     e.preventDefault();
     localStorage.setItem('routes', JSON.stringify({ from, to }));
     if (isFormValid()) {

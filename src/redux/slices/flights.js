@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { VIEWTRIP_URL } from '../../config';
-
-const flights = JSON.parse(localStorage.getItem('flights'));
+import { BASEURL } from '../../config';
 
 export const fetchFlights = createAsyncThunk(
   'flights/fetchFlights',
   async (formData) => {
-    const response = await fetch(`${VIEWTRIP_URL}/api/flights`, {
+    const response = await fetch(`${BASEURL}/api/flights`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

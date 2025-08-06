@@ -1,4 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
+import { trackPageView } from '../utils/analytics';
 import Hero from '../components/HomeComponents/Hero';
 import Process from '../components/HomeComponents/Process';
 import About from '../components/HomeComponents/About';
@@ -12,7 +14,11 @@ export default function Home() {
   const canonical =
     import.meta.env.MODE === 'development'
       ? 'http://localhost:5173'
-      : 'https://www.mydummyticket.ae';
+      : 'https://www.dummyticket365.com';
+
+  useEffect(() => {
+    trackPageView();
+  }, []);
 
   return (
     <>

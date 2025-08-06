@@ -58,23 +58,20 @@ export default function Form() {
   }, [dispatch, quantity, passengers]);
 
   useEffect(() => {
-    // Check if any required field is empty
     const hasEmptyFields = () => {
-      // Check passenger details
       const hasEmptyPassengerFields = passengers?.some(
         (passenger) =>
           !passenger.title || !passenger.firstName || !passenger.lastName
       );
+
       if (hasEmptyPassengerFields) {
         return true;
       }
 
-      // Check contact details
       if (!email || !phoneNumber?.code || !phoneNumber?.digits) {
         return true;
       }
 
-      // Check receipt date if not receiving now
       if (!receiveNow && !receiptDate) {
         return true;
       }
