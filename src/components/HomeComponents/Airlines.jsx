@@ -44,8 +44,9 @@ export default function Airlines() {
   return (
     <PrimarySection className="bg-gray-100 py-10 my-15">
       <Container className="grid grid-cols-4 md:grid-cols-8 gap-3.75 md:gap-12.5 items-center justify-center">
-        {airlines.map((airline) => (
+        {airlines.map((airline, i) => (
           <img
+            key={i}
             className="w-full object-contain p-1.25 grayscale-100 opacity-70"
             src={airline.src}
             alt={airline.name}

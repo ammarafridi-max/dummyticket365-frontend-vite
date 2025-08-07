@@ -12,8 +12,10 @@ export default function Footer() {
     <footer className="py-5 bg-primary-700">
       <Container className="py-7.5 bg-transparent box-border font-nunito">
         <div className="w-full gap-3 md:gap-5 mx-auto mb-3.5 pb-3.5 flex items-center justify-center border-b-1 border-solid border-gray-200 ">
-          {icons.map((icon) => (
-            <div className="text-white text-[35px] md:text-[40px]">{icon}</div>
+          {icons.map((icon, i) => (
+            <div key={i} className="text-white text-[35px] md:text-[40px]">
+              {icon}
+            </div>
           ))}
         </div>
         <div>

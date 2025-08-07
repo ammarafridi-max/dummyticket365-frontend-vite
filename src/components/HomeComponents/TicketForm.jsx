@@ -12,13 +12,13 @@ import SelectAirport from '../FormElements/SelectAirport';
 import SelectDate from '../FormElements/SelectDate';
 import Counter from '../FormElements/Counter';
 import Error from '../Error';
+import { trackFlightSearch } from '../../utils/analytics';
 
 export default function TicketForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [errorMessages, setErrorMessages] = useState({});
-
-  const { from, to, departureDate, returnDate, type, quantity } = useSelector(
+  const { type, from, to, departureDate, returnDate, quantity } = useSelector(
     (state) => state.ticketForm
   );
 
@@ -74,6 +74,14 @@ export default function TicketForm() {
     e.preventDefault();
     localStorage.setItem('routes', JSON.stringify({ from, to }));
     if (isFormValid()) {
+      trackFlightSearch({
+        type,
+        from,
+        to,
+        departureDate,
+        returnDate,
+        quantity,
+      });
       navigate('/booking/select-flights');
     }
   };
@@ -168,7 +176,9 @@ export default function TicketForm() {
         <PrimaryButton
           className="w-full"
           type="submit"
-          disabled={() => !isFormValid()}
+          disabled={
+            !from || !to || !departureDate || (type === 'Return' && !returnDate)
+          }
           onClick={handleFormSubmit}
         >
           Search Flights

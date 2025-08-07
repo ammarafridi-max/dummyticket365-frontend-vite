@@ -19,6 +19,10 @@ export default function PaymentSuccess() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
   const [ticketData, setTicketData] = useState({});
+  const type = ticketData?.type;
+  const quantity =
+    ticketData?.quantity?.adults + ticketData?.quantity?.children;
+  const ticketValidity = ticketData?.ticketValidity;
   const currency = ticketData?.amountPaid?.currency;
   const amount = ticketData?.amountPaid?.amount;
 
@@ -49,7 +53,16 @@ export default function PaymentSuccess() {
 
   if (error) return <Error />;
 
-  return <Success currency={currency} amount={amount} sessionId={sessionId} />;
+  return (
+    <Success
+      type={type}
+      quantity={quantity}
+      ticketValidity={ticketValidity}
+      currency={currency}
+      amount={amount}
+      sessionId={sessionId}
+    />
+  );
 }
 
 function Error() {
@@ -81,12 +94,33 @@ function Error() {
   );
 }
 
-function Success({ currency, amount, sessionId }) {
+function Success({
+  type,
+  quantity,
+  ticketValidity,
+  currency,
+  amount,
+  sessionId,
+}) {
+  let price = 0;
+  if (ticketValidity === '2 Days') {
+    price = 13;
+  } else if (ticketValidity === '7 Days') {
+    price = 20;
+  } else if (ticketValidity === '14 Days') {
+    price = 23;
+  }
+
   useEffect(() => {
     if (currency && amount) {
-      trackPurchaseEvent(currency, amount, sessionId);
+      trackPurchaseEvent({
+        currency,
+        value: amount,
+        sessionId,
+        items: [{ item_name: `${type} Flight Reservation`, quantity, price }],
+      });
     }
-  }, [currency, amount, sessionId]);
+  }, []);
 
   return (
     <>

@@ -265,12 +265,6 @@ function ContactDetails({
   );
 }
 
-const TicketValidityWrapper = styled.div`
-  margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-`;
-
 const Option = styled.label`
   display: flex;
   align-items: center;
@@ -298,36 +292,15 @@ const Option = styled.label`
   }
 `;
 
-const TicketValidityInnerBox = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px;
-  background-color: transparent;
-  display: flex;
-  align-items: center;
-  font-size: 15px;
-  font-weight: 700;
-  border: 2px solid transparent;
-  border-radius: 4px;
-  @media screen and (max-width: 991px) {
-    padding: 12.5px;
-  }
-`;
-
-const Price = styled.span`
-  color: var(--grey-color-600);
-  font-weight: 500;
-  margin-left: 3px;
-`;
-
 function TicketValidityOptions({ ticketValidity }) {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
     dispatch(
       updatePricing({
-        type: 'SET_VALIDITY',
-        validity: e.target.value,
+        ticketValidity: e.target.value,
+        ticketPrice: options.find((option) => option.value === e.target.value)
+          .price,
       })
     );
   };
@@ -339,7 +312,7 @@ function TicketValidityOptions({ ticketValidity }) {
   ];
 
   return (
-    <TicketValidityWrapper>
+    <div className="flex flex-col mt-3.75">
       <Label htmlFor="ticketValidity">Choose Ticket Validity</Label>
       <div className="block md:flex rounded-md overflow-hidden shadow-(--input-box-shadow)">
         {options.map((option, index) => (
@@ -351,13 +324,16 @@ function TicketValidityOptions({ ticketValidity }) {
               checked={ticketValidity === option.value}
               onChange={handleChange} // Use the local handleChange
             />
-            <TicketValidityInnerBox>
-              {option.label} - <Price>USD {option?.price} / person</Price>
-            </TicketValidityInnerBox>
+            <div className="w-full h-full p-3 md:p-2.5 bg-transparent flex items-center text-[15px] font-semibold border-2 border-transparent">
+              {option.label} -{' '}
+              <span className="text-gray-400 font-medium ml-0.75">
+                USD {option?.price} / person
+              </span>
+            </div>
           </Option>
         ))}
       </div>
-    </TicketValidityWrapper>
+    </div>
   );
 }
 

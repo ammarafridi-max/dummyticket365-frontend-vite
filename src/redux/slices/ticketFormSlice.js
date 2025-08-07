@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { BASEURL } from '../../config';
 import { formatISODuration } from '../../utils/formatISODuration';
+import { trackFlightFormSubmission } from '../../utils/analytics';
 
 const routes = JSON.parse(localStorage.getItem('routes'));
 const email = localStorage.getItem('email') || '';
@@ -17,7 +18,7 @@ const initialState = {
   departureDate: '',
   returnDate: '',
   quantity: { adults: 1, children: 0, infants: 0 },
-  ticketPrice: 12,
+  ticketPrice: 13,
   passengers: [],
   email,
   phoneNumber,
@@ -28,7 +29,6 @@ const initialState = {
   paymentStatus: 'UNPAID',
   departureFlight: '',
   returnFlight: '',
-  totalAmount: 12,
   passengerErrors: [],
   errorMessage: '',
   phoneNumberError: '',
@@ -89,24 +89,10 @@ const ticketFormSlice = createSlice({
     },
 
     updatePricing: (state, { payload }) => {
-      const { type, validity, price } = payload;
-
-      switch (type) {
-        case 'SET_VALIDITY':
-          state.ticketValidity = validity;
-          state.ticketPrice =
-            validity === '7 Days' ? 19 : validity === '14 Days' ? 22 : 12;
-          break;
-
-        case 'CALCULATE_TOTAL':
-          const { adults, children } = state.quantity;
-          state.totalAmount = state.ticketPrice * (adults + children);
-          break;
-
-        case 'SET_PRICE':
-          state.ticketPrice = price;
-          break;
-      }
+      const { ticketValidity, ticketPrice } = payload;
+      state.ticketValidity = ticketValidity;
+      state.ticketPrice = ticketPrice;
+      console;
     },
 
     updateValidation: (state, { payload }) => {
@@ -181,44 +167,12 @@ const ticketFormSlice = createSlice({
   },
 });
 
-// Selectors
-export const selectForm = (state) => state.ticketForm;
-export const selectPassengers = (state) => state.ticketForm.passengers;
-export const selectEmail = (state) => state.ticketForm.email;
-export const selectPhoneNumber = (state) => state.ticketForm.phoneNumber;
-export const selectTicketValidity = (state) => state.ticketForm.ticketValidity;
-export const selectReceiveNow = (state) => state.ticketForm.receiveNow;
-export const selectReceiptDate = (state) => state.ticketForm.receiptDate;
-export const selectMessage = (state) => state.ticketForm.message;
-export const selectDepartureFlight = (state) =>
-  state.ticketForm.departureFlight;
-export const selectReturnFlight = (state) => state.ticketForm.returnFlight;
-export const selectTotalAmount = (state) => state.ticketForm.totalAmount;
-export const selectPassengerErrors = (state) =>
-  state.ticketForm.passengerErrors;
-export const selectErrorMessage = (state) => state.ticketForm.errorMessage;
-export const selectPhoneNumberError = (state) =>
-  state.ticketForm.phoneNumberError;
-export const selectDummyPrice = (state) => state.ticketForm.ticketPrice;
-
-export const selectFormValidity = (state) => {
-  const { passengerErrors, phoneNumberError, errorMessage } = state.ticketForm;
-  return (
-    passengerErrors.every((err) => !Object.values(err).some(Boolean)) &&
-    !phoneNumberError &&
-    !errorMessage
-  );
-};
-
 // Thunks
 export const submitFormData = createAsyncThunk(
   'ticketForm/submitFormData',
   async (_, { getState, dispatch, rejectWithValue }) => {
     const state = getState();
     dispatch(validateForm());
-
-    const isValid = selectFormValidity(state);
-    if (!isValid) return rejectWithValue('Validation failed');
 
     const {
       type,
@@ -237,7 +191,6 @@ export const submitFormData = createAsyncThunk(
       ticketValidity,
       receiveNow,
       receiptDate,
-      totalAmount,
     } = state.ticketForm;
 
     const payload = {
@@ -261,10 +214,19 @@ export const submitFormData = createAsyncThunk(
         departureFlight,
         returnFlight: returnFlight || null,
       },
-      totalAmount,
     };
 
     try {
+      trackFlightFormSubmission({
+        passengers: payload.passengers,
+        email: payload.email,
+        phoneNumber: payload.phoneNumber,
+        ticketValidity: payload.ticketValidity,
+        flightDetails: {
+          departureFlight: payload.flightDetails?.departureFlight,
+          returnFlight: payload.flightDetails?.returnFlight || null,
+        },
+      });
       const res = await fetch(`${BASEURL}/api/ticket`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

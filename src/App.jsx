@@ -3,6 +3,8 @@ import '@fontsource/merriweather';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { ToastContainer, Zoom } from 'react-toastify';
+import { useEffect } from 'react';
+import { initializeGA } from './utils/analytics';
 import Layout from './components/Layout';
 import BookingLayout from './components/BookingLayout';
 import Home from './pages/Home';
@@ -16,6 +18,10 @@ import PrivacyPolicy from './pages/PrivacyPolicy';
 import FlightReservation from './pages/FlightReservation';
 
 function App() {
+  useEffect(() => {
+    initializeGA();
+  }, []);
+
   return (
     <HelmetProvider>
       <ToastContainer transition={Zoom} />

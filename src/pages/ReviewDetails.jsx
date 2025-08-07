@@ -73,28 +73,21 @@ const LoadingText = styled.p`
 export default function ReviewDetails() {
   const dispatch = useDispatch();
   const { formDetails, status } = useSelector((state) => state.formDetails);
+  const { type, ticketPrice, quantity, ticketValidity } = useSelector(
+    (state) => state.ticketForm
+  );
   const { stripeStatus, data, stripeError } = useSelector(
     (state) => state.payment
   );
   const navigate = useNavigate();
   const sessionId = localStorage.getItem('SESSION_ID');
 
-  let additionalPrice = 0;
   let validityText = '2 Days';
-
-  if (formDetails?.ticketValidity === '7 Days') {
-    additionalPrice = 7;
-    validityText = '7 Days';
-  }
-  if (formDetails?.ticketValidity === '14 Days') {
-    additionalPrice = 10;
-    validityText = '14 Days';
-  }
 
   const { adults = 0, children = 0 } = formDetails?.quantity || {};
   const totalQuantity = adults + children;
   const ticketAvailability = formDetails?.ticketAvailability || {};
-  const totalAmount = 13 * totalQuantity + additionalPrice * totalQuantity;
+  const totalAmount = ticketPrice * totalQuantity;
 
   useEffect(() => {
     if (sessionId) {
@@ -104,7 +97,17 @@ export default function ReviewDetails() {
 
   const handleConfirm = () => {
     if (sessionId) {
-      trackBeginCheckout('USD', totalAmount);
+      trackBeginCheckout({
+        currency: 'USD',
+        value: ticketPrice * (quantity?.adults + quantity?.children),
+        items: [
+          {
+            item_name: `${type} flight reservation`,
+            price: ticketPrice,
+            quantity: quantity?.adults + quantity?.children,
+          },
+        ],
+      });
       dispatch(createStipePaymentLink({ ...formDetails, totalAmount }));
     }
   };
@@ -178,8 +181,8 @@ export default function ReviewDetails() {
 
         <OrderTotalDetail
           totalQuantity={totalQuantity}
-          additionalPrice={additionalPrice}
           totalAmount={totalAmount}
+          ticketPrice={ticketPrice}
         />
         <ProceedButton
           handleConfirm={handleConfirm}
@@ -316,19 +319,16 @@ function PassengerDetail({ groupedPassengers }) {
   );
 }
 
-function OrderTotalDetail({ totalQuantity, additionalPrice, totalAmount }) {
+function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount }) {
   return (
     <Box>
       <Section>
         <SectionTitle>Order Total</SectionTitle>
         <Detail>
-          <span>Dummy Ticket Price:</span> USD {13 * totalQuantity}
+          <span>Dummy Ticket Price:</span> USD {ticketPrice}
         </Detail>
         <Detail>
-          <span>Additional Validity Price:</span>
-          {additionalPrice === 0
-            ? 'USD 0'
-            : `USD ${additionalPrice * totalQuantity}`}
+          <span>Number of Passengers:</span> {totalQuantity}
         </Detail>
         <Detail>
           <span>Total:</span> USD {totalAmount}
