@@ -18,8 +18,8 @@ export default function Navigation() {
             <a href="/">
               <img
                 src="/logo.webp"
-                alt="My Dummy Ticket Logo"
-                title="My Dummy Ticket Logo"
+                alt="Our Logo"
+                title="Our Logo"
                 className="w-full h-full object-contain"
               />
             </a>

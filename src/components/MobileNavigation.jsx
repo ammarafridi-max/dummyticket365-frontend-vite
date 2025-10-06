@@ -12,8 +12,8 @@ export default function MobileNavigation() {
         <a href="/" className="w-40 h-auto flex items-center">
           <img
             src="/logo.webp"
-            alt="My Dummy Ticket Logo"
-            title="My Dummy Ticket Logo"
+            alt="Our Logo"
+            title="Our Logo"
             className="w-full h-auto object-contain"
           />
         </a>

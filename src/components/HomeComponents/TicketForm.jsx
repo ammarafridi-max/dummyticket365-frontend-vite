@@ -6,13 +6,13 @@ import { updateField } from '../../redux/slices/ticketFormSlice';
 import { FaCircle } from 'react-icons/fa';
 import { PlaneLandingIcon, PlaneTakeoff, CalendarDaysIcon } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
+import { trackFlightSearch } from '../../utils/analytics';
 import Label from '../FormElements/Label';
 import PrimaryButton from '../PrimaryButton';
 import SelectAirport from '../FormElements/SelectAirport';
 import SelectDate from '../FormElements/SelectDate';
 import Counter from '../FormElements/Counter';
 import Error from '../Error';
-import { trackFlightSearch } from '../../utils/analytics';
 
 export default function TicketForm() {
   const navigate = useNavigate();

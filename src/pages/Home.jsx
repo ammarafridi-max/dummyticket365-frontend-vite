@@ -23,21 +23,22 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Dummy Ticket 365 | Verifiable Dummy Tickets From USD 12</title>
+        <title>
+          Flight Reservations From USD 12 | Instant, Verifiable, & Affordable
+        </title>
         <link rel="canonical" href={canonical} />
         <meta name="robots" content="index, follow" />
         <meta
           name="description"
-          content="Dummy tickets are flight reservations travelers use for various purposes, including visa applications. Book yours with My Dummy Ticket. Starting from AED 49."
+          content="Travelers use flight reservations for travel purposes, such as to show as proof of onward travel at airports. Book yours with us now. Starting from USD 13."
         />
       </Helmet>
       <Hero />
       <Process />
       <About />
-      <Benefits />
+      <Benefits keyword="flight reservation" />
       <Testimonials />
       <FAQ />
-      <Airlines />
       <Contact />
     </>
   );
