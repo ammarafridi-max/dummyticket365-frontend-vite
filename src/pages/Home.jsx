@@ -9,6 +9,7 @@ import Benefits from '../components/HomeComponents/Benefits';
 import Testimonials from '../components/HomeComponents/Testimonials';
 import Contact from '../components/HomeComponents/Contact';
 import Airlines from '../components/HomeComponents/Airlines';
+import TrustBar from '../components/HomeComponents/Trustbar';
 
 export default function Home() {
   const canonical =
@@ -23,9 +24,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>
-          Flight Reservations From USD 12 | Instant, Verifiable, & Affordable
-        </title>
+        <title>Flight Reservations From USD 12 | Instant, Verifiable, & Affordable</title>
         <link rel="canonical" href={canonical} />
         <meta name="robots" content="index, follow" />
         <meta

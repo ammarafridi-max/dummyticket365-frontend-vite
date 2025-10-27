@@ -1,25 +1,20 @@
-import {
-  MdOutlineAirplaneTicket,
-  MdOutlineHealthAndSafety,
-  MdOutlineHotel,
-} from 'react-icons/md';
+import { MdOutlineAirplaneTicket, MdOutlineHealthAndSafety, MdOutlineHotel } from 'react-icons/md';
 import PrimarySection from '../PrimarySection';
 import Container from '../Container';
 import SectionTitle from '../SectionTitle';
 
 export default function About() {
   return (
-    <PrimarySection className="pt-10" id="about">
+    <PrimarySection className="pt-15" id="about">
       <Container className="block md:flex items-center gap-5">
         <div className="w-full md:w-[58%] p-0">
           <SectionTitle mb="7" subtitle="About Us">
             Who We Are
           </SectionTitle>
           <p className="font-light font-nunito text-md md:text-lg mb-5">
-            We are a leading provider of flight reservations, hotel bookings,
-            and travel insurance. Each year, we support thousands of travelers
-            in securing their visit visas. Our flight reservations are widely
-            accepted as proof of onward travel at airports worldwide.
+            We are a leading provider of flight reservations, hotel bookings, and travel insurance.
+            Each year, we support thousands of travelers in securing their visit visas. Our flight
+            reservations are widely accepted as proof of onward travel at airports worldwide.
           </p>
           <IconWithText
             icon={<MdOutlineAirplaneTicket />}

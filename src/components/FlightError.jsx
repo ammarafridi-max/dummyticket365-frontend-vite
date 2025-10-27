@@ -12,8 +12,8 @@ export default function FlightError() {
       </div>
       <h1 className="text-4xl font-nunito">Flights not found</h1>
       <p className="text-xl my-5 font-light font-nunito">
-        We&apos;re sorry, but we couldn&apos;t load the flights at this time.
-        This could be due to a technical issue or missing data.
+        We&apos;re sorry, but we couldn&apos;t load the flights at this time. This could be due to a
+        technical issue or missing data.
       </p>
       <PrimaryButton href="/">Back to Home</PrimaryButton>
     </div>

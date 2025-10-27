@@ -19,7 +19,7 @@ export default function TicketForm() {
   const dispatch = useDispatch();
   const [errorMessages, setErrorMessages] = useState({});
   const { type, from, to, departureDate, returnDate, quantity } = useSelector(
-    (state) => state.ticketForm
+    state => state.ticketForm
   );
 
   const isFormValid = () => {
@@ -39,10 +39,7 @@ export default function TicketForm() {
       toast.error('Return date is required');
       return false;
     }
-    if (
-      quantity.adults < 1 ||
-      quantity.adults + quantity.children + quantity.infants > 9
-    ) {
+    if (quantity.adults < 1 || quantity.adults + quantity.children + quantity.infants > 9) {
       toast.error('Return date is required');
       return false;
     }
@@ -59,9 +56,7 @@ export default function TicketForm() {
       [field]: quantity[field] + value,
     };
     const totalPassengers =
-      updatedQuantity.adults +
-      updatedQuantity.children +
-      updatedQuantity.infants;
+      updatedQuantity.adults + updatedQuantity.children + updatedQuantity.infants;
 
     if (totalPassengers > 9 || updatedQuantity.adults < 1) {
       toast.error('Total passengers cannot be less than 1 or exceed 9.');
@@ -70,7 +65,7 @@ export default function TicketForm() {
     dispatch(updateField({ field: 'quantity', value: updatedQuantity }));
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = e => {
     e.preventDefault();
     localStorage.setItem('routes', JSON.stringify({ from, to }));
     if (isFormValid()) {
@@ -88,13 +83,13 @@ export default function TicketForm() {
 
   return (
     <form
-      className="m-0 py-7 px-4 md:p-6 rounded-2xl shadow-(--form-shadow)"
+      className="m-0 py-7 px-4 md:p-6 rounded-2xl bg-white shadow-xl"
       onSubmit={handleFormSubmit}
     >
       <div className="flex gap-2.5">
-        {['One Way', 'Return'].map((tripType) => (
+        {['One Way', 'Return'].map(tripType => (
           <div
-            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer"
+            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer font-outfit"
             key={tripType}
             onClick={() => handleFieldChange('type', tripType)}
           >
@@ -113,7 +108,7 @@ export default function TicketForm() {
           </Label>
           <SelectAirport
             value={from ? from : ''}
-            onChange={(airport) => handleFieldChange('from', airport)}
+            onChange={airport => handleFieldChange('from', airport)}
             icon={<PlaneTakeoff size={20} />}
           />
           {errorMessages?.from && <Error>{errorMessages.from}</Error>}
@@ -124,7 +119,7 @@ export default function TicketForm() {
           </Label>
           <SelectAirport
             value={to ? to : ''}
-            onChange={(airport) => handleFieldChange('to', airport)}
+            onChange={airport => handleFieldChange('to', airport)}
             icon={<PlaneLandingIcon size={20} />}
           />
           {errorMessages?.to && <Error>{errorMessages.to}</Error>}
@@ -140,13 +135,11 @@ export default function TicketForm() {
           </Label>
           <SelectDate
             selectedDate={departureDate && formatDate(departureDate)}
-            onDateSelect={(date) => handleFieldChange('departureDate', date)}
+            onDateSelect={date => handleFieldChange('departureDate', date)}
             minDate={new Date()}
             icon={<CalendarDaysIcon size={20} />}
           />
-          {errorMessages?.departureDate && (
-            <Error>{errorMessages.departureDate}</Error>
-          )}
+          {errorMessages?.departureDate && <Error>{errorMessages.departureDate}</Error>}
         </div>
 
         {type === 'Return' && (
@@ -156,29 +149,22 @@ export default function TicketForm() {
             </Label>
             <SelectDate
               selectedDate={returnDate && formatDate(returnDate)}
-              onDateSelect={(date) => handleFieldChange('returnDate', date)}
+              onDateSelect={date => handleFieldChange('returnDate', date)}
               minDate={new Date(departureDate)}
               icon={<CalendarDaysIcon size={20} />}
             />
-            {errorMessages?.returnDate && (
-              <Error>{errorMessages.returnDate}</Error>
-            )}
+            {errorMessages?.returnDate && <Error>{errorMessages.returnDate}</Error>}
           </div>
         )}
       </div>
 
-      <QuantityCounter
-        quantity={quantity}
-        onQuantityChange={handleQuantityChange}
-      />
+      <QuantityCounter quantity={quantity} onQuantityChange={handleQuantityChange} />
 
       <div className="w-full flex mt-5">
         <PrimaryButton
           className="w-full"
           type="submit"
-          disabled={
-            !from || !to || !departureDate || (type === 'Return' && !returnDate)
-          }
+          disabled={!from || !to || !departureDate || (type === 'Return' && !returnDate)}
           onClick={handleFormSubmit}
         >
           Search Flights

@@ -66,12 +66,12 @@ function Number({
 
   return (
     <div
-      className="w-full py-2.75 px-4 rounded-md relative bg-white shadow-(--input-box-shadow-sm) flex items-center"
+      className="w-full py-2.5 px-4 rounded-lg relative bg-white border-[1.5px] border-gray-300 flex items-center"
       ref={componentRef}
       disabled={disabled}
     >
       <input
-        className="w-[60px]  text-[14.5px] border-r border-r-gray-400"
+        className="w-[60px] text-[13px] md:text-[14px] border-r border-r-gray-400"
         type="text"
         id="code"
         name="code"
@@ -83,7 +83,7 @@ function Number({
         disabled={disabled}
       />
       <input
-        className="w-full text-[14.5px] ml-4"
+        className="w-full text-[13px] md:text-[14px] ml-4"
         type="text"
         id="digits"
         name="digits"

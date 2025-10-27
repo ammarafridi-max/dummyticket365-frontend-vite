@@ -3,17 +3,13 @@ import SectionTitle from '../SectionTitle';
 import PrimarySection from '../PrimarySection';
 import Container from '../Container';
 import FAQAccordion from '../FAQAccordion';
-import PrimaryButton from '../PrimaryButton';
+import PrimaryLink from '../PrimaryLink';
 
 export default function FAQ() {
   return (
-    <PrimarySection id="faq" className="pt-25">
+    <PrimarySection id="faq" className="pt-15">
       <Container>
-        <SectionTitle
-          textAlign="center"
-          subtitle="Common questions answered"
-          mb="8"
-        >
+        <SectionTitle textAlign="center" subtitle="Common questions answered" mb="8">
           Frequently Asked Questions
         </SectionTitle>
         {faqArray.map((faq, i) => {
@@ -25,10 +21,10 @@ export default function FAQ() {
             );
           }
         })}
-        <div className="flex items-center justify-center">
-          <PrimaryButton as="a" mt="30px" href="/faq">
+        <div className="flex items-center justify-center mt-10">
+          <PrimaryLink size="small" to="/faq">
             Read More FAQs
-          </PrimaryButton>
+          </PrimaryLink>
         </div>
       </Container>
     </PrimarySection>

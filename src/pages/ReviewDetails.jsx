@@ -1,99 +1,55 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { createStipePaymentLink } from '../redux/slices/stripePayment';
-import { fetchFormDetails } from '../redux/slices/fetchTicketDetails';
 import { formatDate } from '../utils/formatDate';
 import { Helmet } from 'react-helmet-async';
 import { trackBeginCheckout } from '../utils/analytics';
-import styled from 'styled-components';
+import { useStripePaymentURL } from '../hooks/useStripePaymentURL';
 import PrimaryButton from '../components/PrimaryButton';
+import Loading from '../components/Loading';
+import { useDummyTicket } from '../hooks/useDummyTicket';
 
-const Box = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
+function Section({ children }) {
+  return (
+    <div className="w-full md:w-[50%] mb-3.75 p-5 rounded-xl shadow-md bg-white font-nunito">
+      {children}
+    </div>
+  );
+}
 
-  @media (max-width: 991px) {
-    flex-direction: column;
-  }
-`;
+function SectionTitle({ children }) {
+  return (
+    <h2 className="text-[20px] md:text-2xl mb-2.5 pb-1.25 font-bold">
+      {children}
+    </h2>
+  );
+}
 
-const Section = styled.div`
-  width: 50%;
-  margin-bottom: 15px;
-  padding: 20px;
-  border-radius: 20px;
-  box-shadow: 0px 0px 10px 0px rgb(220, 220, 220);
-  background-color: white;
-  font-family: 'Nunito Variable';
-
-  @media (max-width: 991px) {
-    width: 100%;
-  }
-`;
-
-const SectionTitle = styled.h2`
-  font-size: 1.5rem;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  font-weight: 700;
-  @media (max-width: 991px) {
-    font-size: 1.2rem;
-  }
-`;
-
-const Detail = styled.div`
-  margin-bottom: 4px;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-
-  @media (max-width: 991px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const PassengerInfo = styled.div`
-  margin-bottom: 8px;
-  font-size: 1rem;
-
-  @media (max-width: 991px) {
-    font-size: 0.9rem;
-  }
-`;
-
-const LoadingText = styled.p`
-  text-align: center;
-  font-size: 1.2rem;
-  color: var(--primary-color);
-`;
+function Detail({ children }) {
+  return (
+    <div className="mb-1 text-[0.9rem] md:text-[1rem] flex justify-between">
+      {children}
+    </div>
+  );
+}
 
 export default function ReviewDetails() {
-  const dispatch = useDispatch();
-  const { formDetails, status } = useSelector((state) => state.formDetails);
-  const { type, ticketPrice, quantity, ticketValidity } = useSelector(
+  const { type, ticketPrice, quantity } = useSelector(
     (state) => state.ticketForm
   );
-  const { stripeStatus, data, stripeError } = useSelector(
-    (state) => state.payment
-  );
-  const navigate = useNavigate();
   const sessionId = localStorage.getItem('SESSION_ID');
+  const {
+    url,
+    createStripePayment,
+    isLoadingStripePaymentURL,
+    isErrorStripePaymentURL,
+  } = useStripePaymentURL();
+  const { dummyTicket, isLoadingDummyTicket, isErrorDummyTicket } =
+    useDummyTicket(sessionId);
 
-  let validityText = '2 Days';
-
-  const { adults = 0, children = 0 } = formDetails?.quantity || {};
-  const totalQuantity = adults + children;
-  const ticketAvailability = formDetails?.ticketAvailability || {};
+  const totalQuantity =
+    dummyTicket?.quantity?.adults + dummyTicket?.quantity?.children;
   const totalAmount = ticketPrice * totalQuantity;
-
-  useEffect(() => {
-    if (sessionId) {
-      dispatch(fetchFormDetails(sessionId));
-    }
-  }, [dispatch]);
 
   const handleConfirm = () => {
     if (sessionId) {
@@ -108,191 +64,126 @@ export default function ReviewDetails() {
           },
         ],
       });
-      dispatch(createStipePaymentLink({ ...formDetails, totalAmount }));
+      createStripePayment({ ...dummyTicket, totalAmount });
     }
   };
 
   useEffect(() => {
-    if (stripeError) {
-      toast.error('An error occurred while processing your payment');
+    if (isErrorStripePaymentURL) {
+      toast.error('Could not get payment URL. Please send us an email.');
     }
-  }, [stripeError]);
+  }, [isErrorStripePaymentURL]);
 
   useEffect(() => {
-    if (stripeStatus === 'succeeded' && data?.url) {
-      window.location.href = data.url;
+    if (url) {
+      window.location.href = url;
     }
-  }, [stripeStatus, data]);
+  }, [url]);
 
-  let content;
+  const groupedPassengers =
+    dummyTicket?.passengers?.reduce((acc, passenger) => {
+      if (!acc[passenger.type]) {
+        acc[passenger.type] = [];
+      }
+      acc[passenger.type].push(passenger);
+      return acc;
+    }, {}) || {};
 
-  if (status === 'loading') {
-    content = <LoadingText>Loading...</LoadingText>;
-  } else if (status === 'succeeded' && formDetails) {
-    const groupedPassengers =
-      formDetails?.passengers?.reduce((acc, passenger) => {
-        if (!acc[passenger.type]) {
-          acc[passenger.type] = [];
-        }
-        acc[passenger.type].push(passenger);
-        return acc;
-      }, {}) || {};
+  if (isLoadingDummyTicket) return <Loading />;
 
-    let statusText;
-
-    if (formDetails?.paymentStatus === 'UNPAID') {
-      statusText = 'Unpaid';
-    }
-
-    let availability;
-    if (formDetails?.ticketAvailability?.immediate === true) {
-      availability = true;
-    }
-    if (formDetails?.ticketAvailability?.immediate === false) {
-      availability = false;
-    }
-
-    content = (
-      <>
-        <Helmet>
-          <title>Review Your Information</title>
-        </Helmet>
-
-        <div className="block md:flex md:gap-4">
-          <BookingDetailBox formDetails={formDetails} statusText={statusText} />
-          <FlightDetailBox
-            from={formDetails.from}
-            to={formDetails.to}
-            departureDate={formDetails.departureDate}
-            returnDate={formDetails.returnDate}
-            departureFlight={formDetails.flightDetails.departureFlight}
-            returnFlight={formDetails.flightDetails.returnFlight}
-          />
-        </div>
-
-        <div className="block md:flex md:gap-4">
-          <TicketAvailabilityDetail
-            validityText={validityText}
-            availability={availability}
-            ticketAvailability={ticketAvailability}
-          />
-          <PassengerDetail groupedPassengers={groupedPassengers} />
-        </div>
-
+  return (
+    <>
+      <Helmet>
+        <title>Review Your Information</title>
+      </Helmet>
+      <div className="block md:flex md:gap-4">
+        <BookingDetailBox dummyTicket={dummyTicket} />
+        <FlightDetailBox dummyTicket={dummyTicket} />
+      </div>
+      <div className="block md:flex md:gap-4">
+        <PassengerDetail groupedPassengers={groupedPassengers} />
         <OrderTotalDetail
           totalQuantity={totalQuantity}
           totalAmount={totalAmount}
           ticketPrice={ticketPrice}
         />
-        <ProceedButton
-          handleConfirm={handleConfirm}
-          stripeStatus={stripeStatus}
-          totalAmount={totalAmount}
-        />
-      </>
-    );
-  }
-
-  return <>{content}</>;
+      </div>
+      <ProceedButton
+        handleConfirm={handleConfirm}
+        isLoadingStripePaymentURL={isLoadingStripePaymentURL}
+        totalAmount={totalAmount}
+      />
+    </>
+  );
 }
 
-function BookingDetailBox({ formDetails, statusText }) {
+function BookingDetailBox({ dummyTicket }) {
   return (
     <Section>
       <SectionTitle>Booking Details</SectionTitle>
       <Detail>
-        <span>Booking Date:</span> {formatDate(formDetails.createdAt)}
+        <span>Booking Date:</span> {formatDate(dummyTicket?.createdAt)}
       </Detail>
       <Detail>
-        <span>Email:</span> {formDetails.email}
+        <span>Email:</span> {dummyTicket?.email}
       </Detail>
       <Detail>
-        <span>Phone Number:</span> {formDetails.phoneNumber.code}
-        {formDetails.phoneNumber.digits}
+        <span>Phone Number:</span> {dummyTicket?.phoneNumber.code}
+        {dummyTicket?.phoneNumber.digits}
       </Detail>
-      {formDetails.message && (
+      {dummyTicket?.message && (
         <Detail>
-          <span>Message:</span> {formDetails.message}
+          <span>Message:</span> {dummyTicket?.message}
         </Detail>
       )}
       <Detail>
         <span>Status:</span> Payment Pending
       </Detail>
       <Detail>
-        <span>Ticket Validity:</span> {formDetails.ticketValidity}
+        <span>Ticket Validity:</span> {dummyTicket?.ticketValidity}
       </Detail>
-      {/* <Detail>
-        <span>Ticket Delivery:</span> {formDetails.ticketValidity}
-      </Detail> */}
+      <Detail>
+        <span>Delivery Type:</span>{' '}
+        {dummyTicket?.ticketDelivery?.immediate ? 'Immediate' : 'Later'}
+      </Detail>
+      {!dummyTicket?.ticketDelivery?.immediate && (
+        <Detail>
+          <span>Delivery Date:</span>{' '}
+          {formatDate(dummyTicket?.ticketDelivery?.deliveryDate)}
+        </Detail>
+      )}
     </Section>
   );
 }
 
-function FlightDetailBox({
-  from,
-  to,
-  departureDate,
-  returnDate,
-  departureFlight,
-  returnFlight,
-}) {
+function FlightDetailBox({ dummyTicket }) {
   return (
     <Section>
       <SectionTitle>Flight Information</SectionTitle>
       <Detail>
-        <span>From:</span> {from}
+        <span>From:</span> {dummyTicket?.from}
       </Detail>
       <Detail>
-        <span>To:</span> {to}
+        <span>To:</span> {dummyTicket?.to}
       </Detail>
       <Detail>
-        <span>Departure Date:</span> {formatDate(departureDate)}
+        <span>Departure Date:</span> {formatDate(dummyTicket?.departureDate)}
       </Detail>
       <Detail>
-        <span>Departure Flight:</span> {departureFlight.segments[0].carrierCode}{' '}
-        {departureFlight.segments[0].flightNumber}
+        <span>Departure Flight:</span>{' '}
+        {dummyTicket?.flightDetails?.departureFlight.segments[0].carrierCode}{' '}
+        {dummyTicket?.flightDetails?.departureFlight.segments[0].flightNumber}
       </Detail>
-      {returnDate && (
+      {dummyTicket?.returnDate && (
         <Detail>
-          <span>Return Date:</span> {formatDate(returnDate)}
+          <span>Return Date:</span> {formatDate(dummyTicket?.returnDate)}
         </Detail>
       )}
-      {returnFlight && (
+      {dummyTicket?.flightDetails.returnFlight && (
         <Detail>
-          <span>Return Flight:</span> {returnFlight.segments[0].carrierCode}{' '}
-          {returnFlight.segments[0].flightNumber}
-        </Detail>
-      )}
-    </Section>
-  );
-}
-
-function TicketAvailabilityDetail({
-  validityText,
-  availability,
-  ticketAvailability,
-}) {
-  return (
-    <Section>
-      <SectionTitle>Ticket Availability</SectionTitle>
-      <Detail>
-        <span>Ticket Validity:</span> {validityText}
-      </Detail>
-      <Detail>
-        {availability ? (
-          <>
-            <span>Availability Type:</span> Immediate{' '}
-          </>
-        ) : (
-          <>
-            <span>Availability Type:</span> Later{' '}
-          </>
-        )}
-      </Detail>
-      {!availability && (
-        <Detail>
-          <span>Receipt Date:</span>{' '}
-          {formatDate(ticketAvailability.receiptDate)}
+          <span>Return Flight:</span>{' '}
+          {dummyTicket?.flightDetails?.returnFlight.segments[0].carrierCode}{' '}
+          {dummyTicket?.flightDetails?.returnFlight.segments[0].flightNumber}
         </Detail>
       )}
     </Section>
@@ -306,12 +197,12 @@ function PassengerDetail({ groupedPassengers }) {
       {Object.keys(groupedPassengers).map((type) => (
         <div key={type}>
           {groupedPassengers[type].map((passenger, index) => (
-            <PassengerInfo key={index}>
+            <Detail key={index}>
               <span>
                 {type} {index + 1}:
               </span>{' '}
               {passenger.title} {passenger.firstName} {passenger.lastName}
-            </PassengerInfo>
+            </Detail>
           ))}
         </div>
       ))}
@@ -321,31 +212,33 @@ function PassengerDetail({ groupedPassengers }) {
 
 function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount }) {
   return (
-    <Box>
-      <Section>
-        <SectionTitle>Order Total</SectionTitle>
-        <Detail>
-          <span>Dummy Ticket Price:</span> USD {ticketPrice}
-        </Detail>
-        <Detail>
-          <span>Number of Passengers:</span> {totalQuantity}
-        </Detail>
-        <Detail>
-          <span>Total:</span> USD {totalAmount}
-        </Detail>
-      </Section>
-    </Box>
+    <Section>
+      <SectionTitle>Order Total</SectionTitle>
+      <Detail>
+        <span>Dummy Ticket Price:</span> USD {ticketPrice}
+      </Detail>
+      <Detail>
+        <span>Number of Passengers (excl. infants):</span> {totalQuantity}
+      </Detail>
+      <Detail>
+        <span>Total:</span> USD {totalAmount}
+      </Detail>
+    </Section>
   );
 }
 
-function ProceedButton({ handleConfirm, stripeStatus, totalAmount }) {
+function ProceedButton({
+  handleConfirm,
+  isLoadingStripePaymentURL,
+  totalAmount,
+}) {
   return (
     <div className="flex items-center justify-center">
       <PrimaryButton
         onClick={handleConfirm}
-        disabled={stripeStatus === 'loading'}
+        disabled={isLoadingStripePaymentURL}
       >
-        {stripeStatus === 'loading'
+        {isLoadingStripePaymentURL
           ? 'Processing...'
           : `Proceed To Payment (USD ${totalAmount})`}
       </PrimaryButton>

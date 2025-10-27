@@ -1,8 +1,4 @@
-import {
-  HiOutlineClock,
-  HiOutlineCurrencyDollar,
-  HiCheck,
-} from 'react-icons/hi2';
+import { HiOutlineClock, HiOutlineCurrencyDollar, HiCheck } from 'react-icons/hi2';
 import Container from '../Container';
 import PrimarySection from '../PrimarySection';
 
@@ -10,7 +6,7 @@ export default function Benefits({ keyword = 'dummy ticket' }) {
   return (
     <PrimarySection className="pt-20" id="benefits">
       <Container>
-        <div className="block md:grid md:grid-cols-3 gap-10">
+        <div className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-10">
           <IconCard
             icon={<HiCheck />}
             title="Reliable"
@@ -24,7 +20,7 @@ export default function Benefits({ keyword = 'dummy ticket' }) {
           <IconCard
             icon={<HiOutlineCurrencyDollar />}
             title="Great Value"
-            text="Starting from just USD 12, our tickets combine affordability with professional quality, helping travelers save money without compromising reliability."
+            text={`Starting from just USD 13, our ${keyword}s combine affordability with professional quality, helping travelers save money without compromising reliability.`}
           />
         </div>
       </Container>
@@ -34,14 +30,12 @@ export default function Benefits({ keyword = 'dummy ticket' }) {
 
 function IconCard({ icon, title, text }) {
   return (
-    <div className="w-full mb-12 text-center md:mb-0">
-      <div className="w-fit text-3xl text-primary-500 flex items-center justify-center bg-primary-50 p-3.75 mx-auto rounded-full overflow-hidden">
+    <div className="w-full text-left md:text-center md:mb-0">
+      <div className="flex items-center justify-center w-fit text-2xl text-primary-500 bg-primary-50 p-3 md:mx-auto rounded-full overflow-hidden">
         {icon}
       </div>
-      <h3 className="text-lg my-4.5 p-0 font-bold font-merriweather md:text-[18px]">
-        {title}
-      </h3>
-      <p className="text-center text-[17px] font-light leading-6">{text}</p>
+      <h3 className="text-lg mt-3 mb-2 p-0 font-medium font-outfit">{title}</h3>
+      <p className="text-[16px] font-light leading-6">{text}</p>
     </div>
   );
 }

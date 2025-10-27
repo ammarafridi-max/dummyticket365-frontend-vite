@@ -16,6 +16,9 @@ import PaymentSuccess from './pages/PaymentSuccess';
 import TermsAndConditions from './pages/TermsAndConditions';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import FlightReservation from './pages/FlightReservation';
+import ScrollToTop from './components/ScrollToTop';
+import DummyTicket from './pages/DummyTicket';
+import Sitemap from './pages/Sitemap';
 
 function App() {
   useEffect(() => {
@@ -26,22 +29,25 @@ function App() {
     <HelmetProvider>
       <ToastContainer transition={Zoom} />
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="flight-reservation" element={<FlightReservation />} />
             <Route path="*" element={<PageNotFound />} />
+            <Route path="flight-reservation" element={<FlightReservation />} />
+            <Route path="dummy-ticket" element={<DummyTicket />} />
+            <Route path="sitemap" element={<Sitemap />} />
             <Route path="faq" element={<FAQ />} />
-            <Route path="booking" element={<BookingLayout />}>
-              <Route path="select-flights" element={<SelectFlights />} />
-              <Route path="review-details" element={<ReviewDetails />} />
-            </Route>
             <Route path="payment-successful" element={<PaymentSuccess />} />
             <Route
               path="terms-and-conditions"
               element={<TermsAndConditions />}
             />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="booking" element={<BookingLayout />}>
+              <Route path="select-flights" element={<SelectFlights />} />
+              <Route path="review-details" element={<ReviewDetails />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

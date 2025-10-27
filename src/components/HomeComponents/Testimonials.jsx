@@ -29,16 +29,12 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <PrimarySection className="pt-20">
+    <PrimarySection className="pt-15 md:pt-20">
       <Container>
-        <SectionTitle
-          textAlign="center"
-          subtitle="What our customers say about us"
-          mb="8"
-        >
+        <SectionTitle textAlign="center" subtitle="What our customers say about us" mb="8">
           Testimonials
         </SectionTitle>
-        <div className="flex md:grid md:grid-cols-2 gap-3.75 overflow-scroll">
+        <div className="flex overflow-scroll md:grid md:grid-cols-3 gap-5">
           {testimonials.map((test, i) => (
             <TestimonialCard
               key={i}
