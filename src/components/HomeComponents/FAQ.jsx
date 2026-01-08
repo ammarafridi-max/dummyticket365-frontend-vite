@@ -1,18 +1,21 @@
-import { faqArray } from '../../data/faqs';
 import SectionTitle from '../SectionTitle';
 import PrimarySection from '../PrimarySection';
 import Container from '../Container';
 import FAQAccordion from '../FAQAccordion';
 import PrimaryLink from '../PrimaryLink';
 
-export default function FAQ() {
+export default function FAQ({
+  title = 'Frequently Asked Questions',
+  subtitle = 'Common questions answered',
+  faqs,
+}) {
   return (
-    <PrimarySection id="faq" className="pt-15">
+    <PrimarySection id="faq" className="pt-15 lg:pt-25">
       <Container>
-        <SectionTitle textAlign="center" subtitle="Common questions answered" mb="8">
-          Frequently Asked Questions
+        <SectionTitle textAlign="center" subtitle={subtitle} mb="8">
+          {title}
         </SectionTitle>
-        {faqArray.map((faq, i) => {
+        {faqs.map((faq, i) => {
           while (i < 6) {
             return (
               <FAQAccordion key={i} question={faq.question}>

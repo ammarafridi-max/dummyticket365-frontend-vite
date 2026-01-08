@@ -1,72 +1,93 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { pages } from './Navigation';
 import { HiOutlineXMark, HiOutlineBars3 } from 'react-icons/hi2';
+import { ChevronDown, ChevronRight } from 'lucide-react';
+import { useOutsideClick } from '../hooks/useOutsideClick';
 import Container from './Container';
 
 export default function MobileNavigation() {
+  const wrapperRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [openIndex, setOpenIndex] = useState(null);
+
+  useOutsideClick(wrapperRef, () => setMenuOpen(false));
 
   return (
-    <header className="block lg:hidden font-outfit sticky top-0 z-[60]">
-      {/* Top Nav Bar */}
-      <nav className="bg-white/80 backdrop-blur-sm shadow-sm">
-        <Container className="flex justify-between items-center py-2">
-          <a href="/" className="w-[160px] flex items-center">
-            <img
-              src="/logo.webp"
-              alt="Dummy Ticket 365 Logo"
-              title="Dummy Ticket 365"
-              className="w-full h-auto object-contain"
-            />
-          </a>
+    <nav className="block lg:hidden py-3 relative z-50">
+      <Container className="flex justify-between items-center">
+        <a href="/" className="w-45 h-auto flex items-center">
+          <img
+            src="/logo.webp"
+            alt="MDT Logo"
+            title="MDT Logo"
+            className="w-full h-auto object-contain"
+          />
+        </a>
+        <button onClick={() => setMenuOpen(!menuOpen)} name="mobileMenu">
+          {menuOpen ? (
+            <HiOutlineXMark className="text-3xl" />
+          ) : (
+            <HiOutlineBars3 className="text-3xl" />
+          )}
+        </button>
+      </Container>
 
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            name="mobileMenu"
-            className="text-gray-800 focus:outline-none"
-          >
-            {menuOpen ? (
-              <HiOutlineXMark className="text-3xl" />
-            ) : (
-              <HiOutlineBars3 className="text-3xl" />
-            )}
-          </button>
-        </Container>
-      </nav>
-
-      {/* Overlay & Menu */}
       {menuOpen && (
         <>
-          {/* 🔹 Overlay (covers full viewport) */}
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[70]"
+            className="fixed inset-0 bg-black opacity-60 z-40"
             onClick={() => setMenuOpen(false)}
           />
+          <div className="fixed inset-0 z-50 flex items-start justify-start">
+            <div
+              ref={wrapperRef}
+              className="w-[80%] h-dvh bg-white shadow-md border border-gray-200"
+            >
+              {pages.map((page, i) => {
+                if (page.subpages) {
+                  return (
+                    <>
+                      <div
+                        key={i}
+                        className="flex items-center justify-between px-6 py-2 text-base font-light text-gray-800 hover:bg-gray-100 transition"
+                        onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                      >
+                        <span>{page.name}</span>
+                        {openIndex === i ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                      </div>
 
-          {/* 🔹 Menu */}
-          <div
-            className="fixed top-[65px] left-0 right-0 z-[80] px-4 animate-slideDown"
-            onClick={() => setMenuOpen(false)}
-          >
-            <div className="bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
-              {pages.map((page, i) => (
-                <a
-                  key={i}
-                  href={page.link}
-                  onClick={() => setMenuOpen(false)}
-                  className={`block px-6 py-3 text-center text-[16px] font-medium transition-all duration-200 ${
-                    page.cta
-                      ? 'bg-[#ff6b00] text-white hover:bg-[#e65e00]'
-                      : 'text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {page.name}
-                </a>
-              ))}
+                      {openIndex === i && page.subpages && (
+                        <div className="flex flex-col bg-gray-50">
+                          {page.subpages.map((sub, idx) => (
+                            <a
+                              key={idx}
+                              href={sub.link}
+                              className="px-10 py-2 font-light text-gray-700 hover:bg-gray-100"
+                            >
+                              {sub.name}
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                }
+
+                return (
+                  <a
+                    key={i}
+                    href={page.link}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center justify-between px-6 py-2 text-base font-light text-gray-800 hover:bg-gray-100 transition"
+                  >
+                    <span>{page.name}</span>
+                  </a>
+                );
+              })}
             </div>
           </div>
         </>
       )}
-    </header>
+    </nav>
   );
 }

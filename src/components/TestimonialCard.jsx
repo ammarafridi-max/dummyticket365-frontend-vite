@@ -5,22 +5,20 @@ export default function TestimonialCard({ title, name, src, children, purpose })
         “
       </div>
 
-      <h3 className="text-[18px] md:text-[20px] font-normal text-gray-900 mb-3 leading-snug">
-        {title}
-      </h3>
+      <h3 className="text-[18px] md:text-[20px] font-normal text-gray-900 leading-snug">{title}</h3>
 
-      <p className="text-[15px] text-gray-600 leading-relaxed font-light mb-6">{children}</p>
+      <p className="text-[15px] text-gray-700 leading-relaxed font-extralight py-5">{children}</p>
 
       <div className="flex items-center gap-3">
         <img
           src={src}
-          alt={`Testimonial by ${name} about My Dummy Ticket`}
-          title={`Testimonial by ${name} about My Dummy Ticket`}
+          alt={`Testimonial by ${name} about MDT`}
+          title={`Testimonial by ${name} about MDT`}
           className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm"
         />
         <div>
           <p className="font-semibold text-gray-900 text-[15px]">{name}</p>
-          <p className="text-[13px] text-gray-500">{purpose}</p>
+          <p className="font-extralight text-[13px] text-gray-500">{purpose}</p>
         </div>
       </div>
 

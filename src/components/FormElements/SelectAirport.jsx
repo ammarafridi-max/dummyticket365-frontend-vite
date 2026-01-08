@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BASEURL } from '../../config';
 import InputWithIcon from './InputWithIcon';
 import { useAirports } from '../../hooks/useAirports';
 
@@ -83,7 +82,7 @@ export default function SelectAirport({ value, onChange, id, icon }) {
 function ListItem({ children, className, ...props }) {
   return (
     <li
-      className={`px-5 py-2 font-nunito cursor-pointer transition-colors ${className}`}
+      className={`px-3 py-2 font-nunito font-light cursor-pointer transition-colors text-[14px] ${className}`}
       {...props}
     >
       {children}

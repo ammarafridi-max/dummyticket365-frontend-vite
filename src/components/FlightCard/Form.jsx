@@ -11,7 +11,6 @@ import {
   updateField,
 } from '../../redux/slices/ticketFormSlice';
 import { formatDate } from '../../utils/formatDate';
-import styled from 'styled-components';
 import Error from '../Error';
 import Input from '../FormElements/Input';
 import Label from '../FormElements/Label';
@@ -23,13 +22,11 @@ import PhoneNumber from '../FormElements/PhoneNumber';
 import PrimaryButton from '../PrimaryButton';
 
 const FormRow = ({ children }) => {
-  return (
-    <div className="block md:grid md:grid-cols-2 md:gap-2.5">{children}</div>
-  );
+  return <div className="block lg:grid lg:grid-cols-2 lg:gap-2.5">{children}</div>;
 };
 
 const FormItem = ({ children }) => {
-  return <div className="w-full mb-2">{children}</div>;
+  return <div className="w-full">{children}</div>;
 };
 
 export default function Form() {
@@ -44,12 +41,12 @@ export default function Form() {
     email,
     phoneNumber,
     ticketValidity,
-    receiveNow,
-    receiptDate,
+    deliverNow,
+    deliveryDate,
     message,
     passengerErrors,
     errorMessage,
-  } = useSelector((state) => state.ticketForm);
+  } = useSelector(state => state.ticketForm);
 
   useEffect(() => {
     if (quantity && (!passengers || passengers.length === 0)) {
@@ -60,8 +57,7 @@ export default function Form() {
   useEffect(() => {
     const hasEmptyFields = () => {
       const hasEmptyPassengerFields = passengers?.some(
-        (passenger) =>
-          !passenger.title || !passenger.firstName || !passenger.lastName
+        passenger => !passenger.title || !passenger.firstName || !passenger.lastName
       );
 
       if (hasEmptyPassengerFields) {
@@ -72,7 +68,7 @@ export default function Form() {
         return true;
       }
 
-      if (!receiveNow && !receiptDate) {
+      if (!deliverNow && !deliveryDate) {
         return true;
       }
 
@@ -80,7 +76,7 @@ export default function Form() {
     };
 
     setIsSubmitDisabled(hasEmptyFields());
-  }, [passengers, email, phoneNumber, receiveNow, receiptDate]);
+  }, [passengers, email, phoneNumber, deliverNow, deliveryDate]);
 
   const handleUpdatePassenger = (index, field, value) => {
     dispatch(
@@ -91,11 +87,11 @@ export default function Form() {
     );
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = e => {
     dispatch(updateField({ field: 'email', value: e.target.value }));
   };
 
-  const handleValidityChange = (e) => {
+  const handleValidityChange = e => {
     dispatch(
       updatePricing({
         type: 'SET_VALIDITY',
@@ -104,7 +100,7 @@ export default function Form() {
     );
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     try {
@@ -125,10 +121,7 @@ export default function Form() {
   };
 
   return (
-    <form
-      className="mt-2.5 p-5 md:p-6.25 rounded-xl bg-gray-100"
-      onSubmit={handleSubmit}
-    >
+    <form className="mt-2.5 p-5 lg:p-6.25 rounded-xl bg-gray-100" onSubmit={handleSubmit}>
       {passengers && passengers.length > 0 && (
         <PassengerData
           passengers={passengers}
@@ -140,35 +133,27 @@ export default function Form() {
         email={email}
         handleEmailChange={handleEmailChange}
         phoneNumber={phoneNumber}
-        setPhoneNumber={(value) =>
-          dispatch(updateField({ field: 'phoneNumber', value }))
-        }
+        setPhoneNumber={value => dispatch(updateField({ field: 'phoneNumber', value }))}
       />
       <TicketValidityOptions
         ticketValidity={ticketValidity}
         handleValidityChange={handleValidityChange}
       />
-      {/* <ReceiptOptions
-        receiveNow={receiveNow}
-        setReceiveNow={(value) =>
-          dispatch(updateField({ field: 'receiveNow', value }))
-        }
-        receiptDate={receiptDate}
-        setReceiptDate={(date) =>
-          dispatch(updateField({ field: 'receiptDate', value: date }))
-        }
+      <ReceiptOptions
+        deliverNow={deliverNow}
+        setDeliverNow={value => dispatch(updateField({ field: 'deliverNow', value }))}
+        deliveryDate={deliveryDate}
+        setDeliveryDate={date => dispatch(updateField({ field: 'deliveryDate', value: date }))}
       />
       <Message
         message={message}
-        setMessage={(value) =>
-          dispatch(updateField({ field: 'message', value }))
-        }
-      /> */}
+        setMessage={value => dispatch(updateField({ field: 'message', value }))}
+      />
       {errorMessage && <Error>{errorMessage}</Error>}
       <PrimaryButton
         className="w-full mt-5"
         onClick={handleSubmit}
-        disabled={loading}
+        disabled={loading || isSubmitDisabled}
       >
         {loading ? 'Processing...' : 'Review Your Information'}
       </PrimaryButton>
@@ -198,9 +183,7 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
             <div className="w-full flex gap-1.25 mt-2">
               <SelectTitle
                 value={passenger.title}
-                onChange={(e) =>
-                  handleUpdatePassenger(index, 'title', e.target.value)
-                }
+                onChange={e => handleUpdatePassenger(index, 'title', e.target.value)}
               />
               <Input
                 className="w-100"
@@ -210,9 +193,7 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
                 id={`firstName${index}`}
                 placeholder="First Name"
                 value={passenger.firstName}
-                onChange={(e) =>
-                  handleUpdatePassenger(index, 'firstName', e.target.value)
-                }
+                onChange={e => handleUpdatePassenger(index, 'firstName', e.target.value)}
               />
               <Input
                 className="w-100"
@@ -222,9 +203,7 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
                 id={`lastName${index}`}
                 placeholder="Last Name"
                 value={passenger.lastName}
-                onChange={(e) =>
-                  handleUpdatePassenger(index, 'lastName', e.target.value)
-                }
+                onChange={e => handleUpdatePassenger(index, 'lastName', e.target.value)}
               />
             </div>
             {passengerErrors && passengerErrors[index] && (
@@ -244,136 +223,108 @@ function PassengerData({ passengers, handleUpdatePassenger, passengerErrors }) {
   );
 }
 
-function ContactDetails({
-  email,
-  handleEmailChange,
-  phoneNumber,
-  setPhoneNumber,
-}) {
+function ContactDetails({ email, handleEmailChange, phoneNumber, setPhoneNumber }) {
   return (
     <FormRow>
       <FormItem>
         <Email email={email} handleEmailChange={handleEmailChange} />
       </FormItem>
       <FormItem>
-        <PhoneNumber
-          phoneNumber={phoneNumber}
-          setPhoneNumber={setPhoneNumber}
-        />
+        <PhoneNumber phoneNumber={phoneNumber} setPhoneNumber={setPhoneNumber} />
       </FormItem>
     </FormRow>
   );
 }
 
-const Option = styled.label`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  background-color: white;
-  position: relative;
-  flex: 1;
-  & input[type='radio'] {
-    position: absolute;
-    opacity: 0;
-  }
-  & input[type='radio']:checked + div {
-    background-color: var(--primary-color-500);
-    color: #fff;
-    border: 1px solid var(--primary-color-500);
-  }
-  & input[type='radio']:checked + div span {
-    color: var(--primary-color-100);
-  }
-  &:active {
-    background-color: #dee2e6;
-  }
-  &:hover {
-    background-color: #e9ecef;
-  }
-`;
-
 function TicketValidityOptions({ ticketValidity }) {
   const dispatch = useDispatch();
-
-  const handleChange = (e) => {
-    dispatch(
-      updatePricing({
-        ticketValidity: e.target.value,
-        ticketPrice: options.find((option) => option.value === e.target.value)
-          .price,
-      })
-    );
-  };
 
   const options = [
     { value: '2 Days', label: '2 Days', price: 13 },
     { value: '7 Days', label: '7 Days', price: 20 },
-    { value: '14 Days', label: '14 Days', price: 23 },
+    { value: '14 Days', label: '14 Days', price: 73 },
   ];
 
+  const handleChange = e => {
+    dispatch(
+      updatePricing({
+        ticketValidity: e.target.value,
+        ticketPrice: options.find(option => option.value === e.target.value).price,
+      })
+    );
+  };
+
   return (
-    <div className="flex flex-col mt-3.75">
+    <div className="flex flex-col mt-3.5">
       <Label htmlFor="ticketValidity">Choose Ticket Validity</Label>
-      <div className="block md:flex rounded-lg overflow-hidden border-[1.5px] border-gray-300">
-        {options.map((option, index) => (
-          <Option key={index}>
-            <input
-              type="radio"
-              name="ticketValidity"
-              value={option.value}
-              checked={ticketValidity === option.value}
-              onChange={handleChange} // Use the local handleChange
-            />
-            <div className="w-full h-full p-3 md:p-2.5 bg-transparent flex items-center text-[15px] font-semibold border-2 border-transparent">
-              {option.label} -{' '}
-              <span className="text-gray-400 font-medium ml-0.75">
-                USD {option?.price} / person
-              </span>
-            </div>
-          </Option>
-        ))}
+
+      <div className="block lg:flex rounded-lg overflow-hidden border border-gray-300 mt-2">
+        {options.map((option, index) => {
+          const isSelected = ticketValidity === option.value;
+
+          return (
+            <label
+              key={index}
+              className={`relative flex flex-1 cursor-pointer transition-colors duration-200 
+                ${isSelected ? 'bg-primary-500 text-white border-primary-500' : 'bg-white text-gray-800 hover:bg-gray-100 active:bg-gray-200'}`}
+            >
+              <input
+                type="radio"
+                name="ticketValidity"
+                value={option.value}
+                checked={isSelected}
+                onChange={handleChange}
+                className="absolute opacity-0"
+              />
+              <div
+                className={`w-full h-full p-3 lg:p-2.5 flex items-center gap-1 text-[15px] font-normal border-2 border-transparent`}
+              >
+                <span>{option.label}</span>
+                <span>-</span>
+                <span className={`text-sm ${isSelected ? 'text-primary-100' : 'text-black/40'}`}>
+                  USD {option.price} / person
+                </span>
+              </div>
+            </label>
+          );
+        })}
       </div>
     </div>
   );
 }
 
-function ReceiptOptions({
-  receiveNow,
-  receiptDate,
-  setReceiveNow,
-  setReceiptDate,
-}) {
+function ReceiptOptions({ deliverNow, deliveryDate, setDeliverNow, setDeliveryDate }) {
   return (
     <div className="flex flex-col my-5">
-      <Label>Receive Ticket On</Label>
+      <Label>Deliver Ticket On</Label>
       <div>
-        <div className="flex items-center gap-3 mb-1.25 text-[15px] font-nunito">
+        <div className="flex items-center gap-3 mb-1.25 font-light text-[14.5px] font-nunito">
           <input
             type="radio"
             name="receiveTicket"
-            checked={receiveNow}
-            onChange={() => setReceiveNow(true)}
+            checked={deliverNow}
+            onChange={() => setDeliverNow(true)}
           />
           <span>I need it now</span>
         </div>
-        <div className="flex items-center gap-3 mb-1.25 text-[15px] font-nunito">
+        <div className="flex items-center gap-3 mb-1.25 font-light text-[14.5px] font-nunito">
           <input
             type="radio"
             name="receiveTicket"
-            checked={!receiveNow}
-            onChange={() => setReceiveNow(false)}
+            checked={!deliverNow}
+            onChange={() => setDeliverNow(false)}
           />
           <span>I need it on a later date</span>
         </div>
       </div>
-      {!receiveNow && (
+      {!deliverNow && (
         <FormRow>
           <FormItem>
             <SelectDate
-              selectedDate={receiptDate && formatDate(receiptDate)}
-              onDateSelect={setReceiptDate}
+              selectedDate={deliveryDate && formatDate(deliveryDate)}
+              onDateSelect={setDeliveryDate}
               minDate={new Date()}
-              placeholder="Select receipt date"
+              placeholder="Select delivery date"
             />
           </FormItem>
         </FormRow>
@@ -389,7 +340,7 @@ function Message({ message, setMessage }) {
       <TextArea
         value={message}
         placeholder="Special requests"
-        onChange={(e) => {
+        onChange={e => {
           setMessage(e.target.value);
         }}
       />

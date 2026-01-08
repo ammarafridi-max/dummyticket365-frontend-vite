@@ -6,7 +6,7 @@ import { updateField } from '../../redux/slices/ticketFormSlice';
 import { FaCircle } from 'react-icons/fa';
 import { PlaneLandingIcon, PlaneTakeoff, CalendarDaysIcon } from 'lucide-react';
 import { formatDate } from '../../utils/formatDate';
-import { trackFlightSearch } from '../../utils/analytics';
+import { trackFlightSearch } from '../../lib/analytics';
 import Label from '../FormElements/Label';
 import PrimaryButton from '../PrimaryButton';
 import SelectAirport from '../FormElements/SelectAirport';
@@ -89,7 +89,7 @@ export default function TicketForm() {
       <div className="flex gap-2.5">
         {['One Way', 'Return'].map(tripType => (
           <div
-            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer font-outfit"
+            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer font-outfit font-light"
             key={tripType}
             onClick={() => handleFieldChange('type', tripType)}
           >

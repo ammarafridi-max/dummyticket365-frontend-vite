@@ -8,15 +8,13 @@ export default function FAQAccordion({ question, children }) {
     <div className="w-full border-b border-gray-200 py-1.5">
       <button
         onClick={() => setShowAnswer(prev => !prev)}
-        className="w-full flex items-center justify-between text-left py-3 px-2 sm:px-4
-                   transition-all duration-200 cursor-pointer group"
+        className="w-full flex items-center justify-between text-left py-3 px-2 sm:px-4 transition-all duration-200 cursor-pointer group"
       >
-        <span
-          className={`text-[16px] sm:text-[18px] font-medium font-nunito leading-snug transition-colors duration-200
-                      ${showAnswer ? 'text-primary-600' : 'text-gray-800 group-hover:text-primary-500'}`}
+        <h3
+          className={`text-[16px] sm:text-[18px] font-medium font-nunito leading-snug transition-colors duration-200 ${showAnswer ? 'text-primary-600' : 'text-gray-800 group-hover:text-primary-500'}`}
         >
           {question}
-        </span>
+        </h3>
 
         <span
           className={`flex items-center justify-center w-7 h-7 rounded-full border transition-all duration-200
