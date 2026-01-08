@@ -1,5 +1,5 @@
-import PrimarySection from '../components/PrimarySection';
-import Container from '../components/Container';
+import PrimarySection from '../../components/PrimarySection';
+import Container from '../../components/Container';
 
 const Title = ({ children }) => {
   return <h2 className="font-outfit text-2xl mt-5 mb-5 ">{children}</h2>;
