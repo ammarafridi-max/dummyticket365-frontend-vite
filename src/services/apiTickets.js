@@ -1,13 +1,10 @@
-import { BASEURL } from '../config';
+import { BACKEND } from '../config';
 
 export async function getDummyTicketApi(sessionId) {
-  const res = await fetch(`${BASEURL}/api/ticket/${sessionId}`);
+  const res = await fetch(`${BACKEND}/api/ticket/${sessionId}`);
   if (!res.ok) {
     const err = await res.json();
-    throw new Error(
-      err.message,
-      'An error occurred while retrieving your data'
-    );
+    throw new Error(err.message, 'An error occurred while retrieving your data');
   }
 
   const data = await res.json();
@@ -21,7 +18,7 @@ export async function getStripePaymentURL(ticketData) {
     throw new Error('Session ID is missing. Please restart the process.');
   }
 
-  const res = await fetch(`${BASEURL}/api/ticket/buy-ticket`, {
+  const res = await fetch(`${BACKEND}/api/ticket/buy-ticket`, {
     method: 'POST',
     body: JSON.stringify(ticketData),
     headers: { 'X-Session-ID': sessionId, 'Content-Type': 'application/json' },
