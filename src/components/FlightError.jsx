@@ -19,7 +19,7 @@ export default function FlightError() {
         You can email us your trip plan, including the routes, dates, and passenger names, and we'll
         help you out.{' '}
       </p>
-      <PrimaryLink to="mailto:info@dummyticket365.com">Send email</PrimaryLink>
+      <PrimaryLink to="mailto:info@mydummyticket.ae">Send email</PrimaryLink>
     </div>
   );
 }

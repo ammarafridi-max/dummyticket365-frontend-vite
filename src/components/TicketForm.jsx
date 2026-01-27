@@ -1,26 +1,34 @@
-import { toast } from 'react-toastify';
-import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-hot-toast';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { updateField } from '../../redux/slices/ticketFormSlice';
 import { FaCircle } from 'react-icons/fa';
 import { PlaneLandingIcon, PlaneTakeoff, CalendarDaysIcon } from 'lucide-react';
-import { formatDate } from '../../utils/formatDate';
-import { trackFlightSearch } from '../../lib/analytics';
-import Label from '../FormElements/Label';
-import PrimaryButton from '../PrimaryButton';
-import SelectAirport from '../FormElements/SelectAirport';
-import SelectDate from '../FormElements/SelectDate';
-import Counter from '../FormElements/Counter';
-import Error from '../Error';
+import { formatDate } from '../utils/formatDate';
+import { trackFlightSearch } from '../lib/analytics';
+import { TicketContext } from '../context/TicketContext';
+import Label from './FormElements/Label';
+import PrimaryButton from './PrimaryButton';
+import SelectAirport from './FormElements/SelectAirport';
+import SelectDate from './FormElements/SelectDate';
+import Counter from './FormElements/Counter';
+import Error from './Error';
 
 export default function TicketForm() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [errorMessages, setErrorMessages] = useState({});
-  const { type, from, to, departureDate, returnDate, quantity } = useSelector(
-    state => state.ticketForm
-  );
+  const {
+    type,
+    from,
+    to,
+    departureDate,
+    returnDate,
+    quantity,
+    setType,
+    setFrom,
+    setTo,
+    setDepartureDate,
+    setReturnDate,
+    setQuantity,
+  } = useContext(TicketContext);
 
   const isFormValid = () => {
     if (!from) {
@@ -40,21 +48,26 @@ export default function TicketForm() {
       return false;
     }
     if (quantity.adults < 1 || quantity.adults + quantity.children + quantity.infants > 9) {
-      toast.error('Return date is required');
+      toast.error('Total passengers must be between 1 and 9');
       return false;
     }
     return true;
   };
 
-  const handleFieldChange = (field, value) => {
-    dispatch(updateField({ field, value }));
-  };
+  function handleFieldChange(field, value) {
+    if (field === 'type') setType(value);
+    if (field === 'from') setFrom(value);
+    if (field === 'to') setTo(value);
+    if (field === 'departureDate') setDepartureDate(value);
+    if (field === 'returnDate') setReturnDate(value);
+  }
 
-  const handleQuantityChange = (field, value) => {
+  function handleQuantityChange(field, value) {
     const updatedQuantity = {
       ...quantity,
       [field]: quantity[field] + value,
     };
+
     const totalPassengers =
       updatedQuantity.adults + updatedQuantity.children + updatedQuantity.infants;
 
@@ -62,12 +75,15 @@ export default function TicketForm() {
       toast.error('Total passengers cannot be less than 1 or exceed 9.');
       return;
     }
-    dispatch(updateField({ field: 'quantity', value: updatedQuantity }));
-  };
+
+    setQuantity(updatedQuantity);
+  }
 
   const handleFormSubmit = e => {
     e.preventDefault();
     localStorage.setItem('routes', JSON.stringify({ from, to }));
+    localStorage.setItem('departureDate', departureDate);
+    localStorage.setItem('returnDate', returnDate);
     if (isFormValid()) {
       trackFlightSearch({
         type,
@@ -83,18 +99,20 @@ export default function TicketForm() {
 
   return (
     <form
-      className="m-0 py-7 px-4 md:p-6 rounded-2xl bg-white shadow-xl"
+      className="m-0 py-7 px-4 md:p-6 rounded-2xl shadow-lg bg-white"
       onSubmit={handleFormSubmit}
     >
       <div className="flex gap-2.5">
         {['One Way', 'Return'].map(tripType => (
           <div
-            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer font-outfit font-light"
+            className="text-[14.5px] w-fit flex items-center mb-5 cursor-pointer font-light"
             key={tripType}
             onClick={() => handleFieldChange('type', tripType)}
           >
             <FaCircle
-              className={`mr-2 p-0.75 text-xl rounded-full border-2 border-solid border-black ${type === tripType ? 'text-black' : 'text-transparent'}`}
+              className={`mr-2 p-0.75 text-lg rounded-full border border-solid border-black ${
+                type === tripType ? 'text-black' : 'text-transparent'
+              }`}
             />
             {tripType}
           </div>
@@ -102,58 +120,49 @@ export default function TicketForm() {
       </div>
 
       <div className="block md:flex gap-3 md:gap-3.5">
-        <div className="w-full md:w-[50%] flex flex-col mb-3 md:mb-3">
-          <Label htmlFor="from" required>
-            From
-          </Label>
+        <div className="w-full md:w-[50%] flex flex-col gap-1 mb-3 md:mb-3">
+          <Label htmlFor="from">From</Label>
           <SelectAirport
-            value={from ? from : ''}
+            value={from || ''}
             onChange={airport => handleFieldChange('from', airport)}
             icon={<PlaneTakeoff size={20} />}
           />
-          {errorMessages?.from && <Error>{errorMessages.from}</Error>}
         </div>
-        <div className="w-full md:w-[50%] flex flex-col mb-3 md:mb-3">
-          <Label htmlFor="to" required>
-            To
-          </Label>
+        <div className="w-full md:w-[50%] flex flex-col gap-1 mb-3 md:mb-3">
+          <Label htmlFor="to">To</Label>
           <SelectAirport
-            value={to ? to : ''}
+            value={to || ''}
             onChange={airport => handleFieldChange('to', airport)}
             icon={<PlaneLandingIcon size={20} />}
           />
-          {errorMessages?.to && <Error>{errorMessages.to}</Error>}
         </div>
       </div>
 
       <div className="flex gap-3 md:gap-3.5">
         <div
-          className={`w-full flex flex-col mb-3 md:mb-3 ${type === 'Return' ? 'md:w-[50%]' : 'md:w-full'}`}
+          className={`w-full flex flex-col gap-1 mb-3 md:mb-3 ${
+            type === 'Return' ? 'md:w-[50%]' : 'md:w-full'
+          }`}
         >
-          <Label htmlFor="departureDate" required>
-            Departure Date
-          </Label>
+          <Label htmlFor="departureDate">Departure Date</Label>
           <SelectDate
             selectedDate={departureDate && formatDate(departureDate)}
             onDateSelect={date => handleFieldChange('departureDate', date)}
             minDate={new Date()}
             icon={<CalendarDaysIcon size={20} />}
           />
-          {errorMessages?.departureDate && <Error>{errorMessages.departureDate}</Error>}
         </div>
 
         {type === 'Return' && (
-          <div className="w-full md:w-[50%] flex flex-col mb-3 md:mb-3">
-            <Label htmlFor="returnDate" required>
-              Return Date
-            </Label>
+          <div className="w-full md:w-[50%] flex flex-col gap-1 mb-3 md:mb-3">
+            <Label htmlFor="returnDate">Return Date</Label>
             <SelectDate
               selectedDate={returnDate && formatDate(returnDate)}
               onDateSelect={date => handleFieldChange('returnDate', date)}
               minDate={new Date(departureDate)}
               icon={<CalendarDaysIcon size={20} />}
             />
-            {errorMessages?.returnDate && <Error>{errorMessages.returnDate}</Error>}
+
           </div>
         )}
       </div>

@@ -1,4 +1,4 @@
-export default function Skeleton() {
+export default function FlightSkeleton() {
   return (
     <div className="w-full p-5 bg-white rounded-[10px] shadow-[0_0_10px_2px_rgba(240,240,240,1)] flex flex-col gap-2.5 mb-5">
       <div className="flex items-center gap-2.5">

@@ -6,18 +6,17 @@ import SectionTitle from '../SectionTitle';
 export default function About({
   title = 'About Us',
   text = 'We are an international travel services provider offering verifiable flight reservations and related travel documentation for travelers worldwide. Our services are used by thousands of customers each year for onward travel, immigration checks, and airline requirements. All reservations follow accepted airline formats and include a valid PNR code for verification',
-  keyword = 'dummy ticket',
 }) {
   return (
-    <PrimarySection className="pt-15 lg:pt-25" id="about">
+    <PrimarySection className="pb-15 lg:pb-25" id="about">
       <Container className="flex flex-col lg:grid lg:grid-cols-[7fr_5fr] lg:items-center gap-5">
         <div className="w-full">
           <SectionTitle className="mb-6 lg:mb-6">{title}</SectionTitle>
-          <p className="text-[16px] text-gray-900/70 font-light leading-6.5">{text}</p>
+          <p className="text-[16px] text-gray-900/70 font-extralight leading-6.5">{text}</p>
           <IconWithText
             icon={<MdOutlineAirplaneTicket />}
-            title={`${keyword}s`}
-            description={`Our ${keyword} include a valid PNR code that can be verified directly on airline websites. These reservations are commonly used for onward travel and airline or immigration checks, without purchasing a full airfare.`}
+            title="Flight Reservations"
+            description="Our dummy ticket include a valid PNR code that can be verified directly on airline websites. These reservations are commonly used for onward travel and airline or immigration checks, without purchasing a full airfare."
           />
           <IconWithText
             icon={<MdOutlineHotel />}
@@ -74,9 +73,9 @@ const IconWithText = ({ icon, title, description }) => (
     <div className="w-[40px] h-[40px] text-xl rounded-full bg-primary-500 text-white flex items-center justify-center">
       {icon}
     </div>
-    <p className="text-[16px] text-gray-900/70 leading-6.5">
-      <span className="capitalize font-medium">{title}: </span>
-      <span className="normal-case font-light">{description}</span>
+    <p className="text-[16px] text-gray-900/70 font-extralight leading-6.5">
+      <span className="font-light text-gray-900/90">{title}: </span>
+      {description}
     </p>
   </div>
 );

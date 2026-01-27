@@ -17,7 +17,7 @@ export default function Contact({
               {title}
             </SectionTitle>
             <p className="text-lg lg:text-lg font-nunito font-light">{text}</p>
-            <PrimaryLink size="small" href="mailto:info@dummyticket365.com" className="mt-5">
+            <PrimaryLink size="small" href="mailto:info@mydummyticket.ae" className="mt-5">
               Send Us An Email
             </PrimaryLink>
           </div>

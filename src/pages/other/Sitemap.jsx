@@ -12,8 +12,8 @@ const pages = [
     href: '/flight-reservation',
   },
   {
-    name: 'Dummy Ticket',
-    href: '/dummy-ticket',
+    name: 'Dummy Ticket For Schengen Visa',
+    href: '/dummy-ticket-schengen-visa',
   },
   {
     name: 'Onward Ticket',
@@ -22,6 +22,10 @@ const pages = [
   {
     name: 'Frequently Asked Questions',
     href: '/faq',
+  },
+  {
+    name: 'Blog',
+    href: '/blog',
   },
   {
     name: 'Terms and Conditions',

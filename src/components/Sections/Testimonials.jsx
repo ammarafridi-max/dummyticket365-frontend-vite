@@ -9,7 +9,7 @@ export default function Testimonials({
   testimonials,
 }) {
   return (
-    <PrimarySection className="pt-15 md:pt-25">
+    <PrimarySection className="pt-15 md:pt-10">
       <Container>
         <SectionTitle textAlign="center" subtitle={subtitle} mb="8">
           {title}

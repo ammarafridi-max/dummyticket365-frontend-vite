@@ -1,4 +1,9 @@
-export default function PrimaryButton({ children, className, size = 'medium', ...props }) {
+export default function PrimaryButton({
+  children,
+  className,
+  size = 'medium',
+  ...props
+}) {
   let newClassName = className;
 
   if (size === 'large') {

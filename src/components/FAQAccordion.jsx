@@ -11,7 +11,7 @@ export default function FAQAccordion({ question, children }) {
         className="w-full flex items-center justify-between text-left py-3 px-2 sm:px-4 transition-all duration-200 cursor-pointer group"
       >
         <h3
-          className={`text-[16px] sm:text-[18px] font-medium font-nunito leading-snug transition-colors duration-200 ${showAnswer ? 'text-primary-600' : 'text-gray-800 group-hover:text-primary-500'}`}
+          className={`text-[16px] sm:text-[18px] font-normal leading-snug transition-colors duration-200 ${showAnswer ? 'text-primary-600' : 'text-gray-800 group-hover:text-primary-500'}`}
         >
           {question}
         </h3>

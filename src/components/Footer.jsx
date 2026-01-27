@@ -25,11 +25,13 @@ export default function Footer() {
 
         <div className="mt-6 space-y-3 text-center">
           <div className="text-[14px] text-gray-400">
-            © 2026 <span className="text-white font-medium">TRAVL Technologies</span>. All Rights
+            © 2025 <span className="text-white font-medium">TRAVL Technologies</span>. All Rights
             Reserved.
           </div>
 
           <div className="flex items-center justify-center flex-wrap gap-2 text-[14px] text-gray-400">
+            <FooterLink href="/blog">Blog</FooterLink>
+            <FaCircle className="text-[5px]" />
             <FooterLink href="/terms-and-conditions">Terms & Conditions</FooterLink>
             <FaCircle className="text-[5px]" />
             <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>

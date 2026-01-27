@@ -5,12 +5,28 @@ export const pages = [
   {
     name: 'Dummy Tickets',
     link: '/',
+    subpages: [
+      {
+        name: 'For Schengen Visa',
+        link: '/dummy-ticket-schengen-visa',
+      },
+      {
+        name: 'For US Visa',
+        link: '/dummy-ticket-us-visa',
+      },
+      {
+        name: 'Emirates Dummy Ticket',
+        link: '/emirates-dummy-ticket',
+      },
+      {
+        name: 'Etihad Dummy Ticket',
+        link: '/etihad-dummy-ticket',
+      },
+    ],
   },
-  { name: 'Process', link: '#process' },
-  { name: 'About', link: '#about' },
-  { name: 'Benefits', link: '#benefits' },
-  { name: 'FAQs', link: '#faq' },
-  { name: 'Email Us', link: 'mailto:info@dummyticket365.com' },
+  { name: 'Travel Insurance', link: '/travel-insurance' },
+  { name: 'FAQs', link: '/faq' },
+  { name: 'Email Us', link: 'mailto:info@mydummyticket.ae' },
 ];
 
 export default function Navigation() {
@@ -35,7 +51,7 @@ export default function Navigation() {
                 <a
                   href={page.link}
                   title={page.name}
-                  className="flex items-center gap-1 text-[16px] font-normal text-black/50 hover:text-black py-4 px-2 capitalize transition-colors duration-300"
+                  className="flex items-center gap-1 text-[16px] font-light text-black/50 hover:text-black py-4 px-2 capitalize transition-colors duration-300"
                 >
                   <span>{page.name}</span>
                   <span>{page.subpages ? <ChevronDown size={20} /> : ''}</span>
@@ -47,7 +63,7 @@ export default function Navigation() {
                       <a
                         key={j}
                         href={subpage.link}
-                        className="text-[15px] font-normal text-black/50 hover:text-black px-4 py-1.5 hover:bg-gray-100"
+                        className="text-[15px] font-normal text-black/50 hover:text-black px-4 py-2 hover:bg-gray-100"
                       >
                         {subpage.name}
                       </a>

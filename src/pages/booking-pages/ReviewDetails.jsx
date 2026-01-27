@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { formatDate } from '../../utils/formatDate';
 import { Helmet } from 'react-helmet-async';
+import { formatDate } from '../../utils/formatDate';
 import { trackBeginCheckout } from '../../lib/analytics';
 import { useStripePaymentURL } from '../../hooks/useStripePaymentURL';
 import { useDummyTicket } from '../../hooks/useDummyTicket';
@@ -11,18 +11,20 @@ import Loading from '../../components/Loading';
 
 function Section({ children }) {
   return (
-    <div className="w-full md:w-[50%] mb-3.75 p-5 rounded-xl shadow-md bg-white font-nunito">
-      {children}
-    </div>
+    <div className="w-full md:w-[50%] mb-3.75 p-5 rounded-xl shadow-md bg-white">{children}</div>
   );
 }
 
 function SectionTitle({ children }) {
-  return <h2 className="text-[20px] md:text-2xl mb-2.5 pb-1.25 font-bold">{children}</h2>;
+  return <h2 className="text-[20px] md:text-2xl mb-2.5 pb-1.25 font-normal">{children}</h2>;
 }
 
 function Detail({ children }) {
-  return <div className="mb-1 text-[0.9rem] md:text-[1rem] flex justify-between">{children}</div>;
+  return (
+    <div className="mb-2 text-[14px] lg:text-[16px] flex justify-between font-light">
+      {children}
+    </div>
+  );
 }
 
 export default function ReviewDetails() {
@@ -38,7 +40,7 @@ export default function ReviewDetails() {
   const handleConfirm = () => {
     if (sessionId) {
       trackBeginCheckout({
-        currency: 'USD',
+        currency: 'AED',
         value: ticketPrice * (quantity?.adults + quantity?.children),
         items: [
           {
@@ -79,6 +81,7 @@ export default function ReviewDetails() {
     <>
       <Helmet>
         <title>Review Your Information</title>
+        <meta name="robots" content="none" />
       </Helmet>
       <div className="block md:flex md:gap-4">
         <BookingDetailBox dummyTicket={dummyTicket} />
@@ -197,13 +200,13 @@ function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount }) {
     <Section>
       <SectionTitle>Order Total</SectionTitle>
       <Detail>
-        <span>Dummy Ticket Price:</span> USD {ticketPrice}
+        <span>Dummy Ticket Price:</span> AED {ticketPrice}
       </Detail>
       <Detail>
         <span>Number of Passengers (excl. infants):</span> {totalQuantity}
       </Detail>
       <Detail>
-        <span>Total:</span> USD {totalAmount}
+        <span>Total:</span> AED {totalAmount}
       </Detail>
     </Section>
   );
@@ -213,7 +216,7 @@ function ProceedButton({ handleConfirm, isLoadingStripePaymentURL, totalAmount }
   return (
     <div className="flex items-center justify-center">
       <PrimaryButton onClick={handleConfirm} disabled={isLoadingStripePaymentURL}>
-        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (USD ${totalAmount})`}
+        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (AED ${totalAmount})`}
       </PrimaryButton>
     </div>
   );

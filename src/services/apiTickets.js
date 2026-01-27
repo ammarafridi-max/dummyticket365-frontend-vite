@@ -1,14 +1,9 @@
-import { BACKEND } from '../config';
+import { apiFetch } from './apiClient';
+
+const URL = '/api/ticket';
 
 export async function getDummyTicketApi(sessionId) {
-  const res = await fetch(`${BACKEND}/api/ticket/${sessionId}`);
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message, 'An error occurred while retrieving your data');
-  }
-
-  const data = await res.json();
-  return data?.data;
+  return await apiFetch(`${URL}/${sessionId}`);
 }
 
 export async function getStripePaymentURL(ticketData) {
@@ -18,17 +13,17 @@ export async function getStripePaymentURL(ticketData) {
     throw new Error('Session ID is missing. Please restart the process.');
   }
 
-  const res = await fetch(`${BACKEND}/api/ticket/buy-ticket`, {
+  return await apiFetch(`${URL}/checkout`, {
     method: 'POST',
     body: JSON.stringify(ticketData),
     headers: { 'X-Session-ID': sessionId, 'Content-Type': 'application/json' },
   });
+}
 
-  if (!res.ok) {
-    const err = await res.json();
-    throw new Error(err.message || 'Could not get payment URL');
-  }
-
-  const data = await res.json();
-  return data?.url;
+export async function createDummyTicketApi(data){
+  return await apiFetch(URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  })
 }

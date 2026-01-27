@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { TicketProvider } from '../context/TicketContext';
 import ScrollToTop from '../components/ScrollToTop';
 
 // Layout
@@ -21,6 +22,10 @@ import PrivacyPolicy from '../pages/legal-pages/PrivacyPolicy';
 // FAQ
 import FAQ from '../pages/faq/FAQ';
 
+// Blog
+import BlogPost from '../pages/blog-pages/BlogPost';
+import Blog from '../pages/blog-pages/Blog';
+
 // Other Pages
 import Sitemap from '../pages/other/Sitemap';
 import PageNotFound from '../pages/other/PageNotFound';
@@ -28,23 +33,28 @@ import PageNotFound from '../pages/other/PageNotFound';
 export default function AppRoutes() {
   return (
     <BrowserRouter>
+    <TicketProvider>
+
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<Home />} />
-          <Route path="flight-reservation" element={<FlightReservation />} />
           <Route path="*" element={<PageNotFound />} />
+          <Route path="flight-reservation" element={<FlightReservation />} />
           <Route path="sitemap" element={<Sitemap />} />
           <Route path="faq" element={<FAQ />} />
           <Route path="payment-successful" element={<PaymentSuccess />} />
           <Route path="terms-and-conditions" element={<TermsAndConditions />} />
           <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="blog" element={<Blog />} />
+          <Route path="blog/:slug" element={<BlogPost />} />
           <Route path="booking" element={<BookingLayout />}>
             <Route path="select-flights" element={<SelectFlights />} />
             <Route path="review-details" element={<ReviewDetails />} />
           </Route>
         </Route>
       </Routes>
+    </TicketProvider>
     </BrowserRouter>
   );
 }

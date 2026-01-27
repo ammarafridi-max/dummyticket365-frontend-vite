@@ -1,66 +1,77 @@
 export const faqArray = [
   {
-    question: 'What is a dummy ticket?',
+    question: 'What is a {keyword}?',
     answer:
-      'A dummy ticket is a temporary flight reservation used mostly for visa applications as proof of onward travel. It comes with a PNR that can be verified on airline websites and reservation systems.',
+      'A {keyword} is a temporary and verifiable flight reservation that shows your planned onward or return travel. It is commonly used when airlines or immigration authorities ask for proof that you intend to leave the destination country within the allowed period.',
   },
   {
-    question: 'How can I verify the dummy ticket?',
+    question: 'What is a {keyword} used for?',
     answer:
-      "Our dummy tickets are legitimate flight reservations. They can be verified directly on the airline's website using the airline reservation code (or PNR) and your surname. It's important to note that some airlines do not display reservation information on their website.",
+      'A {keyword} is typically used as proof of onward or return travel during airline check-in or immigration screening. Travelers often use it when they are required to show travel plans without committing to a full-priced airline ticket.',
   },
   {
-    question: 'How much does a dummy ticket cost?',
+    question: 'Does a {keyword} include a verifiable PNR?',
     answer:
-      'The pricing for our dummy tickets start from USD 13 for both, one way and return dummy tickets, and can go up to USD 22 per person, depending on availability selected.',
+      'Yes, every {keyword} comes with a valid PNR (Passenger Name Record) that can usually be verified on the airline’s official website or reservation system, depending on the airline’s verification method.',
   },
   {
-    question: 'How long is your dummy ticket valid for?',
+    question: 'How can I verify my {keyword}?',
     answer:
-      "Our dummy tickets can be valid for upto 48 hours, 7 days, or 14 days, depending on the availability you've selected.",
+      'You can verify your {keyword} by entering the PNR code along with the passenger’s last name on the airline’s website. In some cases, verification may only be possible through the airline’s customer support.',
   },
   {
-    question: 'How long does it take to receive my dummy ticket?',
+    question: 'How much does a {keyword} cost?',
     answer:
-      'All of our dummy tickets are created and sent within 10 to 15 minutes of application time. Please note that we send dummy tickets during working hours only (09:00 AM - 09:00 PM). If you need it urgently, please send us an email',
+      'The cost of a {keyword} starts from USD 13 and may vary based on the itinerary type, validity duration, and availability selected at the time of booking.',
   },
   {
-    question: 'Do dummy tickets work for Schengen visas?',
+    question: 'How long is a {keyword} valid for?',
     answer:
-      "Absolutely! dummy tickets are dummy tickets that allow embassies and VFS to ensure that the traveler has planned their return from the destination they're visiting. It helps gain their confidence and improves the chances of getting your Schengen visa.",
+      'You can choose a {keyword} validity of 48 hours, 7 days, or 14 days. The validity period should match the timeframe in which you need to present proof of onward travel.',
   },
   {
-    question: 'Will my visa get rejected due to dummy tickets?',
+    question: 'How long does it take to receive my {keyword}?',
     answer:
-      'Not at all. dummy tickets are completely fine and accepted by VFS and embassies. They will improve your chances of getting your visa approved.',
+      'Most {keyword}s are generated automatically and delivered by email within 10 to 15 minutes after successful payment, making it suitable for urgent travel needs.',
   },
   {
-    question: 'I need hotel reservations too. Can you provide that?',
+    question: 'Can I use a {keyword} for airline check-in?',
     answer:
-      "Yes, we do. We specialize in all kinds of travel documentation and assistance, which means that we provide dummy tickets, hotel reservations, travel insurance, trip itinerary and all other related documents needed to get your visa approved. Please send us an email with the trip details and we'll be happy to make you a hotel reservation.",
+      'Yes, many travelers use a {keyword} during airline check-in when asked to show proof of onward or return travel. Acceptance ultimately depends on the airline’s policies.',
+  },
+  {
+    question: 'Is a {keyword} suitable for immigration checks?',
+    answer:
+      'A {keyword} is commonly used when immigration officers request proof of onward travel. However, final acceptance is always at the discretion of immigration authorities.',
+  },
+  {
+    question: 'Do I need to buy an actual flight ticket?',
+    answer:
+      'No, a {keyword} allows you to demonstrate onward travel plans without purchasing an actual airline ticket, helping you avoid unnecessary costs.',
+  },
+  {
+    question: 'Can I book a one-way or return {keyword}?',
+    answer:
+      'Yes, you can choose between one-way or return {keyword} options based on your travel route and the requirements of the airline or immigration authority.',
   },
   {
     question: 'What payment methods do you accept?',
     answer:
-      "We accept multiple payment methods. You can choose to pay on our website through Stripe's secure Checkout application or transfer money through a payment link (available on request).",
+      'We accept secure online payments through Stripe, allowing you to pay using major credit and debit cards in a safe and encrypted checkout environment.',
   },
   {
-    question: 'Is the dummy ticket suitable for all visa applications?',
+    question: 'Is there a refund or money-back guarantee?',
     answer:
-      'Yes, our dummy tickets are suitable and acceptable for all kinds of visa applications, including but not limited to Schengen, Turkey, Canada, Thailand, UAE, and UK visas.',
-  },
-  {
-    question: 'What additional services do you offer?',
-    answer:
-      'Besides dummy tickets, we also offer dummy hotel bookings, travel insurance (genuine and official), visa assistance, and airport transfer arrangement.',
-  },
-  {
-    question: 'How can I contact customer support?',
-    answer:
-      'You can contact us by sending us an email us at info@dummyticket365.com',
-  },
-  {
-    question: 'Is there a money-back guarantee?',
-    answer: 'No, we do not offer any refunds or money-back guarantee.',
+      'No, once a {keyword} has been issued and delivered, it is non-refundable, as the reservation is generated specifically for your travel details.',
   },
 ];
+
+export function formatFaqArray(arr, keyword) {
+  const newFaqs = arr.map(arr => {
+    const question = arr.question.replaceAll('{keyword}', keyword);
+    const answer = arr.answer.replaceAll('{keyword}', keyword);
+    return { question, answer };
+  });
+
+  return newFaqs;
+}
