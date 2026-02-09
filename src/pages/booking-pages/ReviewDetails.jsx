@@ -1,11 +1,11 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+import { useContext, useEffect } from 'react';
+import { useStripePaymentURL } from '../../hooks/ticket/useStripePaymentURL';
+import { useDummyTicket } from '../../hooks/ticket/useDummyTicket';
+import { toast } from 'react-hot-toast';
 import { Helmet } from 'react-helmet-async';
-import { formatDate } from '../../utils/formatDate';
+import { TicketContext } from '../../context/TicketContext';
 import { trackBeginCheckout } from '../../lib/analytics';
-import { useStripePaymentURL } from '../../hooks/useStripePaymentURL';
-import { useDummyTicket } from '../../hooks/useDummyTicket';
+import { formatDate } from '../../utils/formatDate';
 import PrimaryButton from '../../components/PrimaryButton';
 import Loading from '../../components/Loading';
 
@@ -28,19 +28,20 @@ function Detail({ children }) {
 }
 
 export default function ReviewDetails() {
-  const { type, ticketPrice, quantity } = useSelector(state => state.ticketForm);
   const sessionId = localStorage.getItem('SESSION_ID');
-  const { url, createStripePayment, isLoadingStripePaymentURL, isErrorStripePaymentURL } =
+  const { type, ticketPrice, quantity } = useContext(TicketContext);
+  const { createStripePayment, isLoadingStripePaymentURL, isErrorStripePaymentURL } =
     useStripePaymentURL();
   const { dummyTicket, isLoadingDummyTicket, isErrorDummyTicket } = useDummyTicket(sessionId);
 
   const totalQuantity = dummyTicket?.quantity?.adults + dummyTicket?.quantity?.children;
   const totalAmount = ticketPrice * totalQuantity;
 
+
   const handleConfirm = () => {
     if (sessionId) {
       trackBeginCheckout({
-        currency: 'AED',
+        currency: 'USD',
         value: ticketPrice * (quantity?.adults + quantity?.children),
         items: [
           {
@@ -59,12 +60,6 @@ export default function ReviewDetails() {
       toast.error('Could not get payment URL. Please send us an email.');
     }
   }, [isErrorStripePaymentURL]);
-
-  useEffect(() => {
-    if (url) {
-      window.location.href = url;
-    }
-  }, [url]);
 
   const groupedPassengers =
     dummyTicket?.passengers?.reduce((acc, passenger) => {
@@ -200,13 +195,13 @@ function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount }) {
     <Section>
       <SectionTitle>Order Total</SectionTitle>
       <Detail>
-        <span>Dummy Ticket Price:</span> AED {ticketPrice}
+        <span>Dummy Ticket Price:</span> USD {ticketPrice}
       </Detail>
       <Detail>
         <span>Number of Passengers (excl. infants):</span> {totalQuantity}
       </Detail>
       <Detail>
-        <span>Total:</span> AED {totalAmount}
+        <span>Total:</span> USD {totalAmount}
       </Detail>
     </Section>
   );
@@ -216,7 +211,7 @@ function ProceedButton({ handleConfirm, isLoadingStripePaymentURL, totalAmount }
   return (
     <div className="flex items-center justify-center">
       <PrimaryButton onClick={handleConfirm} disabled={isLoadingStripePaymentURL}>
-        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (AED ${totalAmount})`}
+        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (USD ${totalAmount})`}
       </PrimaryButton>
     </div>
   );

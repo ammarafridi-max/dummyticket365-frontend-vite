@@ -1,131 +1,144 @@
+import { Helmet } from 'react-helmet-async';
 import PrimarySection from '../../components/PrimarySection';
 import Container from '../../components/Container';
+import PageTitle from '../../components/PageTitle';
+import SectionTitle from '../../components/SectionTitle';
+import PageHero from '../../components/Sections/PageHero';
 
-const Title = ({ children }) => {
-  return <h2 className="font-outfit text-2xl mt-5 mb-5 ">{children}</h2>;
+const pageData = {
+  meta: {
+    title: 'Privacy Policy - Dummy Ticket 365',
+    description:
+      'Read the official Privacy Policy of Dummy Ticket 365 to understand how we collect, protect, and use your personal data.',
+    canonical: 'https://www.dummyticket365.com/privacy-policy',
+  },
+  breadcrumb: [
+    { label: 'Home', path: '/' },
+    { label: 'Privacy Policy', path: '/privacy-policy' },
+  ],
+  sections: {
+    hero: {
+      title: 'Privacy Policy',
+      subtitle:
+        'At Dummy Ticket 365, your privacy is extremely important to us. This Privacy Policy explains how we collect, use, store, and protect your personal information when you use our website (https://www.dummyticket365.com) and our services.',
+    },
+  },
 };
 
 export default function PrivacyPolicy() {
   return (
-    <PrimarySection className="py-10">
-      <Container>
-        <h1 className="text-3xl mb-5 font-outfit">Privacy Policy</h1>
+    <>
+      <Helmet>
+        <title>{pageData.meta.title}</title>
+        <link rel="canonical" href={pageData.meta.canonical} />
+        <meta name="robots" content="index, follow" />
+        <meta name="description" content={pageData.meta.description} />
+      </Helmet>
+      <PageHero
+        paths={pageData?.breadcrumb}
+        title={pageData?.sections?.hero?.title}
+        subtitle={pageData?.sections?.hero?.subtitle}
+      />
 
-        <p className="font-light text-md">
-          At Dummy Ticket 365, your privacy is of utmost importance to us. This Privacy Policy
-          outlines how we collect, use, and protect your personal information when you use our
-          website (https://www.dummyticket365.com).
-        </p>
+      <PrimarySection className="py-8">
+        <Container>
+          <SectionTitle className="mt-10">Information We Collect</SectionTitle>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Information We Collect
-        </Title>
-
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>
-              We collect personal information that you provide to us when placing an order,
-              including your name, email address, phone number, and payment details.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              We collect personal information that you provide when placing an order, including your
+              name, email address, phone number, and booking details.
             </li>
-            <li>
-              We may also collect non-personal information such as your IP address, browser type,
-              and operating system for analytics and improvement purposes.
+            <li className="pl-2">
+              Payment information is processed securely by third-party payment gateways and is not
+              stored on our servers.
             </li>
-          </ol>
-        </p>
-
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          How We Use Your Information
-        </Title>
-
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>To process your orders and deliver the services you have requested.</li>
-            <li>To communicate with you regarding your orders, updates, and support requests.</li>
-            <li>
-              To improve our website, services, and user experience through analytics and feedback.
+            <li className="pl-2">
+              We may also collect non-personal data such as IP address, browser type, and device
+              information for analytics and website improvement.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Sharing Your Information
-        </Title>
+          <SectionTitle className="mt-10">How We Use Your Information</SectionTitle>
 
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>
-              We do not sell, rent, or share your personal information with third parties except as
-              required to fulfill your order or comply with legal obligations.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">To process your order and deliver the services you requested.</li>
+            <li className="pl-2">
+              To communicate with you regarding your booking, updates, or support requests.
             </li>
-            <li>
-              Third-party services we use for payment processing or analytics are required to
-              maintain the confidentiality of your information.
+            <li className="pl-2">
+              To improve our website, services, performance, and overall user experience through
+              analytics.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Data Security
-        </Title>
+          <SectionTitle className="mt-10">Sharing Your Information</SectionTitle>
 
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              We do not sell, rent, or trade your personal information with third parties.
+            </li>
+            <li className="pl-2">
+              Information may be shared only with trusted third parties such as payment processors
+              or service providers strictly for fulfilling your order.
+            </li>
+            <li className="pl-2">
+              We may disclose information if required to do so by law or governmental authority.
+            </li>
+          </ul>
+
+          <SectionTitle className="mt-10">Data Security</SectionTitle>
+
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
               We implement appropriate security measures to protect your personal information from
-              unauthorized access, alteration, disclosure, or destruction.
+              unauthorized access, alteration, or disclosure.
             </li>
-            <li>
-              However, no method of transmission over the internet or electronic storage is
-              completely secure. We cannot guarantee absolute security.
+            <li className="pl-2">
+              However, no method of data transmission over the internet is completely secure;
+              therefore absolute security cannot be guaranteed.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Your Rights
-        </Title>
+          <SectionTitle className="mt-10">Your Rights</SectionTitle>
 
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>
-              You have the right to access, correct, or delete your personal information by
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              You have the right to access, correct, or request deletion of your personal data by
               contacting us at info@dummyticket365.com.
             </li>
-            <li>
-              You may also opt out of receiving marketing communications by following the
-              unsubscribe instructions in our emails.
+            <li className="pl-2">
+              You may opt out of marketing communications at any time by using the unsubscribe link
+              in our emails.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Changes to This Privacy Policy
-        </Title>
+          <SectionTitle className="mt-10">Changes to This Privacy Policy</SectionTitle>
 
-        <p className="font-light text-md">
-          <ol className="list-disc list-inside">
-            <li>
-              We reserve the right to update or modify this Privacy Policy at any time without prior
-              notice.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              Dummy Ticket 365 reserves the right to update or modify this Privacy Policy at any
+              time without prior notice.
             </li>
-            <li>Any changes will be effective immediately upon posting on our website.</li>
-          </ol>
-        </p>
+            <li className="pl-2">
+              Any changes become effective immediately upon posting on our website.
+            </li>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Contact Us
-        </Title>
+          <SectionTitle className="mt-10">Contact Us</SectionTitle>
 
-        <p className="font-light text-md">
-          If you have any questions or concerns about this Privacy Policy, please contact us at:
-          <br />
-          <br />
-          Email: info@dummyticket365.com
-          <br />
-          Address: Abraj Al Mamzar, Al Mamzar, Dubai, United Arab Emirates
-        </p>
-      </Container>
-    </PrimarySection>
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              If you have any questions or concerns regarding this Privacy Policy, please contact
+              us:
+            </li>
+            <li className="pl-2">Email: info@dummyticket365.com</li>
+            <li className="pl-2">
+              Address: Abraj Al Mamzar, Al Mamzar, Dubai, United Arab Emirates
+            </li>
+          </ul>
+        </Container>
+      </PrimarySection>
+    </>
   );
 }

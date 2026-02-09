@@ -81,9 +81,6 @@ export default function TicketForm() {
 
   const handleFormSubmit = e => {
     e.preventDefault();
-    localStorage.setItem('routes', JSON.stringify({ from, to }));
-    localStorage.setItem('departureDate', departureDate);
-    localStorage.setItem('returnDate', returnDate);
     if (isFormValid()) {
       trackFlightSearch({
         type,
@@ -99,7 +96,7 @@ export default function TicketForm() {
 
   return (
     <form
-      className="m-0 py-7 px-4 md:p-6 rounded-2xl shadow-lg bg-white"
+      className="m-0 py-7 px-4 md:p-6 rounded-2xl shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)] bg-white"
       onSubmit={handleFormSubmit}
     >
       <div className="flex gap-2.5">
@@ -125,7 +122,7 @@ export default function TicketForm() {
           <SelectAirport
             value={from || ''}
             onChange={airport => handleFieldChange('from', airport)}
-            icon={<PlaneTakeoff size={20} />}
+            icon={<PlaneTakeoff size={19} className="text-gray-500" />}
           />
         </div>
         <div className="w-full md:w-[50%] flex flex-col gap-1 mb-3 md:mb-3">
@@ -133,7 +130,7 @@ export default function TicketForm() {
           <SelectAirport
             value={to || ''}
             onChange={airport => handleFieldChange('to', airport)}
-            icon={<PlaneLandingIcon size={20} />}
+            icon={<PlaneLandingIcon size={19} className="text-gray-500" />}
           />
         </div>
       </div>
@@ -149,7 +146,7 @@ export default function TicketForm() {
             selectedDate={departureDate && formatDate(departureDate)}
             onDateSelect={date => handleFieldChange('departureDate', date)}
             minDate={new Date()}
-            icon={<CalendarDaysIcon size={20} />}
+            icon={<CalendarDaysIcon size={19} className="text-gray-500" />}
           />
         </div>
 
@@ -160,9 +157,8 @@ export default function TicketForm() {
               selectedDate={returnDate && formatDate(returnDate)}
               onDateSelect={date => handleFieldChange('returnDate', date)}
               minDate={new Date(departureDate)}
-              icon={<CalendarDaysIcon size={20} />}
+              icon={<CalendarDaysIcon size={19} className="text-gray-500" />}
             />
-
           </div>
         )}
       </div>

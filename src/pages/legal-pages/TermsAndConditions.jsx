@@ -1,185 +1,189 @@
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import PrimarySection from '../../components/PrimarySection';
 import Container from '../../components/Container';
+import SectionTitle from '../../components/SectionTitle';
+import PageHero from '../../components/Sections/PageHero';
 
-const Title = ({ children }) => {
-  return <h2 className="font-outfit text-2xl mt-5 mb-5 ">{children}</h2>;
+const pageData = {
+  meta: {
+    title: 'Terms & Conditions - Dummy Ticket 365',
+    description:
+      'Read the official Terms & Conditions of Dummy Ticket 365 to understand service usage, refunds, legal responsibility, and policies.',
+    canonical: 'https://www.dummyticket365.com/terms-and-conditions',
+  },
+  breadcrumb: [
+    { label: 'Home', path: '/' },
+    { label: 'Terms & Conditions', path: '/terms-and-conditions' },
+  ],
+  sections: {
+    hero: {
+      title: 'Terms & Conditions',
+      subtitle:
+        'Welcome to Dummy Ticket 365. By using our website (https://www.dummyticket365.com) or purchasing any service from us, you agree to comply with the Terms & Conditions below. Please read them carefully before proceeding.',
+    },
+  },
 };
 
 export default function TermsAndConditions() {
   return (
-    <PrimarySection className="py-10">
-      <Container>
-        <h1 className="text-3xl mb-5 font-outfit">Terms And Conditions</h1>
+    <>
+      <Helmet>
+        <title>{pageData.meta.title}</title>
+        <link rel="canonical" href={pageData.meta.canonical} />
+        <meta name="robots" content="index, follow" />
+        <meta name="description" content={pageData.meta.description} />
+      </Helmet>
+      <PageHero
+        paths={pageData?.breadcrumb}
+        title={pageData?.sections?.hero?.title}
+        subtitle={pageData?.sections?.hero?.subtitle}
+      />
 
-        <p className="font-extralight text-md">
-          Welcome to Dummy Ticket 365! By using our website (https://www.dummyticket365.com), you
-          agree to comply with and be bound by the following terms and conditions. Please read them
-          carefully before using our services.
-        </p>
+      <PrimarySection className="py-12.5">
+        <Container>
+          <SectionTitle className="mt-10">General Information</SectionTitle>
 
-        <Title>General Information</Title>
-
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li className="list-item">
-              Dummy Ticket 365 provides travel-related services, including the provision of dummy
-              tickets for visa applications and travel planning purposes.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              Dummy Ticket 365 provides travel-related services including dummy flight tickets,
+              travel itineraries, and supporting travel documentation for visa applications and
+              travel planning purposes.
             </li>
-            <li>
-              Our services are intended for legitimate use only. Misuse of our services for
-              fraudulent activities is strictly prohibited and may result in legal action.
+            <li className="pl-2">
+              Our services are intended for legitimate use only. Misuse for fraudulent or illegal
+              purposes is strictly prohibited and may result in legal action.
             </li>
-          </ol>
-        </p>
+            <li className="pl-2">
+              These Terms & Conditions apply to all visitors, users, and customers of My Dummy
+              Ticket.
+            </li>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Use Of Services
-        </Title>
+          <SectionTitle className="mt-10">Use of Services</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              By accessing or using our website, you warrant that you are at least 18 years old or
-              have obtained parental consent to use the site.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              By using our website, you confirm that you are at least 18 years old or have
+              parental/guardian consent.
             </li>
-            <li>
-              You agree to use our services only for lawful purposes and in accordance with these
-              Terms and Conditions.
+            <li className="pl-2">
+              You agree to use our services only for lawful and legitimate purposes.
             </li>
-            <li>
-              You acknowledge that the dummy tickets provided are not actual tickets and cannot be
-              used for boarding or any other purpose beyond their intended use.
+            <li className="pl-2">
+              You acknowledge that dummy tickets are not real flight tickets and cannot be used for
+              boarding or actual air travel.
             </li>
-          </ol>
-        </p>
+            <li className="pl-2">
+              Dummy Ticket 365 reserves the right to refuse service to users engaging in fraudulent,
+              abusive, or illegal activities.
+            </li>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Payments and Refunds
-        </Title>
+          <SectionTitle className="mt-10">Payments & Refund Policy</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              All payments for services must be made via the payment methods available on our
-              website.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              All payments must be made through the secure payment options provided on our website.
             </li>
-            <li>
-              Payments are non-refundable except in cases of system errors where the service was not
-              delivered as described.
+            <li className="pl-2">
+              All payments are non-refundable except in cases of system failure or when the service
+              is not delivered as described.
             </li>
-            <li>
-              If you encounter any issues with your order, you must contact us within 24 hours of
-              purchase.
+            <li className="pl-2">
+              If you experience any issue, you must contact us within 24 hours of purchase for
+              review.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          User Responsibilities
-        </Title>
+          <SectionTitle className="mt-10">User Responsibilities</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
               You are responsible for providing accurate and complete information when placing an
               order.
             </li>
-            <li>
-              Dummy Ticket 365 is not responsible for any consequences arising from incorrect or
-              incomplete information provided by you.
+            <li className="pl-2">
+              Dummy Ticket 365 is not responsible for consequences arising from incorrect or
+              incomplete user information.
             </li>
-            <li>
-              You agree not to misuse our services, including but not limited to using our dummy
-              tickets for illegal purposes.
+            <li className="pl-2">
+              You agree not to misuse dummy tickets for illegal or fraudulent purposes under any
+              circumstances.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Intellectual Property
-        </Title>
+          <SectionTitle className="mt-10">Intellectual Property</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              All content on the Dummy Ticket 365 website, including text, graphics, logos, and
-              software, is the property of Dummy Ticket 365 and protected by copyright laws.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              All content on Dummy Ticket 365 — including text, graphics, logos, and software — is
+              owned by Dummy Ticket 365 and protected by copyright law.
             </li>
-            <li>
-              You may not copy, distribute, modify, or create derivative works from our website
-              content without prior written consent.
+            <li className="pl-2">
+              You may not copy, reproduce, distribute, or create derivative works without written
+              permission.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Disclaimer of Liability
-        </Title>
+          <SectionTitle className="mt-10">Disclaimer of Liability</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              Dummy Ticket 365 does not guarantee visa approval or any specific outcomes from the
-              use of our services.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              Dummy Ticket 365 does not guarantee visa approval or any outcome related to visa
+              applications.
             </li>
-            <li>
-              We are not liable for any direct, indirect, incidental, or consequential damages
-              arising from your use of our services.
+            <li className="pl-2">
+              We are not liable for direct, indirect, incidental, or consequential damages resulting
+              from service use.
             </li>
-            <li>
-              It is your responsibility to ensure that the dummy ticket meets the requirements of
-              the relevant authorities or agencies.
+            <li className="pl-2">
+              It is your responsibility to ensure our documents meet the requirements of relevant
+              authorities.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Privacy Policy
-        </Title>
+          <SectionTitle className="mt-10">Privacy Policy</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              Your privacy is important to us. Please refer to our Privacy Policy for details on how
-              we collect, use, and protect your personal information.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              Your privacy is important to us. We only collect necessary information to process your
+              order and deliver services.
             </li>
-          </ol>
-        </p>
+            <li className="pl-2">
+              Full details are available in our
+              <Link to="/privacy-policy" className="text-primary-500">
+                {' '}
+                Privacy Policy
+              </Link>
+              .
+            </li>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Amendments to Terms
-        </Title>
+          <SectionTitle className="mt-10">Amendments</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              We reserve the right to update or modify these Terms and Conditions at any time
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              Dummy Ticket 365 reserves the right to update or modify these Terms & Conditions
               without prior notice.
             </li>
-            <li>
-              Continued use of the website following any changes indicates your acceptance of the
-              new Terms and Conditions.
+            <li className="pl-2">
+              Continued use of the website indicates acceptance of updated Terms.
             </li>
-          </ol>
-        </p>
+          </ul>
 
-        <Title fontSize="small" mt="50px" mb="20px" fontWeight="400">
-          Governing Law
-        </Title>
+          <SectionTitle className="mt-10">Governing Law</SectionTitle>
 
-        <p className="font-extralight text-md">
-          <ol className="list-inside list-disc">
-            <li>
-              These Terms and Conditions are governed by and construed in accordance with the laws
-              of the United Arab Emirates.
+          <ul className="text-md font-extralight flex flex-col gap-3 list-decimal pl-5">
+            <li className="pl-2">
+              These Terms & Conditions are governed by the laws of the United Arab Emirates.
             </li>
-            <li>
-              Any disputes arising under these Terms and Conditions shall be subject to the
-              exclusive jurisdiction of the courts of the UAE.
+            <li className="pl-2">
+              All disputes fall under the exclusive jurisdiction of UAE courts.
             </li>
-          </ol>
-        </p>
-      </Container>
-    </PrimarySection>
+          </ul>
+        </Container>
+      </PrimarySection>
+    </>
   );
 }

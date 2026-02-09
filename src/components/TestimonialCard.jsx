@@ -12,8 +12,8 @@ export default function TestimonialCard({ title, name, src, children, purpose })
       <div className="flex items-center gap-3">
         <img
           src={src}
-          alt={`Testimonial by ${name} about MDT`}
-          title={`Testimonial by ${name} about MDT`}
+          alt={`Testimonial by ${name} about DT365`}
+          title={`Testimonial by ${name} about DT365`}
           className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm"
         />
         <div>
@@ -23,7 +23,7 @@ export default function TestimonialCard({ title, name, src, children, purpose })
       </div>
 
       {/* Accent Line */}
-      <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-primary-500 to-orange-400 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* <div className="absolute bottom-0 left-0 w-full h-[4px] bg-gradient-to-r from-primary-500 to-orange-400 rounded-b-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> */}
     </div>
   );
 }

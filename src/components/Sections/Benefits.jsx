@@ -13,7 +13,7 @@ export default function Benefits({
         <SectionTitle textAlign="center" subtitle={subtitle} mb="7">
           {title}
         </SectionTitle>
-        <div className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-10">
+        <div className="flex flex-col gap-8 md:grid md:grid-cols-3 md:gap-12">
           {benefits.map((item, i) => (
             <div className="w-full md:mb-0 font-outfit" key={i}>
               <div className="w-10 h-10 flex items-center justify-center bg-white text-primary-500 border border-primary-500 text-md font-medium font-outfit rounded-full">

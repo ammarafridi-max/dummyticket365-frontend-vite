@@ -12,21 +12,23 @@ export default function About({
       <Container className="flex flex-col lg:grid lg:grid-cols-[7fr_5fr] lg:items-center gap-5">
         <div className="w-full">
           <SectionTitle className="mb-6 lg:mb-6">{title}</SectionTitle>
-          <p className="text-[16px] text-gray-900/70 font-extralight leading-6.5">{text}</p>
+          <p className="text-[16px] text-gray-900/70 font-light leading-6.5">{text}</p>
           <IconWithText
             icon={<MdOutlineAirplaneTicket />}
             title="Flight Reservations"
-            description="Our dummy ticket include a valid PNR code that can be verified directly on airline websites. These reservations are commonly used for onward travel and airline or immigration checks, without purchasing a full airfare."
+            description="Our dummy flight reservations include a verifiable PNR that can be checked on official airline websites. They are commonly used for visa applications, onward travel, airline check-ins, and immigration verification without buying a full ticket."
           />
+
           <IconWithText
             icon={<MdOutlineHotel />}
             title="Hotel Reservations"
-            description="We provide hotel reservations on request using accepted reservation formats. These documents are suitable for travel planning and verification purposes where proof of accommodation is required."
+            description="We provide hotel reservation documents on request using internationally accepted booking formats. These are suitable for visa applications, travel planning, and accommodation verification when proof of stay is required."
           />
+
           <IconWithText
             icon={<MdOutlineHealthAndSafety />}
             title="Travel Insurance"
-            description="We offer genuine travel insurance policies that cover medical emergencies, trip cancellations, and travel delays. Unlike reservations, these are real insurance documents issued by authorized providers."
+            description="We offer genuine travel insurance policies covering medical emergencies, trip cancellations, and travel delays. These are real insurance documents issued by authorized providers and meet standard visa and travel requirements."
           />
         </div>
         <Gallery />
@@ -73,8 +75,8 @@ const IconWithText = ({ icon, title, description }) => (
     <div className="w-[40px] h-[40px] text-xl rounded-full bg-primary-500 text-white flex items-center justify-center">
       {icon}
     </div>
-    <p className="text-[16px] text-gray-900/70 font-extralight leading-6.5">
-      <span className="font-light text-gray-900/90">{title}: </span>
+    <p className="text-[16px] text-gray-900/70 font-light leading-6.5">
+      <span className="font-normal text-gray-900/90">{title}: </span>
       {description}
     </p>
   </div>

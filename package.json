@@ -10,20 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fontsource-variable/nunito": "^5.2.5",
-    "@fontsource/merriweather": "^5.2.7",
-    "@fontsource/outfit": "^5.2.8",
+    "@fontsource-variable/outfit": "^5.2.8",
+    "@fontsource/outfit": "^5.2.6",
     "@reduxjs/toolkit": "^2.8.2",
-    "@tailwindcss/vite": "^4.1.11",
-    "@tanstack/react-query": "5.89",
+    "@tailwindcss/vite": "^4.1.12",
+    "@tanstack/react-query": "^5.89.0",
     "@tanstack/react-query-devtools": "^5.89.0",
     "axios": "^1.9.0",
     "date-fns": "^4.1.0",
     "email-validator": "^2.0.4",
     "framer-motion": "^12.23.24",
     "lucide-react": "^0.511.0",
-    "nodemailer": "^7.0.5",
-    "prettier": "^3.5.3",
+    "page-progressbar-react": "^1.0.6",
+    "prettier": "^3.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-ga4": "^2.1.0",
@@ -33,9 +32,11 @@
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.0",
     "react-spinners": "^0.17.0",
-    "react-toastify": "^11.0.5",
     "styled-components": "^6.1.18",
-    "tailwindcss": "^4.1.11"
+    "swiper": "^12.0.3",
+    "tailwindcss": "^4.1.12",
+    "uuid": "^13.0.0",
+    "vite-plugin-compression": "^0.5.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
@@ -46,7 +47,6 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^16.0.0",
-    "react-email": "4.2.1",
     "vite": "^6.3.5"
   }
 }
