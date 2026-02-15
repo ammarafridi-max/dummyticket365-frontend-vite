@@ -40,6 +40,7 @@ export default function FlightForm() {
     deliveryDate,
     departureFlight,
     returnFlight,
+    affiliateAttribution,
     setEmail,
     setPhoneNumber,
     setReceiveNow,
@@ -54,7 +55,7 @@ export default function FlightForm() {
     if (quantity && passengers.length === 0) {
       initializePassengers(quantity);
     }
-  }, [quantity, passengers]);
+  }, [initializePassengers, quantity, passengers]);
 
   useEffect(() => {
     function validateForm() {
@@ -112,6 +113,7 @@ export default function FlightForm() {
       ticketValidity,
       ticketDelivery: { immediate: receiveNow, deliveryDate: receiveNow ? null : deliveryDate },
       flightDetails: { departureFlight, returnFlight: type === 'One Way' ? null : returnFlight },
+      affiliateId: affiliateAttribution?.affiliateId || null,
     });
   }
 
@@ -207,9 +209,9 @@ function ContactDetails({ email, setEmail, phoneNumber, setPhoneNumber }) {
 
 function TicketValidityOptions({ ticketValidity, updatePricing }) {
   const options = [
-    { value: '2 Days', label: '2 Days', price: 49 },
-    { value: '7 Days', label: '7 Days', price: 69 },
-    { value: '14 Days', label: '14 Days', price: 79 },
+    { value: '2 Days', label: '2 Days', price: 13 },
+    { value: '7 Days', label: '7 Days', price: 20 },
+    { value: '14 Days', label: '14 Days', price: 23 },
   ];
 
   const handleChange = option => {

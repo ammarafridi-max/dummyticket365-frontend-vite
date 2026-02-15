@@ -14,6 +14,10 @@ export default function TestimonialCard({ title, name, src, children, purpose })
           src={src}
           alt={`Testimonial by ${name} about DT365`}
           title={`Testimonial by ${name} about DT365`}
+          loading="lazy"
+          decoding="async"
+          width="48"
+          height="48"
           className="w-12 h-12 rounded-full object-cover border border-gray-200 shadow-sm"
         />
         <div>

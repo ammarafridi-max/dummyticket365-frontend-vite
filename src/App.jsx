@@ -1,4 +1,4 @@
-import "@fontsource-variable/outfit";
+import '@fontsource-variable/outfit';
 import { useEffect } from 'react';
 import { initializeGA } from './lib/analytics';
 import { HelmetProvider } from 'react-helmet-async';
@@ -16,7 +16,15 @@ const queryClient = new QueryClient({
 
 function App() {
   useEffect(() => {
-    initializeGA();
+    const init = () => initializeGA();
+
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const idleId = window.requestIdleCallback(init);
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(init, 1200);
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   return (

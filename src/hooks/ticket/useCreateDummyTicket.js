@@ -22,6 +22,7 @@ export function useCreateDummyTicket() {
       ticketValidity,
       ticketDelivery,
       flightDetails,
+      affiliateId,
       paymentStatus = 'UNPAID',
     }) =>
       createDummyTicketApi({
@@ -38,6 +39,7 @@ export function useCreateDummyTicket() {
         ticketValidity,
         ticketDelivery,
         flightDetails,
+        affiliateId,
         paymentStatus,
       }),
 

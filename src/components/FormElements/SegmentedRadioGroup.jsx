@@ -34,7 +34,7 @@ function SegmentedRadioGroup({ name, value, options, onChange, textAlign = 'left
                 {option.price !== undefined && (
                   <>
                     <span> - </span>
-                    <span className={`text-sm`}>AED {option.price} / person</span>
+                    <span className={`text-sm`}>USD {option.price} / person</span>
                   </>
                 )}
               </div>

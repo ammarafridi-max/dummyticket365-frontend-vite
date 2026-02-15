@@ -52,7 +52,7 @@ a {
 }
 
 .blog_post h2 {
-  font-size: 28px;
+  font-size: 30px;
 }
 
 .blog_post h3 {
@@ -70,7 +70,7 @@ a {
 .blog_post h2,
 .blog_post h3,
 .blog_post a {
-  font-weight: 400;
+  font-weight: 500;
 }
 
 .blog_post a {
@@ -81,7 +81,7 @@ a {
 .blog_post p,
 .blog_post li {
   font-size: 18px;
-  font-weight: 200;
+  font-weight: 300;
   line-height: 32px;
 }
 
