@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { useCreateDummyTicket } from '../hooks/ticket/useCreateDummyTicket';
+import { useCreateDummyTicket } from '../hooks/dummy-tickets/useCreateDummyTicket';
 import { formatDate } from '../utils/formatDate';
 import { trackFlightFormSubmission } from '../lib/analytics';
 import { validate } from 'email-validator';
@@ -13,6 +13,7 @@ import Email from './FormElements/Email';
 import PhoneNumber from './FormElements/PhoneNumber';
 import PrimaryButton from './PrimaryButton';
 import SegmentedRadioGroup from './FormElements/SegmentedRadioGroup';
+import { PRICING_OPTIONS } from '../config';
 
 const FormRow = ({ children }) => (
   <div className="block lg:grid lg:grid-cols-2 lg:gap-2.5">{children}</div>
@@ -40,7 +41,6 @@ export default function FlightForm() {
     deliveryDate,
     departureFlight,
     returnFlight,
-    affiliateAttribution,
     setEmail,
     setPhoneNumber,
     setReceiveNow,
@@ -113,7 +113,6 @@ export default function FlightForm() {
       ticketValidity,
       ticketDelivery: { immediate: receiveNow, deliveryDate: receiveNow ? null : deliveryDate },
       flightDetails: { departureFlight, returnFlight: type === 'One Way' ? null : returnFlight },
-      affiliateId: affiliateAttribution?.affiliateId || null,
     });
   }
 
@@ -208,11 +207,7 @@ function ContactDetails({ email, setEmail, phoneNumber, setPhoneNumber }) {
 }
 
 function TicketValidityOptions({ ticketValidity, updatePricing }) {
-  const options = [
-    { value: '2 Days', label: '2 Days', price: 13 },
-    { value: '7 Days', label: '7 Days', price: 20 },
-    { value: '14 Days', label: '14 Days', price: 23 },
-  ];
+  const options = PRICING_OPTIONS;
 
   const handleChange = option => {
     updatePricing({ ticketValidity: option.value, ticketPrice: option.price });

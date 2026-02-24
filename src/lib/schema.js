@@ -37,7 +37,7 @@ export const buildFAQPage = ({ canonical, title, description, faqs }) => ({
   url: canonical,
   name: title,
   description,
-  mainEntity: (faqs || []).map((faq) => ({
+  mainEntity: (faqs || []).map(faq => ({
     '@type': 'Question',
     name: faq.question,
     acceptedAnswer: {
@@ -88,7 +88,7 @@ export const buildService = ({ canonical, name, description, areaServed }) => ({
   provider: { '@id': organizationId },
 });
 
-export const buildGraph = (items) => ({
+export const buildGraph = items => ({
   '@context': 'https://schema.org',
   '@graph': items,
 });

@@ -4,7 +4,8 @@ import { initializeGA } from './lib/analytics';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
-import AppRoutes from './app/AppRoutes';
+import AppRoutes from './client/app/AppRoutes';
+import AdminAppRoutes from './admin/app/AdminAppRoutes';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -15,7 +16,12 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  const isAdminPath =
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+
   useEffect(() => {
+    if (isAdminPath) return undefined;
+
     const init = () => initializeGA();
 
     if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
@@ -25,13 +31,13 @@ function App() {
 
     const timeoutId = window.setTimeout(init, 1200);
     return () => window.clearTimeout(timeoutId);
-  }, []);
+  }, [isAdminPath]);
 
   return (
     <HelmetProvider>
       <Toaster />
       <QueryClientProvider client={queryClient}>
-        <AppRoutes />
+        {isAdminPath ? <AdminAppRoutes /> : <AppRoutes />}
       </QueryClientProvider>
     </HelmetProvider>
   );

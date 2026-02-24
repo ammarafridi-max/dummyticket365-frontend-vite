@@ -19,24 +19,32 @@ export default function BlogPosts({
           {title}
         </SectionTitle>
 
-        <div className="lg:hidden mt-8">
-          <Swiper spaceBetween={16} slidesPerView={1.1} className="overflow-visible">
-            {blogs?.map((post, i) => (
-              <SwiperSlide
-                key={i}
-                className="bg-white rounded-3xl overflow-hidden cursor-pointer duration-300 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]"
-              >
-                <BlogCard blog={post} />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+        {isLoadingBlogs ? (
+          <p className="text-center text-gray-500 mt-8">Loading posts...</p>
+        ) : isErrorBlogs ? (
+          <p className="text-center text-red-600 mt-8">Could not load posts.</p>
+        ) : (
+          <>
+            <div className="lg:hidden mt-8">
+              <Swiper spaceBetween={16} slidesPerView={1.1} className="overflow-visible">
+                {blogs?.map((post, i) => (
+                  <SwiperSlide
+                    key={i}
+                    className="bg-white rounded-3xl overflow-hidden cursor-pointer duration-300 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]"
+                  >
+                    <BlogCard blog={post} />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
 
-        <div className="hidden lg:grid lg:grid-cols-3 gap-7 mt-8">
-          {blogs?.map((post, i) => (
-            <BlogCard key={i} blog={post} />
-          ))}
-        </div>
+            <div className="hidden lg:grid lg:grid-cols-3 gap-7 mt-8">
+              {blogs?.map((post, i) => (
+                <BlogCard key={i} blog={post} />
+              ))}
+            </div>
+          </>
+        )}
       </Container>
     </PrimarySection>
   );

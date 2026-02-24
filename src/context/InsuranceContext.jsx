@@ -160,7 +160,7 @@ export function InsuranceProvider({ children }) {
       setStartDate('');
       setEndDate('');
     }
-  }, []);
+  }, [endDate, startDate]);
 
   useEffect(() => {
     const initialPassengers = PASSENGER_GROUPS.flatMap(gr =>
