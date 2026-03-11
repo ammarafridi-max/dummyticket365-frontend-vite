@@ -1,20 +1,57 @@
 import { Link } from 'react-router-dom';
+import { buildBreadcrumbList, SITE_URL } from '../lib/schema';
 
-export default function Breadcrumb({ paths = [] }) {
+export default function Breadcrumb({ paths = [], dark = false, includeSchema = true }) {
+  const normalizedPaths = paths
+    .map((item) => ({
+      label: item?.label,
+      to: item?.href || item?.path || '',
+    }))
+    .filter((item) => item.label);
+
+  const isAdminRoute =
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/admin');
+  const jsonLd =
+    includeSchema && normalizedPaths.length > 0
+      ? buildBreadcrumbList({
+          paths: normalizedPaths.map((item) => ({ label: item.label, path: item.to })),
+          baseUrl: SITE_URL,
+          basePath: isAdminRoute ? '/admin' : '',
+        })
+      : null;
+
+  const navClass = dark ? 'text-white/45' : 'text-gray-500';
+  const linkClass = dark
+    ? 'transition-colors hover:text-white/80'
+    : 'transition-colors hover:text-primary-600';
+  const currentClass = dark ? 'text-white/85' : 'text-gray-900';
+
   return (
-    <nav className="text-[14px] lg:text-base text-gray-500">
-      {paths.map((path, index) => (
-        <span key={index} className="font-light">
-          {index !== 0 && <span className="mx-2 lg:mx-3">/</span>}
-          {index === paths.length - 1 ? (
-            <span className="text-gray-900">{path.label}</span>
-          ) : (
-            <Link to={path.path} className="hover:text-primary-600 transition-colors">
-              {path.label}
-            </Link>
-          )}
-        </span>
-      ))}
-    </nav>
+    <>
+      <nav aria-label="Breadcrumb" className={`text-[14px] lg:text-sm ${navClass}`}>
+        <ol className="flex flex-wrap items-center gap-y-1">
+          {normalizedPaths.map((item, index) => (
+            <li key={`${item.label}-${index}`} className="flex items-center font-light">
+              {index > 0 && <span className="mx-2 lg:mx-3">/</span>}
+              {index === normalizedPaths.length - 1 || !item.to ? (
+                <span aria-current="page" className={currentClass}>
+                  {item.label}
+                </span>
+              ) : (
+                <Link to={item.to} className={linkClass}>
+                  {item.label}
+                </Link>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      )}
+    </>
   );
 }

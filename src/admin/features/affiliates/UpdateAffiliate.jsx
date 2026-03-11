@@ -128,7 +128,7 @@ export default function UpdateAffiliate() {
               </div>
               <button
                 type="button"
-                className="h-[40px] px-4 rounded-md border border-gray-200 text-sm text-gray-700 hover:bg-gray-50 cursor-pointer"
+                className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs md:text-sm text-gray-700 transition-colors hover:bg-gray-100 cursor-pointer"
                 onClick={() => {
                   setStatsStartDate('');
                   setStatsEndDate('');
@@ -240,7 +240,7 @@ function PageButton({ children, onClick, disabled }) {
   return (
     <button
       type="button"
-      className="bg-transparent border-0 cursor-pointer disabled:opacity-50"
+      className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs md:text-sm text-gray-700 transition-colors hover:bg-gray-100 disabled:opacity-55 disabled:cursor-not-allowed"
       onClick={onClick}
       disabled={disabled}
     >

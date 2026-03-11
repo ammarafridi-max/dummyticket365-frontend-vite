@@ -1,6 +1,7 @@
 import { ChevronDown, Mail, Plane, Rss, ShieldPlus } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import Container from './Container';
+import Currency from './Currency';
 
 export const defaultPages = [
   {
@@ -13,29 +14,21 @@ export const defaultPages = [
         link: '/dummy-ticket-schengen-visa',
       },
       {
-        name: 'Dummy Ticket For US Visa',
-        link: '/dummy-ticket-us-visa',
-      },
-      {
-        name: 'Emirates Dummy Ticket',
-        link: '/emirates-dummy-ticket',
-      },
-      {
-        name: 'Etihad Dummy Ticket',
-        link: '/etihad-dummy-ticket',
+        name: 'Dummy Ticket For UK Visa',
+        link: '/dummy-ticket-uk-visa',
       },
     ],
   },
   // { name: 'Travel Insurance', links: ['/travel-insurance'], icon: <ShieldPlus size={18} /> },
   { name: 'Blog', links: ['/blog'], icon: <Rss size={18} /> },
-  { name: 'Email Us', links: ['mailto:info@mydummyticket.ae'], icon: <Mail size={18} /> },
+  { name: 'Email Us', links: ['mailto:info@dummyticket365.com'], icon: <Mail size={18} /> },
 ];
 
 export default function Navigation({ pages = defaultPages }) {
   const { pathname } = useLocation();
 
   return (
-    <header className="bg-gray-50 hidden lg:block z-50">
+    <header className="hidden lg:block absolute top-0 left-0 right-0 z-50 bg-transparent">
       <Container>
         <nav className="flex items-center justify-between py-3 font-outfit">
           <div className="w-56 flex-shrink-0">
@@ -81,6 +74,9 @@ export default function Navigation({ pages = defaultPages }) {
                 )}
               </div>
             ))}
+            <div className="ml-2 pl-2 border-l">
+              <Currency />
+            </div>
           </div>
         </nav>
       </Container>

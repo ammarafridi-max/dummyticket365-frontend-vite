@@ -5,7 +5,7 @@ import { useAdminDownloadInsurancePolicy } from '../../../hooks/insurance/useAdm
 import { useDeleteInsuranceApplication } from '../../../hooks/insurance/useDeleteInsuranceApplication';
 import { convertToDubaiTime } from '../../../utils/dubaiDateTime';
 import { convertToDubaiDate } from '../../../utils/dubaiDateTime';
-import { format } from 'date-fns';
+import { formatDate } from '../../../utils/formatDate';
 import { capitalCase } from 'change-case';
 import { confirmAlert } from 'react-confirm-alert';
 import { MdWhatsapp } from 'react-icons/md';
@@ -35,10 +35,10 @@ export default function InsuranceApplicationDetail() {
     if (!application) return;
 
     const startDate = application?.startDate
-      ? format(new Date(application.startDate), 'dd MMM yyyy')
+      ? formatDate(application.startDate)
       : '-';
     const endDate = application?.endDate
-      ? format(new Date(application.endDate), 'dd MMM yyyy')
+      ? formatDate(application.endDate)
       : '-';
 
     const passengers = application?.passengers?.length
@@ -157,9 +157,9 @@ function Overview({ application, isAdmin }) {
     <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-3 mt-1 mb-4">
       <OverviewCard label="Payment Status">
         {application?.paymentStatus === 'PAID' ? (
-          <SuccessPill width="auto">PAID</SuccessPill>
+          <SuccessPill>PAID</SuccessPill>
         ) : (
-          <NeutralPill width="auto">{application?.paymentStatus || 'UNPAID'}</NeutralPill>
+          <NeutralPill>{application?.paymentStatus || 'UNPAID'}</NeutralPill>
         )}
       </OverviewCard>
       <OverviewCard label="Policy Number" value={application?.policyNumber || 'Pending'} />
@@ -188,7 +188,7 @@ function BasicInfo({ application, isAdmin }) {
       <Info label="Region" value={application?.region?.name} />
       <Info
         label="Travel Dates"
-        value={`${format(new Date(application?.startDate), 'dd MMM')} → ${format(new Date(application?.endDate), 'dd MMM')}`}
+        value={`${formatDate(application?.startDate)} → ${formatDate(application?.endDate)}`}
       />
       <Info label="Policy #" value={application?.policyNumber} />
       {isAdmin && (
@@ -219,9 +219,7 @@ function TripDetails({ application }) {
 function Passengers({ application }) {
   const formatDob = dob => {
     if (!dob) return '-';
-    const date = new Date(dob);
-    if (Number.isNaN(date.getTime())) return dob;
-    return format(date, 'dd MMM yyyy');
+    return formatDate(dob);
   };
 
   return (

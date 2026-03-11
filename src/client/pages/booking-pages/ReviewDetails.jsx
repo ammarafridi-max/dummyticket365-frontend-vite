@@ -8,6 +8,9 @@ import { trackBeginCheckout } from '../../../lib/analytics';
 import { formatDate } from '../../../utils/formatDate';
 import PrimaryButton from '../../../components/PrimaryButton';
 import Loading from '../../../components/Loading';
+import { useDummyTicketPricing } from '../../../hooks/pricing/useDummyTicketPricing';
+import { getTicketPriceByValidity } from '../../../utils/dummyTicketPricing';
+import { CurrencyContext } from '../../../context/CurrencyContext';
 
 function Section({ children }) {
   return (
@@ -29,28 +32,37 @@ function Detail({ children }) {
 
 export default function ReviewDetails() {
   const sessionId = localStorage.getItem('SESSION_ID');
-  const { type, ticketPrice, quantity } = useContext(TicketContext);
+  const { type } = useContext(TicketContext);
+  const { currency } = useContext(CurrencyContext);
+  const { pricing } = useDummyTicketPricing();
   const { createStripePayment, isLoadingStripePaymentURL, isErrorStripePaymentURL } =
     useStripePaymentURL();
   const { dummyTicket, isLoadingDummyTicket } = useDummyTicket(sessionId);
 
-  const totalQuantity = dummyTicket?.quantity?.adults + dummyTicket?.quantity?.children;
+  const totalQuantity = Number(dummyTicket?.quantity?.adults || 0) + Number(dummyTicket?.quantity?.children || 0);
+  const baseTicketPrice = getTicketPriceByValidity(pricing, dummyTicket?.ticketValidity);
+  const conversionRate = Number(currency?.conversionRate || 1);
+  const ticketPrice = Number((baseTicketPrice * conversionRate).toFixed(2));
   const totalAmount = ticketPrice * totalQuantity;
 
   const handleConfirm = () => {
     if (sessionId) {
       trackBeginCheckout({
-        currency: 'USD',
-        value: ticketPrice * (quantity?.adults + quantity?.children),
+        currency: currency?.code || 'USD',
+        value: ticketPrice * totalQuantity,
         items: [
           {
             item_name: `${type} flight reservation`,
             price: ticketPrice,
-            quantity: quantity?.adults + quantity?.children,
+            quantity: totalQuantity,
           },
         ],
       });
-      createStripePayment({ ...dummyTicket, totalAmount });
+      createStripePayment({
+        ...dummyTicket,
+        totalAmount,
+        currencyCode: currency?.code || 'USD',
+      });
     }
   };
 
@@ -87,12 +99,14 @@ export default function ReviewDetails() {
           totalQuantity={totalQuantity}
           totalAmount={totalAmount}
           ticketPrice={ticketPrice}
+          currencyCode={currency?.code || 'USD'}
         />
       </div>
       <ProceedButton
         handleConfirm={handleConfirm}
         isLoadingStripePaymentURL={isLoadingStripePaymentURL}
         totalAmount={totalAmount}
+        currencyCode={currency?.code || 'USD'}
       />
     </>
   );
@@ -189,28 +203,34 @@ function PassengerDetail({ groupedPassengers }) {
   );
 }
 
-function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount }) {
+function formatPrice(value) {
+  const amount = Number(value || 0);
+  if (Number.isNaN(amount)) return '0';
+  return Number.isInteger(amount) ? String(amount) : amount.toFixed(2);
+}
+
+function OrderTotalDetail({ totalQuantity, ticketPrice, totalAmount, currencyCode }) {
   return (
     <Section>
       <SectionTitle>Order Total</SectionTitle>
       <Detail>
-        <span>Dummy Ticket Price:</span> USD {ticketPrice}
+        <span>Dummy Ticket Price:</span> {currencyCode} {formatPrice(ticketPrice)}
       </Detail>
       <Detail>
         <span>Number of Passengers (excl. infants):</span> {totalQuantity}
       </Detail>
       <Detail>
-        <span>Total:</span> USD {totalAmount}
+        <span>Total:</span> {currencyCode} {formatPrice(totalAmount)}
       </Detail>
     </Section>
   );
 }
 
-function ProceedButton({ handleConfirm, isLoadingStripePaymentURL, totalAmount }) {
+function ProceedButton({ handleConfirm, isLoadingStripePaymentURL, totalAmount, currencyCode }) {
   return (
     <div className="flex items-center justify-center">
       <PrimaryButton onClick={handleConfirm} disabled={isLoadingStripePaymentURL}>
-        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (USD ${totalAmount})`}
+        {isLoadingStripePaymentURL ? 'Processing...' : `Proceed To Payment (${currencyCode} ${formatPrice(totalAmount)})`}
       </PrimaryButton>
     </div>
   );

@@ -5,7 +5,7 @@ export default function Login() {
   return (
     <>
       <Helmet>
-        <title>Login | Dummy Ticket 365 Admin</title>
+        <title>Login | My Dummy Ticket Admin</title>
       </Helmet>
       <LoginForm />
     </>

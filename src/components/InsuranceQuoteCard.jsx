@@ -25,7 +25,7 @@ export default function InsuranceQuoteCard({ quote, onClick, isSelected = false 
         <div className="flex flex-col">
           <span className="text-sm font-light text-gray-500">Total Premium</span>
           <span className="text-xl font-normal text-gray-900">
-            {quote?.currency?.toUpperCase()} {Number(quote?.premium).toFixed(0)}
+            AED {Number(quote?.premium).toFixed(0)}
           </span>
         </div>
         <button

@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef } from 'react';
-import { Edit3, Save, Send, Trash } from 'lucide-react';
+import { Calendar, Edit3, Save, Send, Trash } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useBlog } from '../../../hooks/blog/useBlog';
 import { useUpdateBlog } from '../../../hooks/blog/useUpdateBlog';
 import { usePublishBlog } from '../../../hooks/blog/usePublishBlog';
 import { useDeleteBlog } from '../../../hooks/blog/useDeleteBlog';
+import { useBlogTags } from '../../../hooks/blog-tags/useBlogTags';
 import BlogForm from './BlogForm';
 import Breadcrumb from '../../../components/Breadcrumb';
 import PageHeading from '../../../components/PageHeading';
@@ -37,6 +38,7 @@ export default function UpdateBlogPost() {
   const { updateBlog, isUpdatingBlog } = useUpdateBlog();
   const { publishBlog, isPublishingBlog } = usePublishBlog();
   const { deleteBlog, isDeletingBlog } = useDeleteBlog();
+  const { tags } = useBlogTags();
   const { isAdmin } = useAuth();
 
   const { register, handleSubmit, control, reset, watch } = useForm({
@@ -88,6 +90,27 @@ export default function UpdateBlogPost() {
 
   const handleSaveDraft = handleSubmit((data) => {
     const formData = buildFormData(data, { status: 'draft' });
+    updateBlog({ id, blogData: formData });
+  });
+
+  const handleSchedule = handleSubmit((data) => {
+    if (!data.scheduledAt) {
+      toast.error('Please select a schedule date and time');
+      return;
+    }
+
+    const scheduledAtDate = new Date(data.scheduledAt);
+    if (Number.isNaN(scheduledAtDate.getTime())) {
+      toast.error('Please provide a valid schedule date and time');
+      return;
+    }
+
+    if (scheduledAtDate <= new Date()) {
+      toast.error('Schedule date/time must be in the future');
+      return;
+    }
+
+    const formData = buildFormData(data, { status: 'scheduled' });
     updateBlog({ id, blogData: formData });
   });
 
@@ -152,6 +175,12 @@ export default function UpdateBlogPost() {
                 onClick: handleEdit,
                 disabled: isUpdatingBlog || isPublishingBlog || isDeletingBlog,
               },
+              {
+                text: 'Schedule',
+                icon: Calendar,
+                onClick: handleSchedule,
+                disabled: isUpdatingBlog || isPublishingBlog || isDeletingBlog,
+              },
               ...(blog?.status === 'published'
                 ? [
                     {
@@ -189,6 +218,7 @@ export default function UpdateBlogPost() {
         isLoading={isUpdatingBlog}
         editorRef={editorRef}
         readOnly={!isAdmin}
+        tagOptions={(tags || []).map((tag) => ({ value: tag.name, label: tag.name }))}
       />
     </>
   );

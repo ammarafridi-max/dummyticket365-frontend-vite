@@ -9,6 +9,7 @@ import PrimarySection from '../../../components/PrimarySection';
 import Container from '../../../components/Container';
 import PageTitle from '../../../components/PageTitle';
 import Loading from '../../../components/Loading';
+import { PRICING_OPTIONS } from '../../../config';
 
 export default function PaymentSuccess() {
   const [searchParams] = useSearchParams();
@@ -29,14 +30,10 @@ function Success({ sessionId, dummyTicket }) {
   const currency = dummyTicket?.amountPaid?.currency;
   const amount = dummyTicket?.amountPaid?.amount;
 
-  let price = 0;
-  if (ticketValidity === '2 Days') {
-    price = 49;
-  } else if (ticketValidity === '7 Days') {
-    price = 69;
-  } else if (ticketValidity === '14 Days') {
-    price = 79;
-  }
+  const price =
+    PRICING_OPTIONS.find((option) => option.value === ticketValidity)?.price ||
+    PRICING_OPTIONS[0]?.price ||
+    0;
 
   useEffect(() => {
     if (currency && amount && import.meta.env.MODE === 'production') {

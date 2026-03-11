@@ -1,15 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { getPublishedBlogsApi } from '../../services/apiBlog';
 
-export function useBlogs() {
+export function useBlogs({ page = 1, limit = 9 } = {}) {
   const {
-    data: blogs = [],
+    data,
     isLoading: isLoadingBlogs,
     isError: isErrorBlogs,
   } = useQuery({
-    queryKey: ['blogs', 'published'], // better cache key
-    queryFn: getPublishedBlogsApi,
+    queryKey: ['blogs', 'published', page, limit],
+    queryFn: () => getPublishedBlogsApi({ page, limit }),
   });
 
-  return { blogs, isLoadingBlogs, isErrorBlogs };
+  return {
+    blogs: data?.blogs || [],
+    pagination: data?.pagination || null,
+    isLoadingBlogs,
+    isErrorBlogs,
+  };
 }

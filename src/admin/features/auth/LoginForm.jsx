@@ -62,7 +62,7 @@ export default function LoginForm() {
         </form>
 
         <p className="text-xs text-gray-400 text-center mt-8">
-          © {new Date().getFullYear()} Dummy Ticket 365. All rights reserved.
+          © {new Date().getFullYear()} My Dummy Ticket. All rights reserved.
         </p>
       </div>
     </div>

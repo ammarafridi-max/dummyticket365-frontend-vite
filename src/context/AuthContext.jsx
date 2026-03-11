@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { getMyAccountApi } from '../services/apiAccount';
+import { getMeApi } from '../services/apiAuth';
 import { BACKEND } from '../config';
 import Loading from '../components/Loading';
 
@@ -11,7 +11,7 @@ export function AuthProvider({ children }) {
 
   async function fetchUser() {
     try {
-      const me = await getMyAccountApi();
+      const me = await getMeApi();
       setUser(me || null);
     } catch {
       setUser(null);
@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
       credentials: 'include',
     });
     setUser(null);
-    window.location.href = '/admin/login';
+    window.location.href = '/login';
   }
 
   return (

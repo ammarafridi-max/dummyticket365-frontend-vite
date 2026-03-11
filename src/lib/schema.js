@@ -1,4 +1,4 @@
-const SITE_URL = 'https://www.dummyticket365.com';
+export const SITE_URL = 'https://www.dummyticket365.com';
 const SITE_NAME = 'Dummy Ticket 365';
 const LOGO_URL = `${SITE_URL}/logo.png`;
 
@@ -86,6 +86,35 @@ export const buildService = ({ canonical, name, description, areaServed }) => ({
   url: canonical,
   areaServed,
   provider: { '@id': organizationId },
+});
+
+const toAbsoluteUrl = ({ baseUrl = SITE_URL, value = '/', basePath = '' }) => {
+  if (!value) return baseUrl;
+  if (/^https?:\/\//i.test(value)) return value;
+
+  const normalizedBasePath = basePath ? `/${String(basePath).replace(/^\/+|\/+$/g, '')}` : '';
+  const normalizedValue = value.startsWith('/') ? value : `/${value}`;
+  const needsBasePath =
+    normalizedBasePath &&
+    normalizedValue !== normalizedBasePath &&
+    !normalizedValue.startsWith(`${normalizedBasePath}/`);
+
+  return `${baseUrl}${needsBasePath ? `${normalizedBasePath}${normalizedValue}` : normalizedValue}`;
+};
+
+export const buildBreadcrumbList = ({ paths = [], baseUrl = SITE_URL, basePath = '' } = {}) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: paths.map((item, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: item.label,
+    item: toAbsoluteUrl({
+      baseUrl,
+      value: item.href || item.path || '/',
+      basePath,
+    }),
+  })),
 });
 
 export const buildGraph = items => ({

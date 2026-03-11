@@ -10,7 +10,7 @@ export default function BlogPosts({
   title = 'Blog Posts',
   subtitle = 'Recently published blog posts',
 }) {
-  const { blogs, isLoadingBlogs, isErrorBlogs } = useBlogs();
+  const { blogs, isLoadingBlogs, isErrorBlogs } = useBlogs({ limit: 3 });
 
   return (
     <PrimarySection className="py-10 md:py-12 lg:py-15">
@@ -27,9 +27,9 @@ export default function BlogPosts({
           <>
             <div className="lg:hidden mt-8">
               <Swiper spaceBetween={16} slidesPerView={1.1} className="overflow-visible">
-                {blogs?.map((post, i) => (
+                {blogs?.map((post) => (
                   <SwiperSlide
-                    key={i}
+                    key={post._id}
                     className="bg-white rounded-3xl overflow-hidden cursor-pointer duration-300 shadow-[0px_0px_10px_0px_rgba(0,0,0,0.1)]"
                   >
                     <BlogCard blog={post} />
@@ -39,8 +39,8 @@ export default function BlogPosts({
             </div>
 
             <div className="hidden lg:grid lg:grid-cols-3 gap-7 mt-8">
-              {blogs?.map((post, i) => (
-                <BlogCard key={i} blog={post} />
+              {blogs?.map((post) => (
+                <BlogCard key={post._id} blog={post} />
               ))}
             </div>
           </>

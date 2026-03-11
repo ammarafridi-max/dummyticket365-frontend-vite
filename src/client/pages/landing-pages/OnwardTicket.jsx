@@ -52,21 +52,21 @@ const benefits = [
   },
   {
     title: 'Great Value',
-    text: 'Starting from just AED 49, we offer high-quality, embassy-compliant onward tickets at an affordable price, so you save money without sacrificing reliability.',
+    text: 'Starting from just USD 49, we offer high-quality, embassy-compliant onward tickets at an affordable price, so you save money without sacrificing reliability.',
     icon: HiOutlineCurrencyDollar,
   },
 ];
 
 const pageData = {
   meta: {
-    title: 'Onward Ticket From AED 49 | Instant, Genuine, & Affordable',
+    title: 'Onward Ticket From USD 49 | Instant, Genuine, & Affordable',
     description:
       'Travelers use onward tickets for travel purposes, such as to show as proof of onward travel at airports. Book yours with us now. Starting from USD 13.',
     canonical: 'https://www.dummyticket365.com/onward-ticket',
   },
   sections: {
     hero: {
-      title: 'Book a Your Onward Ticket from AED 49.',
+      title: 'Book a Your Onward Ticket from USD 49.',
       subtitle:
         'Get onward tickets issued through official airline systems with a valid, verifiable PNR. Our flight reservations are legitimate bookings created for travel documentation purposes, not fake or falsified tickets.',
       form: <AllForms />,

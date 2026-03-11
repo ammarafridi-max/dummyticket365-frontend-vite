@@ -3,16 +3,16 @@ import { apiFetch } from './apiClient';
 
 const URL = `/api/blogs`;
 
-export async function getPublishedBlogsApi() {
-  const data = await apiFetch(`${URL}?status=published`);
-  return data.blogs;
+export async function getPublishedBlogsApi({ page = 1, limit = 9, tag, author } = {}) {
+  return await getAllBlogsApi({ page, limit, status: 'published', tag, author });
 }
 
-export async function getAllBlogsApi({ page = 1, limit = 10, status, tag, search } = {}) {
+export async function getAllBlogsApi({ page = 1, limit = 10, status, tag, search, author } = {}) {
   const params = new URLSearchParams({ page, limit });
   if (status) params.append('status', status);
   if (tag) params.append('tag', tag);
   if (search) params.append('search', search);
+  if (author) params.append('author', author);
 
   return apiFetch(`${URL}?${params.toString()}`);
 }

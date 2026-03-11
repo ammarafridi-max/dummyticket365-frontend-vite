@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 import {
   buildBlog,
   buildGraph,
@@ -17,7 +18,7 @@ const pageData = {
   meta: {
     title: 'Blog | Dummy Ticket 365',
     description:
-      'Dummy tickets are flight reservations travelers use for various purposes, including visa applications. Book yours with Dummy Ticket 365. Starting from AED 49.',
+      'Dummy tickets are flight reservations travelers use for various purposes, including visa applications. Book yours with Dummy Ticket 365. Starting from USD 49.',
     canonical: 'https://www.dummyticket365.com/blog',
   },
   breadcrumb: [
@@ -34,7 +35,9 @@ const pageData = {
 };
 
 export default function Blog() {
-  const { blogs, isLoadingBlogs } = useBlogs();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = parseInt(searchParams.get('page'), 10) || 1;
+  const { blogs, pagination, isLoadingBlogs } = useBlogs({ page: currentPage, limit: 9 });
   const schema = buildGraph([
     buildOrganization(),
     buildWebsite(),
@@ -51,6 +54,12 @@ export default function Blog() {
   ]);
 
   if (isLoadingBlogs) return <Loading />;
+
+  const handlePageChange = (page) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('page', String(page));
+    setSearchParams(next);
+  };
 
   return (
     <>
@@ -69,12 +78,55 @@ export default function Blog() {
       <PrimarySection>
         <Container>
           <div className="block items-start gap-7 lg:grid lg:grid-cols-3 lg:gap-7 py-10 lg:py-15">
-            {blogs?.map((post, i) => (
-              <BlogCard key={i} blog={post} />
+            {blogs?.map((post) => (
+              <BlogCard key={post._id} blog={post} />
             ))}
           </div>
+          <PaginationBar
+            pagination={pagination}
+            currentPage={pagination?.page || currentPage}
+            onPageChange={handlePageChange}
+          />
         </Container>
       </PrimarySection>
     </>
+  );
+}
+
+function PaginationBar({ pagination, currentPage, onPageChange }) {
+  if (!pagination || pagination.totalPages <= 1) return null;
+
+  return (
+    <div className="mt-8 flex items-center justify-between gap-4 border-t border-gray-200 pt-6">
+      <p className="text-sm text-gray-600">
+        Showing {pagination.total > 0 ? (currentPage - 1) * pagination.limit + 1 : 0} -{' '}
+        {pagination.total > 0 ? Math.min(currentPage * pagination.limit, pagination.total) : 0} of{' '}
+        {pagination.total}
+      </p>
+      <div className="flex items-center gap-3">
+        <PageButton onClick={() => onPageChange(currentPage - 1)} disabled={!pagination.hasPrevPage}>
+          Previous
+        </PageButton>
+        <span className="text-sm text-gray-600">
+          {currentPage} / {pagination.totalPages}
+        </span>
+        <PageButton onClick={() => onPageChange(currentPage + 1)} disabled={!pagination.hasNextPage}>
+          Next
+        </PageButton>
+      </div>
+    </div>
+  );
+}
+
+function PageButton({ children, onClick, disabled }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      className="rounded-lg border border-gray-300 px-3 py-1.5 text-sm text-gray-700 transition-colors hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {children}
+    </button>
   );
 }

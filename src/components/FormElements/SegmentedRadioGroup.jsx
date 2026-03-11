@@ -1,7 +1,12 @@
 import { LucideCheckCircle2 } from 'lucide-react';
-import { CURRENCY } from '../../config';
 
-function SegmentedRadioGroup({ name, value, options, onChange, textAlign = 'left' }) {
+function formatPrice(value) {
+  const amount = Number(value || 0);
+  if (Number.isNaN(amount)) return '0';
+  return Number.isInteger(amount) ? String(amount) : amount.toFixed(2);
+}
+
+function SegmentedRadioGroup({ name, value, options, onChange, textAlign = 'left', currencyCode = 'USD' }) {
   return (
     <div className="block lg:flex rounded-lg overflow-hidden border border-gray-300 divide-x divide-gray-200">
       {options.map((option, index) => {
@@ -36,7 +41,7 @@ function SegmentedRadioGroup({ name, value, options, onChange, textAlign = 'left
                   <>
                     <span> - </span>
                     <span className={`text-sm`}>
-                      {CURRENCY} {option.price} / person
+                      {currencyCode} {formatPrice(option.price)} / person
                     </span>
                   </>
                 )}

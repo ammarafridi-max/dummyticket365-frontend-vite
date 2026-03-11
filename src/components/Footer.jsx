@@ -38,7 +38,7 @@ export default function Footer() {
           <FaCircle className="text-[5px]" />
           <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
           <FaCircle className="hidden md:block text-[5px]" />
-          <FooterLink href="mailto:info@mydummyticket.ae">info@mydummyticket.ae</FooterLink>
+          <FooterLink href="mailto:info@dummyticket365.com">info@dummyticket365.com</FooterLink>
         </div>
 
         <p className="text-sm mt-4 text-gray-400">

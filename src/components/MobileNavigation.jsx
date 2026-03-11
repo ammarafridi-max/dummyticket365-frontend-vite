@@ -6,6 +6,7 @@ import { HiOutlineEnvelope, HiOutlineXMark } from 'react-icons/hi2';
 import { CgMenuRightAlt } from 'react-icons/cg';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import Container from './Container';
+import Currency from './Currency';
 
 export default function MobileNavigation() {
   const { pathname } = useLocation();
@@ -23,9 +24,10 @@ export default function MobileNavigation() {
         </a>
 
         <div className="flex items-center gap-2">
+          <Currency />
           {/* <a
             aria-label="Email us"
-            href="mailto:info@mydummyticket.ae"
+            href="mailto:info@dummyticket365.com"
             className="bg-gray-100 p-2.5 rounded-xl hover:bg-gray-200 transition-colors"
           >
             <HiOutlineEnvelope className="text-xl" />

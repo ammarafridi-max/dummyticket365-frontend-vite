@@ -9,7 +9,7 @@ const pageData = {
   meta: {
     title: 'Frequently Asked Questions',
     description:
-      'Dummy tickets are flight reservations travelers use for various purposes, including visa applications. Book yours with Dummy Ticket 365. Starting from AED 49.',
+      'Dummy tickets are flight reservations travelers use for various purposes, including visa applications. Book yours with Dummy Ticket 365. Starting from USD 49.',
     canonical: 'https://www.dummyticket365.com/faq',
   },
   breadcrumb: [

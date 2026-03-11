@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { InsuranceProvider } from '../../context/InsuranceContext';
 import { TicketProvider } from '../../context/TicketContext';
+import { CurrencyProvider } from '../../context/CurrencyContext';
 import ScrollToTop from '../../components/ScrollToTop';
 
 // Layout
@@ -31,6 +32,8 @@ const FAQ = lazy(() => import('../pages/faq/FAQ'));
 // Blog
 const BlogPost = lazy(() => import('../pages/blog-pages/BlogPost'));
 const Blog = lazy(() => import('../pages/blog-pages/Blog'));
+const BlogTags = lazy(() => import('../pages/blog-pages/BlogTags'));
+const BlogTag = lazy(() => import('../pages/blog-pages/BlogTag'));
 
 // Other Pages
 const PageNotFound = lazy(() => import('../pages/other/PageNotFound'));
@@ -43,9 +46,10 @@ export default function AppRoutes() {
   return (
     <BrowserRouter>
       <TicketProvider>
-        <InsuranceProvider>
-          <ScrollToTop />
-          <Routes>
+        <CurrencyProvider>
+          <InsuranceProvider>
+            <ScrollToTop />
+            <Routes>
             <Route path="/" element={<AppLayout />}>
               <Route index element={<Home />} />
               <Route
@@ -128,6 +132,22 @@ export default function AppRoutes() {
                   </LazyRoute>
                 }
               />
+              <Route
+                path="blog/tags"
+                element={
+                  <LazyRoute>
+                    <BlogTags />
+                  </LazyRoute>
+                }
+              />
+              <Route
+                path="blog/tag/:slug"
+                element={
+                  <LazyRoute>
+                    <BlogTag />
+                  </LazyRoute>
+                }
+              />
               <Route path="booking" element={<BookingLayout />}>
                 <Route
                   path="select-flights"
@@ -147,8 +167,9 @@ export default function AppRoutes() {
                 />
               </Route>
             </Route>
-          </Routes>
-        </InsuranceProvider>
+            </Routes>
+          </InsuranceProvider>
+        </CurrencyProvider>
       </TicketProvider>
     </BrowserRouter>
   );

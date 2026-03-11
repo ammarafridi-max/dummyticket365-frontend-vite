@@ -49,7 +49,8 @@ export default function Users() {
         ))}
       </Table>
       <button
-        className="absolute bottom-10 right-10 bg-primary-600 hover:bg-primary-700 cursor-pointer duration-300 p-4 text-white text-2xl rounded-full"
+        type="button"
+        className="absolute bottom-8 right-8 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-accent-500 bg-accent-500 text-sm text-white transition-colors hover:bg-accent-600 cursor-pointer"
         onClick={() => navigate('/users/create')}
       >
         <FaPlus />

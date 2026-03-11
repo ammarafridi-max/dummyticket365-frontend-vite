@@ -1,17 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { getAllBlogsApi } from '../../services/apiBlog';
 
-export function useAdminBlogs({ page = 1, limit = 10, status, tag, search } = {}) {
+export function useAdminBlogs({ page = 1, limit = 10, status, tag, search, author } = {}) {
   const {
     data,
     isLoading: isLoadingBlogs,
     isError: isErrorBlogs,
   } = useQuery({
-    queryKey: ['blogs', page, limit, status, tag, search],
-    queryFn: () => getAllBlogsApi({ page, limit, status, tag, search }),
+    queryKey: ['blogs', page, limit, status, tag, search, author],
+    queryFn: () => getAllBlogsApi({ page, limit, status, tag, search, author }),
   });
 
   const blogs = data?.blogs || [];
+  const pagination = data?.pagination || null;
 
-  return { blogs, isLoadingBlogs, isErrorBlogs };
+  return { blogs, pagination, isLoadingBlogs, isErrorBlogs };
 }

@@ -99,7 +99,7 @@ function FilterTemplate({ id, title, options, searchParamsName, activeFilterBox,
     <div className="relative w-fit" ref={ref}>
       <button
         type="button"
-        className="w-fit min-w-[100px] bg-white text-[14px] py-1.5 px-5 rounded-md shadow-sm cursor-pointer"
+        className="inline-flex min-w-[100px] items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs md:text-sm text-gray-700 shadow-sm transition-colors hover:bg-gray-100 cursor-pointer"
         onClick={() => setActiveFilterBox(isOpen ? '' : id)}
       >
         {boxTitle}
@@ -110,7 +110,7 @@ function FilterTemplate({ id, title, options, searchParamsName, activeFilterBox,
             <button
               type="button"
               key={option?.value}
-              className="w-full text-left text-[14px] py-2 px-4 hover:bg-primary-50 cursor-pointer duration-300"
+              className="w-full text-left text-xs md:text-sm py-1.5 px-3 hover:bg-primary-50 cursor-pointer duration-300"
               onClick={() => {
                 const newParams = new URLSearchParams(searchParams);
                 if (option?.value?.toLowerCase() === 'all') {

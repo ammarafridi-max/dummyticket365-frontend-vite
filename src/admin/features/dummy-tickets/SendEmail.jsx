@@ -18,7 +18,7 @@ const templates = [
   {
     name: 'createReservation',
     subject: 'Your Flight Reservation',
-    body: 'Hi {leadPassenger}, \n\nThank you for booking your dummy ticket with MyDummyTicket.ae. \n\nPlease find attached your flight reservation to this email. \n\nIf you need a hotel booking or travel insurance, do let us know. \n\nKindly review your booking details and let us know if you require any corrections. \n\nBest regards,\n{agent}\nwww.mydummyticket.ae',
+    body: 'Hi {leadPassenger}, \n\nThank you for booking your dummy ticket with MyDummyTicket.ae. \n\nPlease find attached your flight reservation to this email. \n\nIf you need a hotel booking or travel insurance, do let us know. \n\nKindly review your booking details and let us know if you require any corrections. \n\nBest regards,\n{agent}\nwww.dummyticket365.com',
   },
 ];
 
