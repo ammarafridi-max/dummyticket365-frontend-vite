@@ -13,14 +13,12 @@ import DangerPill from '../../../components/DangerPill';
 import { useAffiliates } from '../../../hooks/affiliates/useAffiliates';
 import { useDeleteAffiliate } from '../../../hooks/affiliates/useDeleteAffiliate';
 import { useToggleAffiliateStatus } from '../../../hooks/affiliates/useToggleAffiliateStatus';
-import { useSeedAffiliates } from '../../../hooks/affiliates/useSeedAffiliates';
 
 export default function Affiliates() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { affiliates, pagination, isLoadingAffiliates, isErrorAffiliates } = useAffiliates();
   const { deleteAffiliate, isDeletingAffiliate } = useDeleteAffiliate();
   const { toggleAffiliateStatus, isTogglingAffiliateStatus } = useToggleAffiliateStatus();
-  const { seedAffiliates, isSeedingAffiliates } = useSeedAffiliates();
 
   const currentPage = parseInt(searchParams.get('page'), 10) || 1;
   const limit = parseInt(searchParams.get('limit'), 10) || 20;
@@ -44,14 +42,14 @@ export default function Affiliates() {
     setSearchParams(next);
   };
 
-  const handlePageChange = (newPage) => {
+  const handlePageChange = newPage => {
     const next = new URLSearchParams(searchParams);
     next.set('page', String(newPage));
     next.set('limit', String(limit));
     setSearchParams(next);
   };
 
-  const handleDelete = (affiliate) => {
+  const handleDelete = affiliate => {
     confirmAlert({
       title: 'Confirm delete',
       message: `Delete affiliate ${affiliate.name}? This action cannot be undone.`,
@@ -74,25 +72,22 @@ export default function Affiliates() {
         <title>Affiliates</title>
       </Helmet>
 
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <Breadcrumb
-            paths={[
-              { label: 'Home', href: '/' },
-              { label: 'Affiliates', href: '/affiliates' },
-            ]}
-          />
-          <PageHeading className="mb-[15px]">Affiliates</PageHeading>
-        </div>
+      <Breadcrumb
+        paths={[
+          { label: 'Home', href: '/' },
+          { label: 'Affiliates', href: '/affiliates' },
+        ]}
+      />
 
-        <button
-          type="button"
-          disabled={isSeedingAffiliates}
-          className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs md:text-sm text-gray-700 transition-colors hover:bg-gray-100 disabled:opacity-55 disabled:cursor-not-allowed"
-          onClick={() => seedAffiliates()}
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <PageHeading>Affiliates</PageHeading>
+        <Link
+          className="inline-flex items-center gap-2 rounded-lg border border-accent-500 bg-accent-500 px-4 py-2 text-sm text-white transition-colors hover:bg-accent-600"
+          to="/affiliates/create"
         >
-          {isSeedingAffiliates ? 'Seeding...' : 'Seed 5 Test Affiliates'}
-        </button>
+          <FaPlus />
+          Create Affiliate
+        </Link>
       </div>
 
       <div className="flex items-center justify-between gap-3 mb-5">
@@ -101,14 +96,14 @@ export default function Affiliates() {
           placeholder="Search by name, email, affiliate ID"
           className="w-full max-w-[420px] bg-white text-[14px] py-2 px-4 rounded-md shadow-sm outline-0"
           value={search}
-          onChange={(e) => setParam('q', e.target.value)}
+          onChange={e => setParam('q', e.target.value)}
         />
 
         <div className="flex items-center gap-2">
           <select
             className="w-[180px] bg-white text-[14px] py-2 px-3 rounded-md shadow-sm outline-0"
             value={isActive}
-            onChange={(e) => setParam('isActive', e.target.value)}
+            onChange={e => setParam('isActive', e.target.value)}
           >
             <option value="all">All</option>
             <option value="true">Active</option>
@@ -117,7 +112,7 @@ export default function Affiliates() {
           <select
             className="w-[180px] bg-white text-[14px] py-2 px-3 rounded-md shadow-sm outline-0"
             value={sort}
-            onChange={(e) => setParam('sort', e.target.value)}
+            onChange={e => setParam('sort', e.target.value)}
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
@@ -141,27 +136,37 @@ export default function Affiliates() {
             <Table.Heading textAlign="center">Actions</Table.Heading>
           </Table.Head>
 
-          {affiliates.map((affiliate) => (
+          {affiliates.map(affiliate => (
             <Table.Row key={affiliate._id}>
               <Table.Item textAlign="left">{affiliate.name}</Table.Item>
               <Table.Item textAlign="center">{affiliate.affiliateId}</Table.Item>
               <Table.Item textAlign="center">{affiliate.commissionPercent}</Table.Item>
               <Table.Item textAlign="center">
-                {affiliate.isActive ? <SuccessPill>ACTIVE</SuccessPill> : <DangerPill>INACTIVE</DangerPill>}
+                {affiliate.isActive ? (
+                  <SuccessPill>ACTIVE</SuccessPill>
+                ) : (
+                  <DangerPill>INACTIVE</DangerPill>
+                )}
               </Table.Item>
               <Table.Item textAlign="center">
                 {affiliate.createdAt ? format(new Date(affiliate.createdAt), 'dd MMM yyyy') : '-'}
               </Table.Item>
               <Table.Item textAlign="center">
-                <div className="flex items-center justify-center gap-2" onClick={(e) => e.stopPropagation()}>
-                  <Link to={`/affiliates/${affiliate._id}`} className="text-xs text-blue-700 hover:underline">
+                <div
+                  className="flex items-center justify-center gap-2"
+                  onClick={e => e.stopPropagation()}
+                >
+                  <Link
+                    to={`/affiliates/${affiliate._id}`}
+                    className="text-xs text-blue-700 hover:underline"
+                  >
                     View/Edit
                   </Link>
                   <button
                     type="button"
                     className="inline-flex items-center justify-center rounded-lg border border-orange-300 bg-orange-50 px-2.5 py-1 text-xs text-orange-700 transition-colors hover:bg-orange-100 cursor-pointer"
                     disabled={isTogglingAffiliateStatus}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       toggleAffiliateStatus({ id: affiliate._id, isActive: !affiliate.isActive });
                     }}
@@ -172,7 +177,7 @@ export default function Affiliates() {
                     type="button"
                     className="inline-flex items-center justify-center rounded-lg border border-red-300 bg-red-50 px-2.5 py-1 text-xs text-red-700 transition-colors hover:bg-red-100 cursor-pointer"
                     disabled={isDeletingAffiliate}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       handleDelete(affiliate);
                     }}
@@ -190,7 +195,8 @@ export default function Affiliates() {
                 {pagination ? (
                   <p>
                     Showing {pagination.total > 0 ? (currentPage - 1) * limit + 1 : 0} -{' '}
-                    {pagination.total > 0 ? Math.min(currentPage * limit, pagination.total) : 0} of {pagination.total} results
+                    {pagination.total > 0 ? Math.min(currentPage * limit, pagination.total) : 0} of{' '}
+                    {pagination.total} results
                   </p>
                 ) : (
                   <p>Loading...</p>
@@ -198,13 +204,19 @@ export default function Affiliates() {
               </div>
 
               <div className="flex items-center gap-3">
-                <PageButton onClick={() => handlePageChange(currentPage - 1)} disabled={!pagination?.hasPrevPage}>
+                <PageButton
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={!pagination?.hasPrevPage}
+                >
                   Previous
                 </PageButton>
                 <span className="font-extralight">
                   {currentPage} / {pagination?.totalPages || 1}
                 </span>
-                <PageButton onClick={() => handlePageChange(currentPage + 1)} disabled={!pagination?.hasNextPage}>
+                <PageButton
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={!pagination?.hasNextPage}
+                >
                   Next
                 </PageButton>
               </div>
@@ -212,13 +224,6 @@ export default function Affiliates() {
           </Table.Footer>
         </Table>
       )}
-
-      <Link
-        className="absolute bottom-8 right-8 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-accent-500 bg-accent-500 text-sm text-white transition-colors hover:bg-accent-600 cursor-pointer"
-        to="/affiliates/create"
-      >
-        <FaPlus />
-      </Link>
     </>
   );
 }

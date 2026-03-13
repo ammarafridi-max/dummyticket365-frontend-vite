@@ -20,6 +20,7 @@ export default function CreateBlogPost() {
     defaultValues: {
       status: 'draft',
       scheduledAt: '',
+      faqs: [],
     },
   });
   const { isAdmin } = useAuth();
@@ -56,6 +57,7 @@ export default function CreateBlogPost() {
     formData.append('slug', data.slug || '');
     formData.append('excerpt', data.excerpt || '');
     formData.append('status', data.status || 'draft');
+    formData.append('faqs', JSON.stringify(data.faqs || []));
     if (data.status === 'scheduled') {
       formData.append('scheduledAt', data.scheduledAt || '');
     }

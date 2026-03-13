@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useUsers } from '../../../hooks/users/useUsers';
 import { FaPlus } from 'react-icons/fa6';
 import DangerPill from '../../../components/DangerPill';
@@ -12,7 +12,6 @@ import { capitalCase } from 'change-case';
 
 export default function Users() {
   const { users, isLoadingUsers } = useUsers();
-  const navigate = useNavigate();
 
   if (isLoadingUsers) return <Loading />;
 
@@ -27,7 +26,16 @@ export default function Users() {
           { label: 'Users', href: '/users' },
         ]}
       />
-      <PageHeading>Users</PageHeading>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <PageHeading>Users</PageHeading>
+        <Link
+          className="inline-flex items-center gap-2 rounded-lg border border-accent-500 bg-accent-500 px-4 py-2 text-sm text-white transition-colors hover:bg-accent-600"
+          to="/users/create"
+        >
+          <FaPlus />
+          Create User
+        </Link>
+      </div>
       <Table $columntemplate="1fr 1fr 1.5fr 1fr 0.5fr">
         <Table.Head>
           <Table.Heading textAlign="left">Name</Table.Heading>
@@ -48,13 +56,6 @@ export default function Users() {
           </Table.Row>
         ))}
       </Table>
-      <button
-        type="button"
-        className="absolute bottom-8 right-8 inline-flex h-10 w-10 items-center justify-center rounded-lg border border-accent-500 bg-accent-500 text-sm text-white transition-colors hover:bg-accent-600 cursor-pointer"
-        onClick={() => navigate('/users/create')}
-      >
-        <FaPlus />
-      </button>
     </>
   );
 }

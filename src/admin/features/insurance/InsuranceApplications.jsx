@@ -40,7 +40,7 @@ export default function InsuranceApplications() {
               { label: 'Insurance Applications', href: '/insurance' },
             ]}
           />
-          <PageHeading className="mb-[15px]">Insurance Applications</PageHeading>
+          <PageHeading>Insurance Applications</PageHeading>
         </div>
         <div></div>
       </div>
@@ -58,7 +58,7 @@ export default function InsuranceApplications() {
             <Table.Heading textAlign="center">Payment</Table.Heading>
           </Table.Head>
 
-          {applications.map((app) => (
+          {applications.map(app => (
             <Table.Row key={app?.sessionId || app?._id} href={`/insurance/${app.sessionId}`}>
               <Table.Item>{convertToDubaiDate(app.createdAt)}</Table.Item>
 

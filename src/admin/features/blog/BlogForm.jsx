@@ -1,5 +1,6 @@
 import { capitalCase } from 'change-case';
 import { format } from 'date-fns';
+import { useFieldArray } from 'react-hook-form';
 import FormRow from '../../../components/FormElements/FormRow';
 import Input from '../../../components/FormElements/Input';
 import Textarea from '../../../components/FormElements/TextArea';
@@ -24,6 +25,14 @@ export default function BlogForm({
   submitButtonLabel = 'Save',
   tagOptions = [],
 }) {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'faqs',
+  });
+  const metaDescription = watch?.('metaDescription') || '';
+  const metaDescriptionLength = metaDescription.length;
+  const isMetaDescriptionTooLong = metaDescriptionLength > 160;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-6">
       <div className="bg-white rounded-xl shadow p-8 space-y-8">
@@ -56,12 +65,20 @@ export default function BlogForm({
 
           <FormRow>
             <Label>Meta Description</Label>
-            <Textarea
-              rows={2}
-              {...register('metaDescription')}
-              readOnly={readOnly}
-              disabled={readOnly}
-            />
+            <div>
+              <Textarea
+                rows={2}
+                maxLength={160}
+                {...register('metaDescription')}
+                readOnly={readOnly}
+                disabled={readOnly}
+              />
+              <p
+                className={`mt-1 text-xs ${isMetaDescriptionTooLong ? 'text-red-600' : 'text-gray-500'}`}
+              >
+                {metaDescriptionLength} / 160 characters
+              </p>
+            </div>
           </FormRow>
         </section>
 
@@ -100,7 +117,7 @@ export default function BlogForm({
           <FormRow>
             <Label>Excerpt</Label>
             <Textarea
-              rows={3}
+              rows={2}
               {...register('excerpt')}
               placeholder="A short summary of the blog..."
               readOnly={readOnly}
@@ -138,6 +155,68 @@ export default function BlogForm({
         <section className="space-y-4">
           <h2 className="text-2xl font-normal text-gray-800 pb-2">Content</h2>
           <TinyEditor editorRef={editorRef} initialValue={blog?.content} disabled={readOnly} />
+        </section>
+
+        <section className="space-y-4">
+          <div className="flex items-center justify-between gap-3 pb-2">
+            <h2 className="text-2xl font-normal text-gray-800">FAQs</h2>
+            {!readOnly && (
+              <button
+                type="button"
+                className="inline-flex items-center rounded-lg border border-accent-500 px-4 py-2 text-sm text-accent-600 transition-colors hover:bg-accent-50"
+                onClick={() => append({ question: '', answer: '' })}
+              >
+                Add FAQ
+              </button>
+            )}
+          </div>
+
+          {fields.length === 0 ? (
+            <div className="rounded-lg border border-dashed border-gray-300 bg-gray-50 px-5 py-4 text-sm font-light text-gray-500">
+              No FAQs added yet.
+            </div>
+          ) : (
+            <div className="space-y-5">
+              {fields.map((field, index) => (
+                <div key={field.id} className="rounded-xl border border-gray-200 p-5">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <p className="text-sm font-medium text-gray-700">FAQ {index + 1}</p>
+                    {!readOnly && (
+                      <button
+                        type="button"
+                        className="text-sm text-red-600 transition-colors hover:text-red-700"
+                        onClick={() => remove(index)}
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <Label>Question</Label>
+                      <Input
+                        type="text"
+                        {...register(`faqs.${index}.question`)}
+                        readOnly={readOnly}
+                        disabled={readOnly}
+                      />
+                    </div>
+
+                    <div>
+                      <Label>Answer</Label>
+                      <Textarea
+                        rows={4}
+                        {...register(`faqs.${index}.answer`)}
+                        readOnly={readOnly}
+                        disabled={readOnly}
+                      />
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
 
         {showSubmitButton && !readOnly && (

@@ -23,18 +23,21 @@ export default function BlogTags() {
         <title>Blog Tags</title>
       </Helmet>
 
-      <Breadcrumb
-        paths={[
-          { label: 'Home', path: '/' },
-          { label: 'Blog Tags', path: '/blog-tags' },
-        ]}
-      />
-
-      <div className="mb-6 flex flex-wrap gap-4 items-center justify-between">
-        <PageHeading>Blog Tags</PageHeading>
-        <PrimaryLink to="/blog-tags/create" size="small">
-          + Create Tag
-        </PrimaryLink>
+      <div className="flex flex-wrap gap-4 items-center justify-between">
+        <div>
+          <Breadcrumb
+            paths={[
+              { label: 'Home', path: '/' },
+              { label: 'Blog Tags', path: '/blog-tags' },
+            ]}
+          />
+          <PageHeading>Blog Tags</PageHeading>
+        </div>
+        <div>
+          <PrimaryLink to="/blog-tags/create" size="small">
+            + Create Tag
+          </PrimaryLink>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-6">
@@ -46,7 +49,7 @@ export default function BlogTags() {
             <Table.Heading textAlign="center">Actions</Table.Heading>
           </Table.Head>
 
-          {(tags || []).map((tag) => (
+          {(tags || []).map(tag => (
             <Table.Row key={tag._id} href={`/blog-tags/${tag._id}`}>
               <Table.Item textAlign="left">{tag.name}</Table.Item>
               <Table.Item textAlign="left">{tag.description || '-'}</Table.Item>

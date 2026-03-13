@@ -41,7 +41,7 @@ export default function DummyTickets() {
               { label: 'Dummy Tickets', href: '/dummy-tickets' },
             ]}
           />
-          <PageHeading className="mb-[15px]">Dummy Tickets</PageHeading>
+          <PageHeading>Dummy Tickets</PageHeading>
         </div>
         <div></div>
       </div>
@@ -60,39 +60,42 @@ export default function DummyTickets() {
             <Table.Heading>Payment</Table.Heading>
             <Table.Heading>Status</Table.Heading>
           </Table.Head>
-          {dummyTickets?.map((item) => (
-              <Table.Row key={item?.sessionId || item?._id} href={`/dummy-tickets/${item?.sessionId}`}>
-                <Table.Item>{convertToDubaiDate(item?.updatedAt)}</Table.Item>
-                <Table.Item textAlign="left" textTransform="capitalize">
-                  {`${item?.leadPassenger}`.toLowerCase()}
-                  <span className="text-[12px] text-gray-400 lowercase">
-                    {item?.passengers?.length > 1 && `and ${item?.passengers?.length - 1} other(s)`}
-                  </span>
-                </Table.Item>
-                <Table.Item>
-                  {extractIataCode(item?.from)} - {extractIataCode(item?.to)}
-                </Table.Item>
-                <Table.Item>{item?.type}</Table.Item>
-                <Table.Item>
-                  {item?.ticketDelivery?.immediate
-                    ? 'Immediate'
-                    : convertToDubaiDate(item?.ticketDelivery?.deliveryDate)}
-                </Table.Item>
+          {dummyTickets?.map(item => (
+            <Table.Row
+              key={item?.sessionId || item?._id}
+              href={`/dummy-tickets/${item?.sessionId}`}
+            >
+              <Table.Item>{convertToDubaiDate(item?.updatedAt)}</Table.Item>
+              <Table.Item textAlign="left" textTransform="capitalize">
+                {`${item?.leadPassenger}`.toLowerCase()}
+                <span className="text-[12px] text-gray-400 lowercase">
+                  {item?.passengers?.length > 1 && `and ${item?.passengers?.length - 1} other(s)`}
+                </span>
+              </Table.Item>
+              <Table.Item>
+                {extractIataCode(item?.from)} - {extractIataCode(item?.to)}
+              </Table.Item>
+              <Table.Item>{item?.type}</Table.Item>
+              <Table.Item>
+                {item?.ticketDelivery?.immediate
+                  ? 'Immediate'
+                  : convertToDubaiDate(item?.ticketDelivery?.deliveryDate)}
+              </Table.Item>
 
-                <Table.Item>
-                  {item?.handledBy?.name ? item.handledBy.name.split(' ')[0] : '-'}
-                </Table.Item>
-                <Table.Item>
-                  {item?.paymentStatus === 'PAID' && <SuccessPill>PAID</SuccessPill>}
-                  {item?.paymentStatus === 'UNPAID' && <NeutralPill>UNPAID</NeutralPill>}
-                  {item?.paymentStatus === 'REFUNDED' && <DangerPill>REFUNDED</DangerPill>}
-                </Table.Item>
-                <Table.Item>
-                  {item?.orderStatus === 'PENDING' && <DangerPill>PENDING</DangerPill>}
-                  {item?.orderStatus === 'DELIVERED' && <SuccessPill>DELIVERED</SuccessPill>}
-                  {item?.orderStatus === 'PROGRESS' && <WarningPill>PROGRESS</WarningPill>}
-                </Table.Item>
-              </Table.Row>
+              <Table.Item>
+                {item?.handledBy?.name ? item.handledBy.name.split(' ')[0] : '-'}
+              </Table.Item>
+              <Table.Item>
+                {item?.paymentStatus === 'PAID' && <SuccessPill>PAID</SuccessPill>}
+                {item?.paymentStatus === 'UNPAID' && <NeutralPill>UNPAID</NeutralPill>}
+                {item?.paymentStatus === 'REFUNDED' && <DangerPill>REFUNDED</DangerPill>}
+              </Table.Item>
+              <Table.Item>
+                {item?.orderStatus === 'PENDING' && <DangerPill>PENDING</DangerPill>}
+                {item?.orderStatus === 'DELIVERED' && <SuccessPill>DELIVERED</SuccessPill>}
+                {item?.orderStatus === 'PROGRESS' && <WarningPill>PROGRESS</WarningPill>}
+              </Table.Item>
+            </Table.Row>
           ))}
           <Table.Footer>
             <div className="flex justify-between">

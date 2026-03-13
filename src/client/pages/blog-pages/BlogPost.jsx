@@ -17,6 +17,7 @@ import PrimarySection from '../../../components/PrimarySection';
 import Loading from '../../../components/Loading';
 import Container from '../../../components/Container';
 import Breadcrumb from '../../../components/Breadcrumb';
+import FAQAccordion from '../../../components/FAQAccordion';
 import {
   buildBlogPosting,
   buildGraph,
@@ -61,6 +62,7 @@ export default function BlogPost() {
     title,
     tags,
     updatedAt,
+    faqs = [],
   } = blog;
 
   const recentPosts = (blogs || [])
@@ -74,7 +76,7 @@ export default function BlogPost() {
 
   const pageData = {
     meta: {
-      title: `${metaTitle} | Blog | Dummy Ticket 365`,
+      title: metaTitle,
       description: metaDescription,
       canonical: `https://www.dummyticket365.com/blog/${blog?.slug}`,
     },
@@ -215,6 +217,19 @@ export default function BlogPost() {
               dangerouslySetInnerHTML={{ __html: pageData?.blogPost?.content }}
               className="font-outfit blog_post"
             />
+
+            {faqs.length > 0 && (
+              <section className="mt-14">
+                <h2 className="mb-6 text-2xl font-medium text-gray-900">Frequently Asked Questions</h2>
+                <div className="space-y-3">
+                  {faqs.map((faq, index) => (
+                    <FAQAccordion key={`${faq.question}-${index}`} question={faq.question}>
+                      <p>{faq.answer}</p>
+                    </FAQAccordion>
+                  ))}
+                </div>
+              </section>
+            )}
           </div>
           <div className="sticky top-24 self-start h-fit">
             <h2 className="font-normal mb-5">Recently Published Posts:</h2>

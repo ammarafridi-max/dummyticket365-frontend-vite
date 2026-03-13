@@ -52,6 +52,7 @@ export default function UpdateBlogPost() {
       scheduledAt: '',
       tags: [],
       content: '',
+      faqs: [],
     },
   });
 
@@ -66,6 +67,7 @@ export default function UpdateBlogPost() {
     formData.append('slug', data.slug || '');
     formData.append('excerpt', data.excerpt || '');
     formData.append('content', editorContent);
+    formData.append('faqs', JSON.stringify(data.faqs || []));
 
     formData.append('status', finalStatus);
     if (finalStatus === 'scheduled') {
@@ -143,6 +145,7 @@ export default function UpdateBlogPost() {
         status: blog.status || 'draft',
         scheduledAt: toDateTimeLocal(blog.scheduledAt),
         tags: blog.tags || [],
+        faqs: blog.faqs || [],
       });
     }
   }, [blog, reset]);
