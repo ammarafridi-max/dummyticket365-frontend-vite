@@ -5,26 +5,21 @@ import { useBlogTags } from '../../../hooks/blog-tags/useBlogTags';
 import { Helmet } from 'react-helmet-async';
 import { format } from 'date-fns';
 import { LuDot } from 'react-icons/lu';
+import { FaFacebookF, FaInstagram, FaLinkedinIn, FaTiktok, FaWhatsapp } from 'react-icons/fa6';
 import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaTiktok,
-  FaWhatsapp,
-} from 'react-icons/fa6';
+  buildBlogPosting,
+  buildFAQPage,
+  buildGraph,
+  buildOrganization,
+  buildWebPage,
+  buildWebsite,
+} from '../../../lib/schema';
 import PageProgressBar from 'page-progressbar-react';
 import PrimarySection from '../../../components/PrimarySection';
 import Loading from '../../../components/Loading';
 import Container from '../../../components/Container';
 import Breadcrumb from '../../../components/Breadcrumb';
 import FAQAccordion from '../../../components/FAQAccordion';
-import {
-  buildBlogPosting,
-  buildGraph,
-  buildOrganization,
-  buildWebPage,
-  buildWebsite,
-} from '../../../lib/schema';
 
 export default function BlogPost() {
   const { slug } = useParams();
@@ -59,6 +54,7 @@ export default function BlogPost() {
     metaDescription,
     metaTitle,
     publishedAt,
+    quickAnswer,
     title,
     tags,
     updatedAt,
@@ -66,7 +62,7 @@ export default function BlogPost() {
   } = blog;
 
   const recentPosts = (blogs || [])
-    .filter((item) => item?._id !== blog?._id)
+    .filter(item => item?._id !== blog?._id)
     .sort((a, b) => {
       const aDate = new Date(a?.publishedAt || a?.createdAt || 0).getTime();
       const bDate = new Date(b?.publishedAt || b?.createdAt || 0).getTime();
@@ -136,6 +132,16 @@ export default function BlogPost() {
       dateModified: pageData.blogPost.updatedAt,
       authorName: pageData.blogPost.author?.name,
     }),
+    ...(faqs.length > 0
+      ? [
+          buildFAQPage({
+            canonical: pageData.meta.canonical,
+            title: `${pageData.blogPost.title} FAQs`,
+            description: pageData.meta.description,
+            faqs,
+          }),
+        ]
+      : []),
   ]);
 
   return (
@@ -188,10 +194,13 @@ export default function BlogPost() {
                   <span className="flex items-center gap-1 flex-wrap">
                     {tags.map((tagName, index) => {
                       const tagObj = allBlogTags.find(
-                        (tag) => String(tag.name).toLowerCase() === String(tagName).toLowerCase(),
+                        tag => String(tag.name).toLowerCase() === String(tagName).toLowerCase()
                       );
                       return (
-                        <span key={`${tagName}-${index}`} className="inline-flex items-center gap-1">
+                        <span
+                          key={`${tagName}-${index}`}
+                          className="inline-flex items-center gap-1"
+                        >
                           {index > 0 && <span>,</span>}
                           {tagObj ? (
                             <Link
@@ -213,6 +222,15 @@ export default function BlogPost() {
               </div>
             </div>
 
+            {quickAnswer && (
+              <div className="mb-8 rounded-2xl border border-primary-100 bg-primary-50/60 p-5">
+                <p className="mb-2 text-sm font-medium uppercase tracking-[0.16em] text-primary-700">
+                  Quick Answer
+                </p>
+                <p className="text-[15px] leading-7 text-gray-700">{quickAnswer}</p>
+              </div>
+            )}
+
             <div
               dangerouslySetInnerHTML={{ __html: pageData?.blogPost?.content }}
               className="font-outfit blog_post"
@@ -220,7 +238,9 @@ export default function BlogPost() {
 
             {faqs.length > 0 && (
               <section className="mt-14">
-                <h2 className="mb-6 text-2xl font-medium text-gray-900">Frequently Asked Questions</h2>
+                <h2 className="mb-6 text-2xl font-medium text-gray-900">
+                  Frequently Asked Questions
+                </h2>
                 <div className="space-y-3">
                   {faqs.map((faq, index) => (
                     <FAQAccordion key={`${faq.question}-${index}`} question={faq.question}>
@@ -237,7 +257,7 @@ export default function BlogPost() {
               <p>Loading...</p>
             ) : (
               <div className="flex flex-col gap-6">
-                {recentPosts.map((b) => (
+                {recentPosts.map(b => (
                   <a
                     key={b._id}
                     href={`/blog/${b.slug}`}
@@ -246,6 +266,7 @@ export default function BlogPost() {
                     <img
                       className="w-full bg-gray-100 aspect-square rounded-md border-0 object-cover object-center"
                       src={b.coverImageUrl}
+                      alt={b.title}
                     />
                     <div>
                       <h3 className="font-light text-sm leading-5">{b.title}</h3>

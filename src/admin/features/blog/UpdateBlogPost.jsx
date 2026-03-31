@@ -48,6 +48,7 @@ export default function UpdateBlogPost() {
       title: '',
       slug: '',
       excerpt: '',
+      quickAnswer: '',
       status: 'draft',
       scheduledAt: '',
       tags: [],
@@ -66,6 +67,7 @@ export default function UpdateBlogPost() {
     formData.append('title', data.title || '');
     formData.append('slug', data.slug || '');
     formData.append('excerpt', data.excerpt || '');
+    formData.append('quickAnswer', data.quickAnswer || '');
     formData.append('content', editorContent);
     formData.append('faqs', JSON.stringify(data.faqs || []));
 
@@ -142,6 +144,7 @@ export default function UpdateBlogPost() {
         title: blog.title || '',
         slug: blog.slug || '',
         excerpt: blog.excerpt || '',
+        quickAnswer: blog.quickAnswer || '',
         status: blog.status || 'draft',
         scheduledAt: toDateTimeLocal(blog.scheduledAt),
         tags: blog.tags || [],

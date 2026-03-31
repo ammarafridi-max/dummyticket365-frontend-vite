@@ -65,14 +65,14 @@ a {
 .blog_post h2 {
   font-size: 32px;
   line-height: 1.2;
-  margin-bottom: 16px;
-  margin-top: 44px;
+  margin-top: 40px;
+  margin-bottom: 24px;
   font-weight: 500;
   color: #0f172a;
 }
 
 .blog_post h3 {
-  font-size: 25px;
+  font-size: 22px;
   line-height: 1.28;
   margin-bottom: 14px;
   margin-top: 34px;
@@ -92,14 +92,14 @@ a {
 .blog_post p,
 .blog_post ol,
 .blog_post ul {
-  margin-bottom: 24px;
+  margin-bottom: 30px;
 }
 
 .blog_post p,
 .blog_post li {
   font-size: 17px;
   font-weight: 300;
-  line-height: 1.75;
+  line-height: 1.6;
   color: #334155;
 }
 
@@ -135,6 +135,63 @@ a {
 .blog_post li:last-of-type,
 .blog_post p:last-child {
   margin-bottom: 0;
+}
+
+.blog_post table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 32px 0;
+  overflow-x: auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid color-mix(in srgb, var(--color-primary-200) 70%, white);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+.blog_post thead {
+  background: color-mix(in srgb, var(--color-primary-50) 88%, white);
+}
+
+.blog_post th,
+.blog_post td {
+  min-width: 160px;
+  padding: 14px 18px;
+  border-right: 1px solid color-mix(in srgb, var(--color-primary-100) 75%, white);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-primary-100) 75%, white);
+  text-align: left;
+  vertical-align: top;
+}
+
+.blog_post th {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.blog_post td {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: #334155;
+  background: #fff;
+}
+
+.blog_post tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--color-primary-50) 28%, white);
+}
+
+.blog_post tr:last-child td {
+  border-bottom: 0;
+}
+
+.blog_post th:last-child,
+.blog_post td:last-child {
+  border-right: 0;
 }
 
 .blog_post strong {
@@ -181,6 +238,17 @@ a {
   .blog_post ol,
   .blog_post ul {
     margin-bottom: 20px;
+  }
+
+  .blog_post table {
+    margin: 24px 0;
+    border-radius: 12px;
+  }
+
+  .blog_post th,
+  .blog_post td {
+    min-width: 140px;
+    padding: 12px 14px;
   }
 
   /* p {

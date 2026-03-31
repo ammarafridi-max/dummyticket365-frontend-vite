@@ -56,6 +56,7 @@ export default function CreateBlogPost() {
     formData.append('title', data.title || '');
     formData.append('slug', data.slug || '');
     formData.append('excerpt', data.excerpt || '');
+    formData.append('quickAnswer', data.quickAnswer || '');
     formData.append('status', data.status || 'draft');
     formData.append('faqs', JSON.stringify(data.faqs || []));
     if (data.status === 'scheduled') {

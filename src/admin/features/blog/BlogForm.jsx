@@ -126,6 +126,17 @@ export default function BlogForm({
           </FormRow>
 
           <FormRow>
+            <Label>Quick Answer</Label>
+            <Textarea
+              rows={2}
+              {...register('quickAnswer')}
+              placeholder="A concise answer that appears near the top of the blog post..."
+              readOnly={readOnly}
+              disabled={readOnly}
+            />
+          </FormRow>
+
+          <FormRow>
             <Label>Status</Label>
             <Select {...register('status')} disabled={readOnly}>
               <option value="draft">Draft</option>

@@ -2,47 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.dummyticket365.com/</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/dummy-ticket-schengen-visa</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/dummy-ticket-uk-visa</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/blog</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/faq</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://www.dummyticket365.com/blog/dummy-ticket-not-verifiable-on-airline-website-heres-why</loc>
-    <lastmod>2026-02-15</lastmod>
+    <loc>https://www.dummyticket365.com/blog/what-is-a-gds-system-and-why-it-matters-for-visa-applications</loc>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.dummyticket365.com/blog/can-a-dummy-ticket-cause-visa-rejection</loc>
-    <lastmod>2026-02-15</lastmod>
+    <loc>https://www.dummyticket365.com/blog/dummy-ticket-vs-refundable-ticket-which-is-safer-for-visa-applications</loc>
+    <lastmod>2026-03-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.dummyticket365.com/blog/dummy-ticket-not-verifiable-on-airline-website-heres-why</loc>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/terms-and-conditions</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.dummyticket365.com/privacy-policy</loc>
-    <lastmod>2026-02-15</lastmod>
+    <lastmod>2026-03-14</lastmod>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://www.dummyticket365.com/blog/tag/dummy-ticket</loc>
+    <lastmod>2026-03-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.dummyticket365.com/blog/can-a-dummy-ticket-cause-visa-rejection</loc>
+    <lastmod>2026-03-14</lastmod>
+    <priority>0.8</priority>
   </url>
 </urlset>
